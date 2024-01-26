@@ -1,2 +1,2 @@
 RMmRaGen.R is an R file prepared for initial loading, for example:
-source("https://github.com/ManuMi68/StatMmRa/blob/main/RMmRaGen.R")
+source("https://raw.githubusercontent.com/ManuMi68/StatMmRa/main/RMmRaGen.R")
