@@ -123,7 +123,6 @@
   
 # ▼▼▼================ Information Presentation ================▼▼▼
 # They are debugged
-chkPkg("kableExtra")
 {
   kableTabl<-function(TableFor, LebelFor="",NoteFor="", heightp = "800px") {
     #chkPkg("kableExtra")
@@ -2277,7 +2276,7 @@ chkPkg("kableExtra")
              "inflection", "deSolve", 
              "nlme","car", "drc", "aomisc", "RootsExtremaInflections", "minpack.lm",
              "ggplotify","nlraa","vegan", "ggtrendline", "HydroMe", "NRAIA", "NISTnls", "rTPC", "nls.multstart")
-    source("/Volumes/RMmRa21/ADMmRa/AdjFunc/Mas_aosmic.R")
+    source("https://github.com/ManuMi68/StatMmRa/raw/main/Mas_aosmic.R")
     chkPkg(list.of.packages)
     new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
     if(length(new.packages)) install.packages(new.packages)
