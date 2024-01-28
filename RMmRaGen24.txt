@@ -33,7 +33,6 @@
   Mk.dir<-function(NmDirp="Result") {
     NmDir<-paste0(getwd(),"/",NmDirp,"/")
     if (!dir.exists(NmDir)) {try(dir.create(NmDir))}
-    NmDir
   }
   
   '%ni%' <- Negate('%in%')
