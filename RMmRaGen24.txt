@@ -2091,26 +2091,20 @@
     se<-sqrt(winvar(x,tr))/((1-2*tr)*sqrt(length(x)))
     trimci<-vector(mode="numeric",length=2)
     df<-length(x)-2*floor(tr*length(x))-1
-    # trimci[1]<-mean(x,tr) - qt(1-alpha/2,df)*se
-    # trimci[2]<-mean(x,tr) + qt(1-alpha/2,df)*se
+    trimci[1]<-mean(x,tr) - qt(1-alpha/2,df)*se
+    trimci[2]<-mean(x,tr) + qt(1-alpha/2,df)*se
     test<-(mean(x,tr)-null.value)/se
     if (alternative == "less") {
       # pval <- pt(tstat, df)
       # sig  <- pt(abs(test),df)
       sig  <- pt(test,df)
-      trimci[1]<- -Inf
-      trimci[2]<-mean(x,tr) + qt(1-alpha,df)*se
     } else if (alternative == "greater") {
       # pval <- pt(tstat, df, lower.tail = FALSE)
       # sig  <- pt(abs(test),df,lower.tail = FALSE)
       sig  <- pt(test,df,lower.tail = FALSE)
-      trimci[1]<-mean(x,tr) - qt(1-alpha,df)*se
-      trimci[2]<- Inf	
     } else {
       # pval <- 2 * pt(-abs(tstat), df)
       sig<-2*(1-pt(abs(test),df))
-      trimci[1]<-mean(x,tr) - qt(1-alpha/2,df)*se
-      trimci[2]<-mean(x,tr) + qt(1-alpha/2,df)*se
     }
     # sig<-2*(1-pt(abs(test),df))
     if(tr==0)term=1
