@@ -465,6 +465,122 @@
     g1
   }
   
+  Grph.2023b<-function(DatP,Dvp,VarX="Day",VarFill="Class",LblsP=c("Preference for Displaced Object", "B","Object Preference During Test",""),
+                      ylmP=NULL,hLin=F,lvIp=4,GrpSel=c(1:4),wMain=F,
+                      TyGrp="Box", Wthdot=F, Relleno=T,  ResumAd=T,Spcng=1,ColPer,ColViol="gray75") {
+    # TyGrp= 'Bar', 'Box', 'Violin', 'SplitViolin'
+    chkPkg("ggplot2")
+    ColPerI<-rep(ColPer[GrpSel],lvIp)
+    TopePoint=ifelse(is.null(ylmP),.4,(1/30))
+    #TopePoint=ifelse(is.null(ylmP),.4,(1/(30*(ylmP[2]-ylmP[1]))))
+    
+    gPrv<-ggplot2::ggplot(data=DatP, aes(x=get(VarX), y=get(Dvp),fill=factor(get(VarFill)))) +
+      theme_classic2() +
+      theme(legend.title = element_blank(),legend.position = "top", panel.spacing = unit(Spcng, "lines"),
+            text = element_text(size=28))
+    
+    RangeMM<-ggplot_build(gPrv)$layout$panel_scales_y[[1]]$range$range
+    RangeMf= ((ylmP[2]-ylmP[1])/(RangeMM[2]-RangeMM[1]))*.4
+    TopePoint=ifelse(is.null(ylmP),.4,RangeMf)
+    
+    if (Relleno | TyGrp == "SplitViolin") {
+      g1<-ggplot2::ggplot(data=DatP, aes(x=get(VarX), y=get(Dvp),fill=factor(get(VarFill)))) +
+        theme_classic2() +
+        theme(legend.title = element_blank(),legend.position = "top", panel.spacing = unit(Spcng, "lines"),
+              text = element_text(size=28)) +
+        # theme(legend.position="top", text = element_text(size=28),
+        #       axis.text.x = element_text(colour = "black"), axis.text.y = element_text(colour = "black")) +
+        labs(tag=LblsP[2],y=LblsP[3],x=LblsP[4]) +
+        scale_fill_manual(values=ColPerI)
+      
+      if (TyGrp=="SplitViolin") {
+        g1<- g1 +
+          introdataviz::geom_split_violin(alpha = .4, trim = FALSE) +
+          geom_boxplot(width = .2, alpha = .8, fatten = NULL, show.legend = F,outlier.shape = NA)
+      }
+      if (TyGrp=="Bar") {
+        g1 <- g1 + stat_summary(geom = "bar", fun = mean, position = "dodge") +
+          stat_summary(geom = "errorbar", fun.data = mean_se, position = position_dodge(.9),width=.2,
+                       show.legend = F)
+        #geom_errorbar(aes(ymin=lower, ymax=upper), width=.2,
+        # position=position_dodge(.9))
+      }
+      if (TyGrp=="Box") g1 <- g1 + geom_boxplot(colour="black", outlier.shape = NA,lwd=1, staplewidth = .5)
+      if (TyGrp=="Violin") g1<-g1 + stat_ydensity(scale="width", trim=F,
+                                                  position=position_dodge(0.75),draw_quantiles = c(.5),
+                                                  width=.7, alpha=.5,lwd=1)
+      
+      if (Wthdot) g1 <- g1 +
+          geom_dotplot(binaxis='y', stackdir='center', position=position_dodge(.75),dotsize=TopePoint,
+                       fill = "grey45",aes(group = interaction(get(VarX), get(VarFill))), alpha = 1)
+      
+      if (ResumAd)  {
+        if (TyGrp=="SplitViolin") {
+          g1 <- g1 + 
+            stat_summary(fun=mean, geom="point", shape=18, color=ColPerI,
+                         size=7,show.legend = F,position=position_dodge(width=.175)) +
+            stat_summary(fun=mean, geom="point", shape=18, color=ColViol,
+                         size=4,show.legend = F,position=position_dodge(width=.175))
+        } else {
+          g1 <- g1 + 
+            stat_summary(fun=mean, geom="point", shape=18, color="white",
+                         size=10,position=position_dodge(width=.75), show.legend = F) +
+            stat_summary(fun=mean, geom="point", shape=18, color="black",
+                         size=8,position=position_dodge(width=.75), show.legend = F)
+        }
+        
+      }
+      
+      if(hLin) g1 <- g1 + geom_hline(yintercept=0, linetype="dashed", color = "gray30")
+      if(wMain) g1 <- g1 + 
+          stat_summary(fun=mean, geom="point", shape=13, size=8, color="black", fill="gray30") +
+          stat_summary(fun=mean, geom="point", shape=13, size=7, color="black", fill="gray75")
+    }
+    
+    
+    # Sin Relleno
+    if (!Relleno){
+      g1<-ggplot2::ggplot(data=DatP, aes(x=get(VarX), y=get(Dvp),fill=factor(get(VarFill)),color=factor(get(VarFill)))) +
+        theme_classic2() +
+        theme(legend.title = element_blank(),legend.position = "top",panel.spacing = unit(Spcng, "lines"),
+              text = element_text(size=28)) +
+        # theme(legend.position="top", text = element_text(size=28),
+        #       axis.text.x = element_text(colour = "black"), axis.text.y = element_text(colour = "black")) +
+        labs(tag=LblsP[2],y=LblsP[3],x=LblsP[4]) +
+        scale_color_manual(values=ColPerI) + scale_fill_manual(values=rep("white",length(ColPer)))
+      
+      if (TyGrp=="Bar") {
+        g1 <- g1 + stat_summary(geom = "bar", fun = mean, position = "dodge") +
+          stat_summary(geom = "errorbar", fun.data = mean_se, position = position_dodge(.9),width=.2,
+                       show.legend = F)
+        #geom_errorbar(aes(ymin=lower, ymax=upper), width=.2,
+        # position=position_dodge(.9))
+      }
+      if (TyGrp=="Box") g1 <- g1 + geom_boxplot(outlier.shape = NA,lwd=1, staplewidth = .5)
+      if (TyGrp=="Violin") g1 <- g1 + stat_ydensity(scale="width", trim=F,
+                                                    position=position_dodge(0.75),draw_quantiles = c(.5),
+                                                    width=.7, alpha=.5,lwd=1)
+      
+      if (Wthdot) g1 <- g1 +
+          geom_dotplot(binaxis='y', stackdir='center', position=position_dodge(.75),dotsize=TopePoint,
+                       fill = "grey45",aes(group = interaction(get(VarX), get(VarFill))), alpha = 1)
+      
+      if (ResumAd)  {	  
+        g1 <- g1 + 
+          stat_summary(fun=mean, geom="point", shape=18, color=ColPerI,
+                       size=8,position=position_dodge(width=.75), show.legend = F) +
+          stat_summary(fun=mean, geom="point", shape=18, color="black",
+                       size=5,position=position_dodge(width=.75), show.legend = F) 
+      }
+      if(hLin) g1 <- g1 + geom_hline(yintercept=0, linetype="dashed", color = "gray30")
+      if(wMain) g1 <- g1 + 
+          stat_summary(fun=mean, geom="point", shape=13, size=8, color="black", fill="gray30") +
+          stat_summary(fun=mean, geom="point", shape=13, size=7, color="black", fill="gray30")
+    }
+    if(!is.null(ylmP)) g1 <- g1 + coord_cartesian(ylim = ylmP)
+    g1
+  }
+  
   GrphModels <-function (DTg,modP, ElTit="Example", NmModP=NULL, AjAx=FALSE,
                          sample.curve = 1000, ylab = "Dependent", 
                          xlab = "Independent", theme = theme_classic(), legend.position = "top", 
