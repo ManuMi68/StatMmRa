@@ -2511,6 +2511,7 @@
   RobSisOne <- function(DTFisp,IdSj="Subject",wv1="Context",wv2="Day",LaVd="Rate") {
     RsAOV<-list()
     DTp2<-NA
+    AOVOmn <-NA
     DTp2 <- DTFisp %>% 
       dplyr::rename(IdSuj=all_of(IdSj)) %>% 
       dplyr::rename(x1=all_of(wv1)) %>% 
