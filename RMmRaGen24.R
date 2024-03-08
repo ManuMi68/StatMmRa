@@ -7280,6 +7280,47 @@
     # Final function to scrutinize the models
       # LasMedP=Efs; TyLbl=JnEq; xLb="Decile";yLb="Pearson's Correlation"; xmaxp=10; yminp=-1;PIp=NULL;LineRate=TRUE;pointXMed="p";RootG=TRUE;MaxG=FALSE;InflG=FALSE
       # PIp Possible Inflection Point that I pass directly to the chart, so that it can be included.
+    
+    ExtrParDRC<-function(MPas)  {
+      Smm<-summary(MPas)
+      Coef<-data.table(Smm$coefficients)
+      Estim<-frmMM(c(Coef[,'Estimate'][[1]]),2)
+      Lasp=c(Coef[,'p-value'][[1]])
+      Lasp[is.nan(Lasp)]=1
+      Estim[Lasp<=.05]<-paste0(Estim[Lasp<=.05],"*")
+      Resf<-paste0(MPas$parNames[[2]],"= ", Estim,collapse="; ")
+      Resf
+    }
+    
+    AdjParms.DRC<-function(MPas){
+      list(
+        AIC=AIC(MPas),
+        LogLik=logLik(MPas)[[1]],
+        #SE= sigma(MPas),
+        SE=sqrt(summary(MPas)$resVar),
+        coefs =ExtrParDRC(MPas)
+      )}
+    
+    ExtrParLM<-function(MPas)  {
+      Smm<-summary(MPas)
+      Coef<-data.table(Smm$coefficients)
+      Estim<-frmMM(c(Coef[,'Estimate'][[1]]),2)
+      Lasp=c(Coef[,'Pr(>|t|)'][[1]])
+      Lasp[is.nan(Lasp)]=1
+      Estim[Lasp<=.05]<-paste0(Estim[Lasp<=.05],"*")
+      Resf<-paste0(rownames(Smm$coefficients),"= ", Estim,collapse="; ")
+      Resf
+    }
+    
+    AdjParms.LM<-function(MPas){
+      list(
+        AIC=AIC(MPas),
+        LogLik=logLik(MPas)[[1]],
+        #SE= sigma(MPas),
+        SE=summary(MPas)$sigma,
+        coefs =ExtrParLM(MPas)
+      )}
+    
     AdjMod.23.f<-function(LasMedP,TyLbl=NULL,xLb="X",yLb="Y",xmaxp=10,yminp=0,PIp=NULL,
                           LineRate=TRUE,pointXMed="p",pointXMedLb="OnAx",RootG=FALSE,MaxG=FALSE,InflG=FALSE) {
       chkPkg(c("shape","RootsExtremaInflections"))
