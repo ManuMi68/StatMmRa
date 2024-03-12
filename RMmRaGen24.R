@@ -209,7 +209,6 @@
   #devtools::install_github("zumbov2/deeplr")
   
   chkPkg("deeplr")
-  my_keyDeep="16ce0043-b6d4-60a9-9177-6d12910a20b2:fx"
 }
 # ▲▲▲======================== Tool Kit ========================▲▲▲
   
