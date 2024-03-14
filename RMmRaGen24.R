@@ -7,7 +7,7 @@
 # ▼▼▼================= Information Processing =================▼▼▼
 # They are debugged
 {
-
+  
   # Example: greek$eta
   # Encodes the Greek alphabet letters
   greek = data.frame( # lowercase Greek letters
@@ -27,9 +27,9 @@
     leq='\u2264', geq='\u2265', muchless='\u226a', muchgreater='\u226b', leftarrow='\u21d0', rightarrow='\u21d2',
     equal='\uff1d', notEqual='\u2260', integral='\u222b', doubleintegral='\u222c', tripleintegral='\u222d',
     logicalAnd='\u2227', logicalOr='\u2228', intersection='\u2229', union='\u222a')
-    
+  
   # Checks if a certain library is installed on the system.
-   # If it is not installed, it installs it first and then loads it.
+  # If it is not installed, it installs it first and then loads it.
   chkPkg <-function(l.of.p){
     new.packages <- l.of.p[!(l.of.p %in% installed.packages()[,"Package"])]
     if(length(new.packages)) install.packages(new.packages)
@@ -145,7 +145,7 @@
 # ▲▲▲================= Information Processing =================▲▲▲
 
 
-  
+
 # ▼▼▼================ Information Presentation ================▼▼▼
 # They are debugged
 {
@@ -217,8 +217,8 @@
   chkPkg("deeplr")
 }
 # ▲▲▲======================== Tool Kit ========================▲▲▲
-  
-  
+
+
 
 # ▼▼▼============= Graphs & Exploratory & Visual ==============▼▼▼
 # They are debugged
@@ -491,8 +491,8 @@
   }
   
   Grph.2023b<-function(DatP,Dvp,VarX="Day",VarFill="Class",LblsP=c("Preference for Displaced Object", "B","Object Preference During Test",""),
-                      ylmP=NULL,hLin=F,lvIp=4,GrpSel=c(1:4),wMain=F,
-                      TyGrp="Box", Wthdot=F, Relleno=T,  ResumAd=T,Spcng=1,ColPer,ColViol="gray75") {
+                       ylmP=NULL,hLin=F,lvIp=4,GrpSel=c(1:4),wMain=F,
+                       TyGrp="Box", Wthdot=F, Relleno=T,  ResumAd=T,Spcng=1,ColPer,ColViol="gray75") {
     # TyGrp= 'Bar', 'Box', 'Violin', 'SplitViolin'
     chkPkg("ggplot2")
     ColPerI<-rep(ColPer[GrpSel],lvIp)
@@ -661,7 +661,7 @@
   
 }
 # ▲▲▲============= Graphs & Exploratory & Visual ==============▲▲▲
-  
+
 
 # ▼▼▼=========== Statistics & Mathematics: General ============▼▼▼
 # They are debugged
@@ -963,25 +963,25 @@
       .default = "No evidence"
     )
     res
-      # if (e<=ValCorte[1]) r_e="Contrary Exteme/Very strong"
-      # if (data.table::between(e, ValCorte[1], ValCorte[2])) r_e="Contray Extreme/Strong"
-      # if (data.table::between(e, ValCorte[2], ValCorte[3])) r_e="Contray Very strong/Strong"
-      # if (data.table::between(e, ValCorte[3], ValCorte[4])) r_e="Contray Strong"
-      # if (data.table::between(e, ValCorte[4], ValCorte[5])) r_e="Contray Strong/Positive"
-      # if (data.table::between(e, ValCorte[5], ValCorte[6])) r_e="Contray Moderate/Positive"
-      # if (data.table::between(e, ValCorte[6], ValCorte[6+1])) r_e="Contray Anecdotal/Weak"
-      # 
-      # if (e<=ValCorte[6+1]) r_e="No evidence"
-      # 
-      # if (data.table::between(e, ValCorte[6+1], ValCorte[6+2])) r_e="Anecdotal/Weak"
-      # if (data.table::between(e, ValCorte[6+2], ValCorte[6+3])) r_e="Moderate/Positive"
-      # if (data.table::between(e, ValCorte[6+3], ValCorte[6+4])) r_e="Strong/Positive"
-      # if (data.table::between(e, ValCorte[6+4], ValCorte[6+5])) r_e="Strong"
-      # if (data.table::between(e, ValCorte[6+5], ValCorte[6+6])) r_e="Very Strong/Strong"
-      # if (data.table::between(e, ValCorte[6+6], ValCorte[6+7])) r_e="Extrem/Strong"
-      # if (e>ValCorte[6+7]) r_e="Extreme/Very strong"
-      # 
-      # r_e
+    # if (e<=ValCorte[1]) r_e="Contrary Exteme/Very strong"
+    # if (data.table::between(e, ValCorte[1], ValCorte[2])) r_e="Contray Extreme/Strong"
+    # if (data.table::between(e, ValCorte[2], ValCorte[3])) r_e="Contray Very strong/Strong"
+    # if (data.table::between(e, ValCorte[3], ValCorte[4])) r_e="Contray Strong"
+    # if (data.table::between(e, ValCorte[4], ValCorte[5])) r_e="Contray Strong/Positive"
+    # if (data.table::between(e, ValCorte[5], ValCorte[6])) r_e="Contray Moderate/Positive"
+    # if (data.table::between(e, ValCorte[6], ValCorte[6+1])) r_e="Contray Anecdotal/Weak"
+    # 
+    # if (e<=ValCorte[6+1]) r_e="No evidence"
+    # 
+    # if (data.table::between(e, ValCorte[6+1], ValCorte[6+2])) r_e="Anecdotal/Weak"
+    # if (data.table::between(e, ValCorte[6+2], ValCorte[6+3])) r_e="Moderate/Positive"
+    # if (data.table::between(e, ValCorte[6+3], ValCorte[6+4])) r_e="Strong/Positive"
+    # if (data.table::between(e, ValCorte[6+4], ValCorte[6+5])) r_e="Strong"
+    # if (data.table::between(e, ValCorte[6+5], ValCorte[6+6])) r_e="Very Strong/Strong"
+    # if (data.table::between(e, ValCorte[6+6], ValCorte[6+7])) r_e="Extrem/Strong"
+    # if (e>ValCorte[6+7]) r_e="Extreme/Very strong"
+    # 
+    # r_e
   }
   
   
@@ -1086,9 +1086,9 @@
   }
   
   # Allows to obtain descriptive statistics for a variable, grouped in categories:
-   # Basic (e.g. Mean), Robust (e.g. Median), Shape (Asym and Kurtosis);
-   # Special (e.g. Bounded M.) and Qualitative (e.g. Mode).
-   # Example: SummUja(DatPas = c(1,3,5,6,7,8,2,1,2))
+  # Basic (e.g. Mean), Robust (e.g. Median), Shape (Asym and Kurtosis);
+  # Special (e.g. Bounded M.) and Qualitative (e.g. Mode).
+  # Example: SummUja(DatPas = c(1,3,5,6,7,8,2,1,2))
   SummUja <-function(DatPas,DPrec=3,Recor=.20) {
     # Example: SummUja(DatPas = c(1,3,5,6,7,8,2,1,2))
     
@@ -1209,7 +1209,7 @@
 }
 
 # ▲▲▲================== Statistics: General ===================▲▲▲  
-  
+
 
 
 
@@ -1273,10 +1273,10 @@
   }
   
   # Pre-stores values that I have already calibrated
-   # Examples of use:
-   # Elest="DTS"
-   # RefSizes[,get(Elest)]
-   # RefSizes[,Wass]
+  # Examples of use:
+  # Elest="DTS"
+  # RefSizes[,get(Elest)]
+  # RefSizes[,Wass]
   RefSizes=data.table(AKP=c(.1,.3,.5),QS=c(.55,.65,.70),SIGN=c(.46,.38,.31),KS=c(.08,.2,.32),Kuiper=c(.08,.2,.32),
                       Wass=c(.2,.5,.8), Lp=c(.2,.5,.8), CVM=c(75.14,440.54,1098.32), AD= c(3964568,22889998,56219919), 
                       DTS= c(63.57,	151.03,	239.47))
@@ -1324,22 +1324,22 @@
   # Old, in 2-variable format
   # wincorMM<-function(x,y=NULL,tr=.2){
   {#   #   Winsorized correlation between x and y (tr is the amount of Winsorization)
-  #   #   Also returns the Winsorized covariance
-  #   #   Pairwise deletion of missing values is performed.
-  #   if (is.null(y[1])){y = x[, 2];x = x[, 1]}
-  #   sig<-NA
-  #   if(length(x)!=length(y))stop("Lengths of vectors are not equal")
-  #   m1=na.del(cbind(x,y))
-  #   g<-floor(tr*nrow(m1))
-  #   vec<-cbind(Trg(m1[,1],tr),Trg(m1[,2],tr))
-  #   wcor<-cor(vec)[1,2]
-  #   wcov<-var(vec)[1,2]
-  #   if(sum(x==y,na.rm = T)!=nrow(m1)){
-  #     test<-wcor*sqrt((nrow(m1)-2)/(1.-wcor^2))
-  #     sig<-as.numeric(as.character(frmMM(2*(1-pt(abs(test),nrow(m1)-2*g-2)),10)))
-  #   }
-  #   list(cor=wcor,cov=wcov,siglevel=sig,n=nrow(m1))
-  # } #As Wilcox' "wincor", and "wincor.sub"
+    #   #   Also returns the Winsorized covariance
+    #   #   Pairwise deletion of missing values is performed.
+    #   if (is.null(y[1])){y = x[, 2];x = x[, 1]}
+    #   sig<-NA
+    #   if(length(x)!=length(y))stop("Lengths of vectors are not equal")
+    #   m1=na.del(cbind(x,y))
+    #   g<-floor(tr*nrow(m1))
+    #   vec<-cbind(Trg(m1[,1],tr),Trg(m1[,2],tr))
+    #   wcor<-cor(vec)[1,2]
+    #   wcov<-var(vec)[1,2]
+    #   if(sum(x==y,na.rm = T)!=nrow(m1)){
+    #     test<-wcor*sqrt((nrow(m1)-2)/(1.-wcor^2))
+    #     sig<-as.numeric(as.character(frmMM(2*(1-pt(abs(test),nrow(m1)-2*g-2)),10)))
+    #   }
+    #   list(cor=wcor,cov=wcov,siglevel=sig,n=nrow(m1))
+    # } #As Wilcox' "wincor", and "wincor.sub"
   }
   
   #x=DTa
@@ -1476,6 +1476,207 @@
     sqrt(e.pow2)
   } # With formula & data.table
   
+  # The first version, which I have to check what I have changed.
+  # I have added x2 (it was missing) to DTFisDif
+  # DTFisp<-DTFis
+  # IdSj="Subject";wv1="Class";wv2="Day";LaVd="Rate"
+  RobSis.1st<- function(DTFisp,IdSj="Subject",wv1="Class",wv2="Day",LaVd="Rate") {
+    RsAOV<-list()
+    RsAOVOmn<-NA; RobAOvAPA.1<-NA; RsAOVOmn2<-NA
+    DTFisDif<-NA; DTp2<-NA
+    DTp2 <- DTFisp %>% 
+      dplyr::rename(IdSuj=all_of(IdSj)) %>% 
+      dplyr::rename(x1=all_of(wv1)) %>% 
+      dplyr::rename(x2=all_of(wv2)) %>%
+      dplyr::rename(y=all_of(LaVd)) %>%
+      mutate(x1=factor(x1)) %>%
+      mutate(x2=factor(x2)) %>%
+      mutate(IdSuj=factor(IdSuj)) %>%
+      mutate(Inter:=factor(interaction(x1,x2))) %>%
+      data.table() %>%
+      setkey(.,Inter)
+    
+    NumL=length(levels(DTp2$Inter)); vector=c(1:NumL)
+    lv1=length(levels(DTp2$x1));lv2=length(levels(DTp2$x2))
+    
+    # Data structure for Wilcox functions
+    ArP=lapply(1:NumL, function (x) DTp2[.(levels(DTp2$Inter)[x]),"y",with=F][[1]])
+    
+    # A) Robust AOV with wwtrim
+    RsAOVOmn<-bwtrim(lv2,lv1,ArP)
+    try(RsAOVOmn2<-bwtrimbt_vMM(lv2,lv1,ArP))
+    
+    RobAOvAPA.1 <- with(RsAOVOmn, paste0(wv2,": Fw(1) = ",round(Qa,3), ", p = ",round(Qa.p.value,3),
+                                         ", ",wv1,": Fw(1) = ",round(Qb,3), ", p = ",round(Qb.p.value,3),
+                                         ", ",wv2,"*",wv1, ": Fw(1) = ",round(Qab,3),
+                                         ", p = ",round(Qab.p.value,3)))
+    
+    RobAOvTXT<-round(unlist(RsAOVOmn),4)
+    RobAOvAPA.2<-paste0("[",wv1,": ", "V(",lv1-1,") = ", 
+                        frmMM(RobAOvTXT[3],2), ", p = ", frmMM(RobAOvTXT[4],4), "; ",
+                        wv2, ": ", "V(",lv2-1,") = ",
+                        frmMM(RobAOvTXT[1],2), ", p = ", frmMM(RobAOvTXT[2],4), "; ",
+                        "Interaction ",wv1, " x ", wv2,": ", "V(",(lv1-1)*(lv2-1),") = ", 
+                        frmMM(RobAOvTXT[5],2), ", p = ", frmMM(RobAOvTXT[6],4),"]" )
+    
+    # Resultados con un estilo
+    RobAOvAPA.1
+    # Resultados con otro estilo
+    RobAOvAPA.2
+    
+    RsAOV$Omn1<-RobAOvAPA.1
+    RsAOV$Omn2<-RobAOvAPA.2
+    RsAOV$Omn3<-RsAOVOmn2
+    
+    # Effect Size old
+    TamA=mean(ESmainMCP(lv2,lv1,ArP)$Factor.A[,3])
+    TamB=mean(ESmainMCP(lv2,lv1,ArP)$Factor.B[,3])
+    TamInt=mean(esImcp(lv2,lv1,ArP)$Effect.Sizes)
+    AllTam = c(TamA,TamB,TamInt)
+    RsAOV$EffSize=sapply(AllTam, frmMM)
+    
+    TamInterp= unlist(lapply(AllTam, InterpExplana))
+    
+    # Effect Size New
+    DTFisDif <- DTp2 %>% 
+      group_by(IdSuj,x2) %>% 
+      mutate(Difference = y[x1 == levels(x1)[1]] - y[x1 == levels(x1)[2]]) %>%
+      filter(.,x1 == levels(x1)[1]) %>%
+      dplyr::select(.,-x1) %>%
+      data.table()
+    
+    x1.Spl <- split(DTp2$y, DTp2$x1)
+    x1.Ef=yuendv2(x1.Spl[[1]],x1.Spl[[2]],pr=F)$Effect.Size
+    x1.Ef.b=rmES.pro(x1.Spl)$effect.size
+    # dep.ES.summary.CI(x[[1]],x[[2]])
+    
+    x2.Spl<-split(DTp2$y, DTp2$x2)
+    x2.Ef= t1wayv2(x2.Spl)$Effect.Size
+    
+    setkey(DTFisDif,x2)
+    ArPDif=lapply(1:lv2, function (x) DTFisDif[.(levels(DTFisDif$x2)[x]),"Difference",with=F][[1]])
+    xInter.Ef= t1wayv2(ArPDif)$Effect.Size
+    
+    RsAOV$EffSize2=round(c(x2.Ef,x1.Ef,xInter.Ef),2)
+    
+    RobAOvAPA.3<-paste0("[",wv1,": ", "V(",lv1-1,") = ", 
+                        frmMM(RobAOvTXT[3],2), ", p = ", frmMM(RsAOVOmn2[[2]],4), ", ",
+                        "\U1D6CF = ", frmMM(x1.Ef,2), " (",TamInterp[2], " effect); ",
+                        wv2, ": ", "V(",lv2-1,") = ",
+                        frmMM(RobAOvTXT[1],2), ", p = ", frmMM(RsAOVOmn2[[1]],4), ", ",
+                        "\U1D6CF = ", frmMM(x2.Ef,2), " (",TamInterp[1], " effect); ",
+                        "Interaction ",wv1, " x ", wv2,": ", "V(",(lv1-1)*(lv2-1),") = ", 
+                        frmMM(RobAOvTXT[5],2), ", p = ", frmMM(RsAOVOmn2[[3]],4), ", ",
+                        "\U1D6CF = ", frmMM(TamInt,2), " (",TamInterp[3], " effect)",
+                        "]" )
+    
+    RsAOV$Omn4<-RobAOvAPA.3
+    
+    # B) Simple effect (with yuenv2) and Rom vs BH Pos Hoc for Between,
+    # and with yuendv2 and Rom vs BH Pos Hoc for Within
+    # B.1) Direction Class (within) on each Day (Between)
+    cnt=0; yd<-list();LapAd<-NULL;LapAd2<-NULL
+    for (i2 in 1:lv2) {
+      LaP=NULL
+      for (i in (1:(lv1-1))) {
+        for (j in ((i+1):(lv1))) {
+          cnt=cnt+1
+          sample1<-DTp2[x2==levels(DTp2$x2)[i2]&x1==levels(DTp2$x1)[i],y] 
+          sample2<-DTp2[x2==levels(DTp2$x2)[i2]&x1==levels(DTp2$x1)[j],y] 
+          out=c(unlist(yuendv2(sample1,sample2)))
+          yd[[cnt]]<-as.data.table(rbind(out))
+          LaP=c(LaP,yd[[cnt]]$p.value)
+          yd[[cnt]]<-data.table(cbind(IV1=levels(DTp2$x2)[i2],IV2.a=levels(DTp2$x1)[i],
+                                      IV2.b=levels(DTp2$x1)[j],yd[[cnt]]))
+        }
+      }
+      #LapAd<-c(LapAd,p.adjust(LaP, "holm"))
+      LapAd2<-c(LapAd2,p.adjust(LaP, "BH")) # Optimo
+      if (length(LaP)==1) LapAd<-c(LapAd,(LaP))
+      if (length(LaP)>1) LapAd<-c(LapAd,adjustRom(LaP))
+    }
+    
+    ext1<-ExtrSig(LapAd); names(ext1)<-c("p.Rom","Sig.Rom")
+    ext2<-ExtrSig(LapAd2); names(ext2)<-c("p.BH","Sig.BH")
+    ResPosRob<-data.table(do.call("rbind", yd),ext1,ext2)
+    ResPosRob$p.value=frmMM( ResPosRob$p.value,4)
+    for (i in (c(4,5,7:11,14)))ResPosRob[[i]]<-as.numeric(frmMM(ResPosRob[[i]],2))
+    ResPosRob<-data.table(ResPosRob, Tam= unlist(lapply(ResPosRob$Effect.Size, InterpExplana)))
+    setorder(ResPosRob, -Sig.BH)
+    
+    #with (ResPosRob[1,], paste0(IV1,": ",IV2.a," - ",IV2.b," = ",dif,": ","tw(",df,") = ",
+    #                               teststat, "; p = ", p.V1, "; \U1D6CF =",
+    #                               Effect.Size, " (",Tam," effect)"))
+    
+    ResAPA<-lapply(1:nrow(ResPosRob), function(i) with (ResPosRob[i,], paste0(IV1,": ",IV2.a," - ",IV2.b," = ",dif,": ","tw(",df,") = ",
+                                                                              teststat, "; pROM = ", p.Rom,"; pBH = ", p.BH, "; \U1D6CF =",
+                                                                              Effect.Size, " (",Tam," effect)")))
+    ResAPA2<-data.table(do.call("rbind",ResAPA))
+    
+    RsAOV$SimplEfa.1<- ResPosRob
+    RsAOV$SimplEfa.2<- ResAPA2
+    
+    ResPosRob
+    ResAPA2
+    
+    # Guía para texto paper
+    # F(1, 17) = 4.43, p = .050, ηG2 = .13 (medium effect)
+    # t(33.00) = −0.56, p = .582, dpair = −0.28 (small effect)
+    
+    
+    # B.2) Direction Day (Between) on each Class (within)
+    cnt=0; yd<-list();LapAd<-NULL;LapAd2<-NULL
+    for (i2 in 1:lv1) {
+      LaP=NULL
+      for (i in (1:(lv2-1))) {
+        for (j in ((i+1):(lv2))) {
+          cnt=cnt+1
+          sample1<-DTp2[x2==levels(DTp2$x2)[i]&x1==levels(DTp2$x1)[i2],y] 
+          sample2<-DTp2[x2==levels(DTp2$x2)[j]&x1==levels(DTp2$x1)[i2],y]
+          out=c(unlist(yuenv2(sample1,sample2)))
+          yd[[cnt]]<-as.data.table(rbind(out))
+          LaP=c(LaP,yd[[cnt]]$p.value)
+          yd[[cnt]]<-data.table(cbind(IV1=levels(DTp2$x1)[i2],
+                                      IV2.a=levels(DTp2$x2)[i],IV2.b=levels(DTp2$x2)[j],yd[[cnt]]))
+          
+        }
+      }
+      #LapAd<-c(LapAd,p.adjust(LaP, "holm"))
+      LapAd2<-c(LapAd2,p.adjust(LaP, "BH")) # Optimo
+      if (length(LaP)==1) LapAd<-c(LapAd,(LaP))
+      if (length(LaP)>1) LapAd<-c(LapAd,adjustRom(LaP))
+    }
+    
+    ext1<-ExtrSig(LapAd); names(ext1)<-c("p.Rom","Sig.Rom")
+    ext2<-ExtrSig(LapAd2); names(ext2)<-c("p.BH","Sig.BH")
+    ResPosRob2<-data.table(do.call("rbind", yd),ext1,ext2)
+    ResPosRob2$p.value=frmMM( ResPosRob2$p.value,4)
+    for (i in (c(4,5,9:15)))ResPosRob2[[i]]<-as.numeric(frmMM(ResPosRob2[[i]],2))
+    ResPosRob2<-data.table(ResPosRob2, Tam= unlist(lapply(ResPosRob2$Effect.Size, InterpExplana)))  
+    
+    setorder(ResPosRob2, -Sig.BH)
+    #with (ResPosRob[1,], paste0(IV1,": ",IV2.a," - ",IV2.b," = ",dif,": ","tw(",df,") = ",
+    #                               teststat, "; p = ", p.V1, "; \U1D6CF =",
+    #                               Effect.Size, " (",Tam," effect)"))
+    
+    ResAPAb<-lapply(1:nrow(ResPosRob2), function(i) with (ResPosRob2[i,], paste0(IV1,": ",IV2.a," - ",IV2.b," = ",dif,": ","tw(",df,") = ",
+                                                                                 teststat, "; pROM = ", p.Rom,"; pBH = ", p.BH, "; \U1D6CF =",
+                                                                                 Effect.Size, " (",Tam," effect)")))
+    ResAPA2b<-data.table(do.call("rbind",ResAPAb))
+    
+    RsAOV$SimplEfb.1<- ResPosRob2
+    RsAOV$SimplEfb.2<- ResAPA2b
+    
+    ResPosRob2
+    ResAPA2b
+    
+    RsAOV$Dif<-DTFisDif[,c(1,2,5)]
+    
+    RsAOV
+    
+  }
+  
+  # I have added x2 (it was missing) to DTFisDif
   # DTFisp<-DTFis
   # IdSj="Subject";wv1="Class";wv2="Day";LaVd="Rate"
   RobSis<- function(DTFisp,IdSj="Subject",wv1="Class",wv2="Day",LaVd="Rate") {
@@ -1537,7 +1738,7 @@
     
     # Effect Size New
     DTFisDif <- DTp2 %>% 
-      group_by(IdSuj) %>% 
+      group_by(IdSuj,x2) %>% 
       mutate(Difference = y[x1 == levels(x1)[1]] - y[x1 == levels(x1)[2]]) %>%
       filter(.,x1 == levels(x1)[1]) %>%
       dplyr::select(.,-x1) %>%
@@ -1660,10 +1861,10 @@
     #                               Effect.Size, " (",Tam," effect)"))
     
     ResAPAb<-lapply(1:nrow(ResPosRob2), function(i) with (ResPosRob2[i,], paste0(IV1,": ",IV2.a," - ",IV2.b," = ",dif,": ",
-                                                                                "tw(",df,") = ", teststat,
-                                                                                "; pROM = ", p.Rom,
-                                                                                "; pBH = ", p.BH,
-                                                                                "; ", greek$xi," = ", Effect.Size, " (",Tam," effect)")))
+                                                                                 "tw(",df,") = ", teststat,
+                                                                                 "; pROM = ", p.Rom,
+                                                                                 "; pBH = ", p.BH,
+                                                                                 "; ", greek$xi," = ", Effect.Size, " (",Tam," effect)")))
     ResAPA2b<-data.table(do.call("rbind",ResAPAb))
     
     RsAOV$SimplEfb.1<- ResPosRob2
@@ -1834,7 +2035,7 @@
     hl * (hl - 1)/((length(x) - 1) * winvarMM(x,tr,na.rm,rees=FALSE))
   }
   
-  # Computa efecto básico de yuen para todo, 2 o mas grupos
+  # Computes basic effect of yuen for all, 2 or more groups
   yuenMM <- function(x,tr=0.2,alphap=0.05) {
     #
     #  Perform Yuen's test for trimmed means on the data in x and y.
@@ -1879,7 +2080,7 @@
     Res
   }
   
-  # Computa vriante de yuen a partir de QS (Shift Function) from Trimmed Means
+  # Computation of yuen variante from QS (Shift Function) from Trimmed Means
   yuen.QS.MM <- function(xp,tr=0.2,alphap=0.05) {
     if(tr==.5)stop('Use medpb to compare medians.')
     if(tr>.5)stop('cannot have tr>.5')
@@ -1995,7 +2196,7 @@
     output
   }
   
-  # la he cambiado en octubre de 2023 pues daba errores
+  # I changed it in October 2023 because it was giving errors.
   # ecdfdist(list(x,y),method=locfun,p = 1,as.dist = T)[[1]]
   ES.sum.REL.MAG.MM3<-function(REL.M=c(0.2, 0.5, 0.8),locfun="KS",n = 10000,reps=100,SEED=TRUE) {
     #  Determine small medium and large equivalent measures of effect size based on the values in REL.M
@@ -2155,7 +2356,7 @@
     list(ci=ci, t=t, t0=mean(t), Bias=mean(t)-sqrt(PowBasS(x)),sd=sd(t))
   } # With apply
   
-  # Alternativa para más de 2 niveles, comparados 2 a 2 como PosH
+  # Alternative for more than 2 levels, compared 2 to 2 as PosH
   #xp=DatFrmMod(DepV1~Grp1,DTf)
   #xp=DatFrmMod(DepV1~Grp1,DTBig4)
   shiftesAOVMM<-function(xp,locfun=median,iter=100,SEED=TRUE,...) {
@@ -2388,64 +2589,65 @@
   # The original function yuen.effect.ci reproduced, to study it
   # x=Data;y=Data2; nboot=400;tr=.2;alphap=.05
   {# yuen.effect.ci<-function(x,y,SEED=TRUE,nboot=400,tr=.2,alpha=.05){
-  #       #
-  #       # Compute a 1-alpha  confidence interval
-  #       # for a robust, heteroscedastic  measure of effect size
-  #       #  The absolute value of the measure of effect size is used.
-  #       #
-  #       if(SEED)set.seed(2) # set seed of random number generator so that
-  #       #             results can be duplicated.
-  #       x=elimna(x)
-  #       y=elimna(y)
-  #       bvec=0
-  #       datax<-matrix(sample(x,size=length(x)*nboot,replace=TRUE),nrow=nboot)
-  #       datay<-matrix(sample(y,size=length(y)*nboot,replace=TRUE),nrow=nboot)
-  #       for(i in 1:nboot){
-  #         bvec[i]=yuenv2(datax[i,],datay[i,],tr=tr,SEED=FALSE)$Effect.Size
-  #       }
-  #       bvec<-sort(abs(bvec))
-  #       crit<-alphap/2
-  #       icl<-round(crit*nboot)+1
-  #       icu<-nboot-icl
-  #       ci<-NA
-  #       ci[1]<-bvec[icl]
-  #       pchk=yuen(x,y,tr=tr)$p.value
-  #       if(pchk>alphap)ci[1]=0
-  #       ci[2]<-bvec[icu]
-  #       if(ci[1]<0)ci[1]=0
-  #       es=abs(yuenv2(x,y,tr=tr)$Effect.Size)
-  #       list(CI=ci,Effect.Size=es)
-  #     }
+    #       #
+    #       # Compute a 1-alpha  confidence interval
+    #       # for a robust, heteroscedastic  measure of effect size
+    #       #  The absolute value of the measure of effect size is used.
+    #       #
+    #       if(SEED)set.seed(2) # set seed of random number generator so that
+    #       #             results can be duplicated.
+    #       x=elimna(x)
+    #       y=elimna(y)
+    #       bvec=0
+    #       datax<-matrix(sample(x,size=length(x)*nboot,replace=TRUE),nrow=nboot)
+    #       datay<-matrix(sample(y,size=length(y)*nboot,replace=TRUE),nrow=nboot)
+    #       for(i in 1:nboot){
+    #         bvec[i]=yuenv2(datax[i,],datay[i,],tr=tr,SEED=FALSE)$Effect.Size
+    #       }
+    #       bvec<-sort(abs(bvec))
+    #       crit<-alphap/2
+    #       icl<-round(crit*nboot)+1
+    #       icu<-nboot-icl
+    #       ci<-NA
+    #       ci[1]<-bvec[icl]
+    #       pchk=yuen(x,y,tr=tr)$p.value
+    #       if(pchk>alphap)ci[1]=0
+    #       ci[2]<-bvec[icu]
+    #       if(ci[1]<0)ci[1]=0
+    #       es=abs(yuenv2(x,y,tr=tr)$Effect.Size)
+    #       list(CI=ci,Effect.Size=es)
+    #     }
   }
   
   #formula=DepV1 ~ Grp1; data=DTa;tr = 0.2;
   # t1wayMM<-function (formula, data, tr = 0.2, alphap=0.05,
   {#                    nboot = 100, SEED = TRUE, pr = TRUE, loc.fun = median, PB=FALSE) 
-  # {
-  #   #require(MASS)
-  #   if (SEED)set.seed(2)
-  #   if (missing(data)) {
-  #     mf <- model.frame(formula)
-  #   }else {
-  #     mf <- model.frame(formula, data)
-  #   }
-  #   cl <- match.call()
-  #   x <- split(model.extract(mf, "response"), mf[, 2])
-  #   if (tr == 0.5) 
-  #     warning("Comparing medians should not be done with this function!")
-  #   yRes<-yuenMM(x,tr)
-  #   
-  #   #Estimacion Potencia añadida a partir de t1wayv2 & t1way.effect
-  #   Ef.Siz<-RobEffS(x,tr=tr,loc.fun=loc.fun,PB=PB,nboot=nboot)
-  #   CI.EfSiz<-PowBasSCI(x,tr=tr, loc.fun=loc.fun, PB=PB,nboot=nboot, SEED=SEED, alphap=alphap,pcpas=yRes$p.value)
-  #   c(list(call = cl),yRes, list(Var.Explained = Ef.Siz^2, Effect.Size = Ef.Siz, CI.Ef.Size=CI.EfSiz))
-  #   #class(result) <- c("t1way")
-  #   #result
-  # }
+    # {
+    #   #require(MASS)
+    #   if (SEED)set.seed(2)
+    #   if (missing(data)) {
+    #     mf <- model.frame(formula)
+    #   }else {
+    #     mf <- model.frame(formula, data)
+    #   }
+    #   cl <- match.call()
+    #   x <- split(model.extract(mf, "response"), mf[, 2])
+    #   if (tr == 0.5) 
+    #     warning("Comparing medians should not be done with this function!")
+    #   yRes<-yuenMM(x,tr)
+    #   
+    #   #Estimacion Potencia añadida a partir de t1wayv2 & t1way.effect
+    #   Ef.Siz<-RobEffS(x,tr=tr,loc.fun=loc.fun,PB=PB,nboot=nboot)
+    #   CI.EfSiz<-PowBasSCI(x,tr=tr, loc.fun=loc.fun, PB=PB,nboot=nboot, SEED=SEED, alphap=alphap,pcpas=yRes$p.value)
+    #   c(list(call = cl),yRes, list(Var.Explained = Ef.Siz^2, Effect.Size = Ef.Siz, CI.Ef.Size=CI.EfSiz))
+    #   #class(result) <- c("t1way")
+    #   #result
+    # }
   }
   
+  # It used to be called 't1wayMM'
   t1way_vMM<-function (formula, data, tr = 0.2, alphap=0.05,
-                     nboot = 100, SEED = TRUE, pr = TRUE, loc.fun = median, PB=FALSE) 
+                       nboot = 100, SEED = TRUE, pr = TRUE, loc.fun = median, PB=FALSE) 
   {
     #require(MASS)
     if (SEED)set.seed(2)
@@ -2717,7 +2919,7 @@
     }
     
     # It has been subsumed in the one that serves for more than 2 levels (shiftesAOVMM),
-     # but I keep it to preserve compatibility and in the future it will be extinguished.
+    # but I keep it to preserve compatibility and in the future it will be extinguished.
     shiftesMM<-function(xp,locfun=median,iter=100,SEED=TRUE,...){
       #
       #  Probabilistic measure of effect size: shift of the median.
@@ -2757,12 +2959,12 @@
 # ▲▲▲================== Statistics: Robust ====================▲▲▲
 
 
-  
 
-  
-  
 
-  
+
+
+
+
 # ▼▼▼======================== Adj Func ========================▼▼▼
 # For function adjustment (come from LibrFunc.R)
 {
@@ -3540,9 +3742,9 @@
     }
     # Required libraries
     list.of.packages <- c("data.table","dplyr", "ggplot2", "knitr", "kableExtra", 
-             "inflection", "deSolve", 
-             "nlme","car", "drc", "aomisc", "RootsExtremaInflections", "minpack.lm",
-             "ggplotify","nlraa","vegan", "ggtrendline", "HydroMe", "NRAIA", "NISTnls", "rTPC", "nls.multstart")
+                          "inflection", "deSolve", 
+                          "nlme","car", "drc", "aomisc", "RootsExtremaInflections", "minpack.lm",
+                          "ggplotify","nlraa","vegan", "ggtrendline", "HydroMe", "NRAIA", "NISTnls", "rTPC", "nls.multstart")
     #source("https://github.com/ManuMi68/StatMmRa/raw/main/Mas_aosmic.R")
     chkPkg(list.of.packages)
     new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
@@ -3558,7 +3760,7 @@
     
     # Define Models
     {
-    
+      
       # Complement to dcr
       BC.3 <- function (fixed = c(NA, NA, NA), names = c("b", "e", "f"), ...) 
       {
@@ -3566,12 +3768,12 @@
           stop("Not correct 'names' argument")
         }
         return(drc::braincousens(names = c(names[1], "c", "d",names[2:3]), 
-                            fixed = c(fixed[1], 0, 0, fixed[2:3]), fctName = as.character(match.call()[[1]]), 
-                            fctText = "Brain-Cousens (hormesis) with lower limit and Upper horizontal asymptote fixed at 0", 
-                            ...))
+                                 fixed = c(fixed[1], 0, 0, fixed[2:3]), fctName = as.character(match.call()[[1]]), 
+                                 fctText = "Brain-Cousens (hormesis) with lower limit and Upper horizontal asymptote fixed at 0", 
+                                 ...))
       }
       
-    # A) dcr and nls
+      # A) dcr and nls
       # 1) # Asymptotic regression, Exponential decay
       NmRegModel<-c(
         "AR.2", "AR.3",
@@ -3651,7 +3853,7 @@
       # R.MMModel=ProcMod(Efs,MMModel,NmMModel,"E.Mod","MM")
       
       # This model is also included in the base NLMM2.MM (from Eq), but
-       # I add it here so that the category is not empty.
+      # I add it here so that the category is not empty.
       NmMModel.nls<-c(
         "NLS.MM.MM"
       )
@@ -3670,8 +3872,8 @@
           stop("Not correct length of 'fixed' argument")
         }
         return(drc::logistic(fixed = c(fixed[1], 0, upper, fixed[2], 1), 
-                        names = c(names[1], "c", "d", names[2], "f"), fctName = as.character(match.call()[[1]]), 
-                        fctText = "Logistic (ED50 as parameter)"))
+                             names = c(names[1], "c", "d", names[2], "f"), fctName = as.character(match.call()[[1]]), 
+                             fctText = "Logistic (ED50 as parameter)"))
       }
       
       # 3) logistic growth  
@@ -3730,7 +3932,7 @@
       GModel<-list(
         G.2(), G.3(), G.3u(), G.4(), 
         E.2(), E.3(), E.4(),
-        gompertz(), gompertzd()
+        drc::gompertz(), drc::gompertzd()
       )
       
       NmGModel.nls<-c(
@@ -3804,8 +4006,8 @@
       
       # 7) Cedergreen-Ritz-Streibig, Hormesis-type
       # ucedergreen() is the general way to vary alpha into other values
-       # I have taken advantage of the nls part to include
-       # those of the nls_multstart package.
+      # I have taken advantage of the nls part to include
+      # those of the nls_multstart package.
       NmCRSModel<-c(
         "CRS.4a", "CRS.4b", "CRS.4c",
         "CRS.5a", "CRS.5b", "CRS.5c",
@@ -3838,162 +4040,162 @@
       )
       CRSModel.nls<-list(
         expression(nls_multstart(Y~beta_2012(X,a, b, c, d, e),data = DTPas,iter = 500,
-                      start_lower = get_start_vals(DTPas$X,DTPas$Y,'beta_2012')-10,
-                      start_upper = get_start_vals(DTPas$X,DTPas$Y,'beta_2012')+10,
-                      lower = get_lower_lims(DTPas$X,DTPas$Y,'beta_2012'),
-                      upper = get_upper_lims(DTPas$X,DTPas$Y,'beta_2012'),
-                      supp_errors = "Y")),
+                                 start_lower = get_start_vals(DTPas$X,DTPas$Y,'beta_2012')-10,
+                                 start_upper = get_start_vals(DTPas$X,DTPas$Y,'beta_2012')+10,
+                                 lower = get_lower_lims(DTPas$X,DTPas$Y,'beta_2012'),
+                                 upper = get_upper_lims(DTPas$X,DTPas$Y,'beta_2012'),
+                                 supp_errors = "Y")),
         expression(nls_multstart(Y~boatman_2017(X, rmax, tmin, tmax, a, b),data = DTPas,iter = 500,
-                      start_lower = get_start_vals(DTPas$X,DTPas$Y,'boatman_2017')-10,
-                      start_upper = get_start_vals(DTPas$X,DTPas$Y,'boatman_2017')+10,
-                      lower = get_lower_lims(DTPas$X,DTPas$Y,'boatman_2017'),
-                      upper = get_upper_lims(DTPas$X,DTPas$Y,'boatman_2017'),
-                      supp_errors = "Y")),
+                                 start_lower = get_start_vals(DTPas$X,DTPas$Y,'boatman_2017')-10,
+                                 start_upper = get_start_vals(DTPas$X,DTPas$Y,'boatman_2017')+10,
+                                 lower = get_lower_lims(DTPas$X,DTPas$Y,'boatman_2017'),
+                                 upper = get_upper_lims(DTPas$X,DTPas$Y,'boatman_2017'),
+                                 supp_errors = "Y")),
         expression(nls_multstart(Y~briere2_1999(X, tmin, tmax, a, b),data = DTPas,iter = 500,
-                      start_lower = get_start_vals(DTPas$X,DTPas$Y,'briere2_1999')-10,
-                      start_upper = get_start_vals(DTPas$X,DTPas$Y,'briere2_1999')+10,
-                      lower = get_lower_lims(DTPas$X,DTPas$Y,'briere2_1999'),
-                      upper = get_upper_lims(DTPas$X,DTPas$Y,'briere2_1999'),
-                      supp_errors = "Y")),
+                                 start_lower = get_start_vals(DTPas$X,DTPas$Y,'briere2_1999')-10,
+                                 start_upper = get_start_vals(DTPas$X,DTPas$Y,'briere2_1999')+10,
+                                 lower = get_lower_lims(DTPas$X,DTPas$Y,'briere2_1999'),
+                                 upper = get_upper_lims(DTPas$X,DTPas$Y,'briere2_1999'),
+                                 supp_errors = "Y")),
         expression(nls_multstart(Y~delong_2017(X, c, eb, ef, tm, ehc),data = DTPas,iter = 500,
-                      start_lower = get_start_vals(DTPas$X,DTPas$Y,'delong_2017')-10,
-                      start_upper = get_start_vals(DTPas$X,DTPas$Y,'delong_2017')+10,
-                      lower = get_lower_lims(DTPas$X,DTPas$Y,'delong_2017'),
-                      upper = get_upper_lims(DTPas$X,DTPas$Y,'delong_2017'),
-                      supp_errors = "Y")),
+                                 start_lower = get_start_vals(DTPas$X,DTPas$Y,'delong_2017')-10,
+                                 start_upper = get_start_vals(DTPas$X,DTPas$Y,'delong_2017')+10,
+                                 lower = get_lower_lims(DTPas$X,DTPas$Y,'delong_2017'),
+                                 upper = get_upper_lims(DTPas$X,DTPas$Y,'delong_2017'),
+                                 supp_errors = "Y")),
         expression(nls_multstart(Y~deutsch_2008(X, rmax, topt, ctmax, a),data = DTPas,iter = 500,
-                      start_lower = get_start_vals(DTPas$X,DTPas$Y,'deutsch_2008')-10,
-                      start_upper = get_start_vals(DTPas$X,DTPas$Y,'deutsch_2008')+10,
-                      lower = get_lower_lims(DTPas$X,DTPas$Y,'deutsch_2008'),
-                      upper = get_upper_lims(DTPas$X,DTPas$Y,'deutsch_2008'),
-                      supp_errors = "Y")),
+                                 start_lower = get_start_vals(DTPas$X,DTPas$Y,'deutsch_2008')-10,
+                                 start_upper = get_start_vals(DTPas$X,DTPas$Y,'deutsch_2008')+10,
+                                 lower = get_lower_lims(DTPas$X,DTPas$Y,'deutsch_2008'),
+                                 upper = get_upper_lims(DTPas$X,DTPas$Y,'deutsch_2008'),
+                                 supp_errors = "Y")),
         expression(nls_multstart(Y~flinn_1991(X, a, b, c),data = DTPas,iter = 500,
-                      start_lower = get_start_vals(DTPas$X,DTPas$Y,'flinn_1991')-10,
-                      start_upper = get_start_vals(DTPas$X,DTPas$Y,'flinn_1991')+10,
-                      lower = get_lower_lims(DTPas$X,DTPas$Y,'flinn_1991'),
-                      upper = get_upper_lims(DTPas$X,DTPas$Y,'flinn_1991'),
-                      supp_errors = "Y")),
+                                 start_lower = get_start_vals(DTPas$X,DTPas$Y,'flinn_1991')-10,
+                                 start_upper = get_start_vals(DTPas$X,DTPas$Y,'flinn_1991')+10,
+                                 lower = get_lower_lims(DTPas$X,DTPas$Y,'flinn_1991'),
+                                 upper = get_upper_lims(DTPas$X,DTPas$Y,'flinn_1991'),
+                                 supp_errors = "Y")),
         expression(nls_multstart(Y~gaussian_1987(X,rmax, topt, a),data = DTPas,iter = 500,
-                      start_lower = get_start_vals(DTPas$X,DTPas$Y,'gaussian_1987')-10,
-                      start_upper = get_start_vals(DTPas$X,DTPas$Y,'gaussian_1987')+10,
-                      lower = get_lower_lims(DTPas$X,DTPas$Y,'gaussian_1987'),
-                      upper = get_upper_lims(DTPas$X,DTPas$Y,'gaussian_1987'),
-                      supp_errors = "Y")),
+                                 start_lower = get_start_vals(DTPas$X,DTPas$Y,'gaussian_1987')-10,
+                                 start_upper = get_start_vals(DTPas$X,DTPas$Y,'gaussian_1987')+10,
+                                 lower = get_lower_lims(DTPas$X,DTPas$Y,'gaussian_1987'),
+                                 upper = get_upper_lims(DTPas$X,DTPas$Y,'gaussian_1987'),
+                                 supp_errors = "Y")),
         expression(nls_multstart(Y~hinshelwood_1947(X,a, e, b, eh),data = DTPas,iter = 500,
-                           start_lower = get_start_vals(DTPas$X,DTPas$Y,'hinshelwood_1947')-10,
-                           start_upper = get_start_vals(DTPas$X,DTPas$Y,'hinshelwood_1947')+10,
-                           lower = get_lower_lims(DTPas$X,DTPas$Y,'hinshelwood_1947'),
-                           upper = get_upper_lims(DTPas$X,DTPas$Y,'hinshelwood_1947'),
-                           supp_errors = "Y")),
+                                 start_lower = get_start_vals(DTPas$X,DTPas$Y,'hinshelwood_1947')-10,
+                                 start_upper = get_start_vals(DTPas$X,DTPas$Y,'hinshelwood_1947')+10,
+                                 lower = get_lower_lims(DTPas$X,DTPas$Y,'hinshelwood_1947'),
+                                 upper = get_upper_lims(DTPas$X,DTPas$Y,'hinshelwood_1947'),
+                                 supp_errors = "Y")),
         expression(nls_multstart(Y~joehnk_2008(X,rmax, topt, a, b, c),data = DTPas,iter = 500,
-                      start_lower = get_start_vals(DTPas$X,DTPas$Y,'joehnk_2008')-10,
-                      start_upper = get_start_vals(DTPas$X,DTPas$Y,'joehnk_2008')+10,
-                      lower = get_lower_lims(DTPas$X,DTPas$Y,'joehnk_2008'),
-                      upper = get_upper_lims(DTPas$X,DTPas$Y,'joehnk_2008'),
-                      supp_errors = "Y")),
+                                 start_lower = get_start_vals(DTPas$X,DTPas$Y,'joehnk_2008')-10,
+                                 start_upper = get_start_vals(DTPas$X,DTPas$Y,'joehnk_2008')+10,
+                                 lower = get_lower_lims(DTPas$X,DTPas$Y,'joehnk_2008'),
+                                 upper = get_upper_lims(DTPas$X,DTPas$Y,'joehnk_2008'),
+                                 supp_errors = "Y")),
         expression(nls_multstart(Y~johnsonlewin_1946(X,r0, e, eh, topt),data = DTPas,iter = 500,
-                      start_lower = get_start_vals(DTPas$X,DTPas$Y,'johnsonlewin_1946')-10,
-                      start_upper = get_start_vals(DTPas$X,DTPas$Y,'johnsonlewin_1946')+10,
-                      lower = get_lower_lims(DTPas$X,DTPas$Y,'johnsonlewin_1946'),
-                      upper = get_upper_lims(DTPas$X,DTPas$Y,'johnsonlewin_1946'),
-                      supp_errors = "Y")),
+                                 start_lower = get_start_vals(DTPas$X,DTPas$Y,'johnsonlewin_1946')-10,
+                                 start_upper = get_start_vals(DTPas$X,DTPas$Y,'johnsonlewin_1946')+10,
+                                 lower = get_lower_lims(DTPas$X,DTPas$Y,'johnsonlewin_1946'),
+                                 upper = get_upper_lims(DTPas$X,DTPas$Y,'johnsonlewin_1946'),
+                                 supp_errors = "Y")),
         expression(nls_multstart(Y~kamykowski_1985(X,tmin, tmax, a, b, c),data = DTPas,iter = 500,
-                      start_lower = get_start_vals(DTPas$X,DTPas$Y,'kamykowski_1985')-10,
-                      start_upper = get_start_vals(DTPas$X,DTPas$Y,'kamykowski_1985')+10,
-                      lower = get_lower_lims(DTPas$X,DTPas$Y,'kamykowski_1985'),
-                      upper = get_upper_lims(DTPas$X,DTPas$Y,'kamykowski_1985'),
-                      supp_errors = "Y")),
+                                 start_lower = get_start_vals(DTPas$X,DTPas$Y,'kamykowski_1985')-10,
+                                 start_upper = get_start_vals(DTPas$X,DTPas$Y,'kamykowski_1985')+10,
+                                 lower = get_lower_lims(DTPas$X,DTPas$Y,'kamykowski_1985'),
+                                 upper = get_upper_lims(DTPas$X,DTPas$Y,'kamykowski_1985'),
+                                 supp_errors = "Y")),
         expression(nls_multstart(Y~lactin2_1995(X,a, b, tmax, delta_t),data = DTPas,iter = 500,
-                      start_lower = get_start_vals(DTPas$X,DTPas$Y,'lactin2_1995')-10,
-                      start_upper = get_start_vals(DTPas$X,DTPas$Y,'lactin2_1995')+10,
-                      lower = get_lower_lims(DTPas$X,DTPas$Y,'lactin2_1995'),
-                      upper = get_upper_lims(DTPas$X,DTPas$Y,'lactin2_1995'),
-                      supp_errors = "Y")),
+                                 start_lower = get_start_vals(DTPas$X,DTPas$Y,'lactin2_1995')-10,
+                                 start_upper = get_start_vals(DTPas$X,DTPas$Y,'lactin2_1995')+10,
+                                 lower = get_lower_lims(DTPas$X,DTPas$Y,'lactin2_1995'),
+                                 upper = get_upper_lims(DTPas$X,DTPas$Y,'lactin2_1995'),
+                                 supp_errors = "Y")),
         expression(nls_multstart(Y~lrf_1991(X,rmax, topt, tmin, tmax),data = DTPas,iter = 500,
-                      start_lower = get_start_vals(DTPas$X,DTPas$Y,'lrf_1991')-10,
-                      start_upper = get_start_vals(DTPas$X,DTPas$Y,'lrf_1991')+10,
-                      lower = get_lower_lims(DTPas$X,DTPas$Y,'lrf_1991'),
-                      upper = get_upper_lims(DTPas$X,DTPas$Y,'lrf_1991'),
-                      supp_errors = "Y")),
+                                 start_lower = get_start_vals(DTPas$X,DTPas$Y,'lrf_1991')-10,
+                                 start_upper = get_start_vals(DTPas$X,DTPas$Y,'lrf_1991')+10,
+                                 lower = get_lower_lims(DTPas$X,DTPas$Y,'lrf_1991'),
+                                 upper = get_upper_lims(DTPas$X,DTPas$Y,'lrf_1991'),
+                                 supp_errors = "Y")),
         expression(nls_multstart(Y~modifiedgaussian_2006(X,rmax, topt, a, b),data = DTPas,iter = 500,
-                      start_lower = get_start_vals(DTPas$X,DTPas$Y,'modifiedgaussian_2006')-10,
-                      start_upper = get_start_vals(DTPas$X,DTPas$Y,'modifiedgaussian_2006')+10,
-                      lower = get_lower_lims(DTPas$X,DTPas$Y,'modifiedgaussian_2006'),
-                      upper = get_upper_lims(DTPas$X,DTPas$Y,'modifiedgaussian_2006'),
-                      supp_errors = "Y")),
+                                 start_lower = get_start_vals(DTPas$X,DTPas$Y,'modifiedgaussian_2006')-10,
+                                 start_upper = get_start_vals(DTPas$X,DTPas$Y,'modifiedgaussian_2006')+10,
+                                 lower = get_lower_lims(DTPas$X,DTPas$Y,'modifiedgaussian_2006'),
+                                 upper = get_upper_lims(DTPas$X,DTPas$Y,'modifiedgaussian_2006'),
+                                 supp_errors = "Y")),
         expression(nls_multstart(Y~oneill_1972(X,rmax, ctmax, topt, q10),data = DTPas,iter = 500,
-                      start_lower = get_start_vals(DTPas$X,DTPas$Y,'oneill_1972')-10,
-                      start_upper = get_start_vals(DTPas$X,DTPas$Y,'oneill_1972')+10,
-                      lower = get_lower_lims(DTPas$X,DTPas$Y,'oneill_1972'),
-                      upper = get_upper_lims(DTPas$X,DTPas$Y,'oneill_1972'),
-                      supp_errors = "Y")),
+                                 start_lower = get_start_vals(DTPas$X,DTPas$Y,'oneill_1972')-10,
+                                 start_upper = get_start_vals(DTPas$X,DTPas$Y,'oneill_1972')+10,
+                                 lower = get_lower_lims(DTPas$X,DTPas$Y,'oneill_1972'),
+                                 upper = get_upper_lims(DTPas$X,DTPas$Y,'oneill_1972'),
+                                 supp_errors = "Y")),
         expression(nls_multstart(Y~pawar_2018(X, r_tref, e, eh, topt, tref=5),data = DTPas,iter = 500,
-                      start_lower = get_start_vals(DTPas$X,DTPas$Y,'pawar_2018')-10,
-                      start_upper = get_start_vals(DTPas$X,DTPas$Y,'pawar_2018')+10,
-                      lower = get_lower_lims(DTPas$X,DTPas$Y,'pawar_2018'),
-                      upper = get_upper_lims(DTPas$X,DTPas$Y,'pawar_2018'),
-                      supp_errors = "Y")),
+                                 start_lower = get_start_vals(DTPas$X,DTPas$Y,'pawar_2018')-10,
+                                 start_upper = get_start_vals(DTPas$X,DTPas$Y,'pawar_2018')+10,
+                                 lower = get_lower_lims(DTPas$X,DTPas$Y,'pawar_2018'),
+                                 upper = get_upper_lims(DTPas$X,DTPas$Y,'pawar_2018'),
+                                 supp_errors = "Y")),
         expression(nls_multstart(Y~quadratic_2008(X,a, b, c),data = DTPas,iter = 500,
-                      start_lower = get_start_vals(DTPas$X,DTPas$Y,'quadratic_2008')-10,
-                      start_upper = get_start_vals(DTPas$X,DTPas$Y,'quadratic_2008')+10,
-                      lower = get_lower_lims(DTPas$X,DTPas$Y,'quadratic_2008'),
-                      upper = get_upper_lims(DTPas$X,DTPas$Y,'quadratic_2008'),
-                      supp_errors = "Y")),
+                                 start_lower = get_start_vals(DTPas$X,DTPas$Y,'quadratic_2008')-10,
+                                 start_upper = get_start_vals(DTPas$X,DTPas$Y,'quadratic_2008')+10,
+                                 lower = get_lower_lims(DTPas$X,DTPas$Y,'quadratic_2008'),
+                                 upper = get_upper_lims(DTPas$X,DTPas$Y,'quadratic_2008'),
+                                 supp_errors = "Y")),
         expression(nls_multstart(Y~ratkowsky_1983(X,tmin, tmax, a, b),data = DTPas,iter = 500,
-                      start_lower = get_start_vals(DTPas$X,DTPas$Y,'ratkowsky_1983')-10,
-                      start_upper = get_start_vals(DTPas$X,DTPas$Y,'ratkowsky_1983')+10,
-                      lower = get_lower_lims(DTPas$X,DTPas$Y,'ratkowsky_1983'),
-                      upper = get_upper_lims(DTPas$X,DTPas$Y,'ratkowsky_1983'),
-                      supp_errors = "Y")),
+                                 start_lower = get_start_vals(DTPas$X,DTPas$Y,'ratkowsky_1983')-10,
+                                 start_upper = get_start_vals(DTPas$X,DTPas$Y,'ratkowsky_1983')+10,
+                                 lower = get_lower_lims(DTPas$X,DTPas$Y,'ratkowsky_1983'),
+                                 upper = get_upper_lims(DTPas$X,DTPas$Y,'ratkowsky_1983'),
+                                 supp_errors = "Y")),
         expression(nls_multstart(Y~rezende_2019(X,q10, a, b, c),data = DTPas,iter = 500,
-                      start_lower = get_start_vals(DTPas$X,DTPas$Y,'rezende_2019')-10,
-                      start_upper = get_start_vals(DTPas$X,DTPas$Y,'rezende_2019')+10,
-                      lower = get_lower_lims(DTPas$X,DTPas$Y,'rezende_2019'),
-                      upper = get_upper_lims(DTPas$X,DTPas$Y,'rezende_2019'),
-                      supp_errors = "Y")),
+                                 start_lower = get_start_vals(DTPas$X,DTPas$Y,'rezende_2019')-10,
+                                 start_upper = get_start_vals(DTPas$X,DTPas$Y,'rezende_2019')+10,
+                                 lower = get_lower_lims(DTPas$X,DTPas$Y,'rezende_2019'),
+                                 upper = get_upper_lims(DTPas$X,DTPas$Y,'rezende_2019'),
+                                 supp_errors = "Y")),
         expression(nls_multstart(Y~sharpeschoolfull_1981(X,r_tref, e, el, tl, eh, th, tref=5),data = DTPas,
-                      iter = 500,
-                      start_lower = get_start_vals(DTPas$X,DTPas$Y,'sharpeschoolfull_1981')-10,
-                      start_upper = get_start_vals(DTPas$X,DTPas$Y,'sharpeschoolfull_1981')+10,
-                      lower = get_lower_lims(DTPas$X,DTPas$Y,'sharpeschoolfull_1981'),
-                      upper = get_upper_lims(DTPas$X,DTPas$Y,'sharpeschoolfull_1981'),
-                      supp_errors = "Y")),
+                                 iter = 500,
+                                 start_lower = get_start_vals(DTPas$X,DTPas$Y,'sharpeschoolfull_1981')-10,
+                                 start_upper = get_start_vals(DTPas$X,DTPas$Y,'sharpeschoolfull_1981')+10,
+                                 lower = get_lower_lims(DTPas$X,DTPas$Y,'sharpeschoolfull_1981'),
+                                 upper = get_upper_lims(DTPas$X,DTPas$Y,'sharpeschoolfull_1981'),
+                                 supp_errors = "Y")),
         expression(nls_multstart(Y~sharpeschoolhigh_1981(X,r_tref, e, eh, th, tref=5),data = DTPas,iter = 500,
-                      start_lower = get_start_vals(DTPas$X,DTPas$Y,'sharpeschoolhigh_1981')-10,
-                      start_upper = get_start_vals(DTPas$X,DTPas$Y,'sharpeschoolhigh_1981')+10,
-                      lower = get_lower_lims(DTPas$X,DTPas$Y,'sharpeschoolhigh_1981'),
-                      upper = get_upper_lims(DTPas$X,DTPas$Y,'sharpeschoolhigh_1981'),
-                      supp_errors = "Y")),
+                                 start_lower = get_start_vals(DTPas$X,DTPas$Y,'sharpeschoolhigh_1981')-10,
+                                 start_upper = get_start_vals(DTPas$X,DTPas$Y,'sharpeschoolhigh_1981')+10,
+                                 lower = get_lower_lims(DTPas$X,DTPas$Y,'sharpeschoolhigh_1981'),
+                                 upper = get_upper_lims(DTPas$X,DTPas$Y,'sharpeschoolhigh_1981'),
+                                 supp_errors = "Y")),
         expression(nls_multstart(Y~sharpeschoollow_1981(X,r_tref, e, el, tl, tref=5),data = DTPas,iter = 500,
-                      start_lower = get_start_vals(DTPas$X,DTPas$Y,'sharpeschoollow_1981')-10,
-                      start_upper = get_start_vals(DTPas$X,DTPas$Y,'sharpeschoollow_1981')+10,
-                      lower = get_lower_lims(DTPas$X,DTPas$Y,'sharpeschoollow_1981'),
-                      upper = get_upper_lims(DTPas$X,DTPas$Y,'sharpeschoollow_1981'),
-                      supp_errors = "Y")),
+                                 start_lower = get_start_vals(DTPas$X,DTPas$Y,'sharpeschoollow_1981')-10,
+                                 start_upper = get_start_vals(DTPas$X,DTPas$Y,'sharpeschoollow_1981')+10,
+                                 lower = get_lower_lims(DTPas$X,DTPas$Y,'sharpeschoollow_1981'),
+                                 upper = get_upper_lims(DTPas$X,DTPas$Y,'sharpeschoollow_1981'),
+                                 supp_errors = "Y")),
         expression(nls_multstart(Y~spain_1982(X, a, b, c, r0),data = DTPas,iter = 500,
-                      start_lower = get_start_vals(DTPas$X,DTPas$Y,'spain_1982')-10,
-                      start_upper = get_start_vals(DTPas$X,DTPas$Y,'spain_1982')+10,
-                      lower = get_lower_lims(DTPas$X,DTPas$Y,'spain_1982'),
-                      upper = get_upper_lims(DTPas$X,DTPas$Y,'spain_1982'),
-                      supp_errors = "Y")),
+                                 start_lower = get_start_vals(DTPas$X,DTPas$Y,'spain_1982')-10,
+                                 start_upper = get_start_vals(DTPas$X,DTPas$Y,'spain_1982')+10,
+                                 lower = get_lower_lims(DTPas$X,DTPas$Y,'spain_1982'),
+                                 upper = get_upper_lims(DTPas$X,DTPas$Y,'spain_1982'),
+                                 supp_errors = "Y")),
         expression(nls_multstart(Y~thomas_2012(X,a, b, c, topt),data = DTPas,iter = 500,
-                      start_lower = get_start_vals(DTPas$X,DTPas$Y,'thomas_2012')-10,
-                      start_upper = get_start_vals(DTPas$X,DTPas$Y,'thomas_2012')+10,
-                      lower = get_lower_lims(DTPas$X,DTPas$Y,'thomas_2012'),
-                      upper = get_upper_lims(DTPas$X,DTPas$Y,'thomas_2012'),
-                      supp_errors = "Y")),
+                                 start_lower = get_start_vals(DTPas$X,DTPas$Y,'thomas_2012')-10,
+                                 start_upper = get_start_vals(DTPas$X,DTPas$Y,'thomas_2012')+10,
+                                 lower = get_lower_lims(DTPas$X,DTPas$Y,'thomas_2012'),
+                                 upper = get_upper_lims(DTPas$X,DTPas$Y,'thomas_2012'),
+                                 supp_errors = "Y")),
         expression(nls_multstart(Y~thomas_2017(X,a, b, c, d, e),data = DTPas,iter = 500,
-                      start_lower = get_start_vals(DTPas$X,DTPas$Y,'thomas_2017')-10,
-                      start_upper = get_start_vals(DTPas$X,DTPas$Y,'thomas_2017')+10,
-                      lower = get_lower_lims(DTPas$X,DTPas$Y,'thomas_2017'),
-                      upper = get_upper_lims(DTPas$X,DTPas$Y,'thomas_2017'),
-                      supp_errors = "Y")),
+                                 start_lower = get_start_vals(DTPas$X,DTPas$Y,'thomas_2017')-10,
+                                 start_upper = get_start_vals(DTPas$X,DTPas$Y,'thomas_2017')+10,
+                                 lower = get_lower_lims(DTPas$X,DTPas$Y,'thomas_2017'),
+                                 upper = get_upper_lims(DTPas$X,DTPas$Y,'thomas_2017'),
+                                 supp_errors = "Y")),
         expression(nls_multstart(Y~weibull_1995(X,a, topt, b, c),data = DTPas,iter = 500,
-                      start_lower = get_start_vals(DTPas$X,DTPas$Y,'weibull_1995')-10,
-                      start_upper = get_start_vals(DTPas$X,DTPas$Y,'weibull_1995')+10,
-                      lower = get_lower_lims(DTPas$X,DTPas$Y,'weibull_1995'),
-                      upper = get_upper_lims(DTPas$X,DTPas$Y,'weibull_1995'),
-                      supp_errors = "Y"))
+                                 start_lower = get_start_vals(DTPas$X,DTPas$Y,'weibull_1995')-10,
+                                 start_upper = get_start_vals(DTPas$X,DTPas$Y,'weibull_1995')+10,
+                                 lower = get_lower_lims(DTPas$X,DTPas$Y,'weibull_1995'),
+                                 upper = get_upper_lims(DTPas$X,DTPas$Y,'weibull_1995'),
+                                 supp_errors = "Y"))
       )
       # R.CRSModel=ProcMod(Efs,CRSModel,NmCRSModel,"M.Mod","CRS")
       
@@ -4053,7 +4255,7 @@
       )
       
       # This model is also included in the base NLMM2.MM (from Eq), but
-        # I add it here so that the category is not empty.
+      # I add it here so that the category is not empty.
       NmSpModel.nls <-c(
         "Green_Ampt"
       )
@@ -4122,7 +4324,7 @@
       
       veganModels<- list (
         "SSarrhenius", "SSgleason", "SSgitay", "SSlomolino"
-        )
+      )
       
       ggtrendlineModels<-list("SSexp2P", "SSexp3P", "SSpower2P", "SSpower3P")
       
@@ -4166,8 +4368,8 @@
       AllModelsJn <- c(AllModels, AllModels.nls)
       AllModelsJn.Nm <- c(AllModels.Nm, AllModels.Nm.nls)
       
-    # B) Second list from direct equations,
-       # which I will elaborate little by little because it is very laborious.
+      # B) Second list from direct equations,
+      # which I will elaborate little by little because it is very laborious.
       # First, the basic definitions
       MM.Recip1.Mod <- function(X, Alfa, Beta) {Alfa + Beta/X}
       MM.Recip1.Init <- function(mCall, LHS, data,...) {
@@ -4602,7 +4804,7 @@
         names(output) <- c("fitted_parameters", "Km", "Vm")
         return(output)
       }
-        
+      
       
       DRC.SSasymp.MM <- function (fixed = c(NA, NA, NA), names = c("Asym", "R0", "lrc")) 
       {
@@ -6961,8 +7163,8 @@
             Inv=TRUE
           )
         )
-    }
-    
+      }
+      
       
     }
     
@@ -7032,14 +7234,48 @@
                 # PrintMod.23(ModelMM.1,nmMod,dtp,AjAx = T,NmModP = Form1b)
                 NNN.1 <-  AdjParms.G(ModelMM.1)
                 ResM.1= list(Params=data.table(GenTypeM=GenTypeM,ClasType=ClasType,
-                                   Model=Model,NNN.1),Grp=grpM)
+                                               Model=Model,NNN.1),Grp=grpM)
                 ResM.1
               })
             })
     }
     
+    ExtrMiModF.werr <- function(nmMod='RegAs1',BasPa="NLM.MM",dtp) {
+      with( get(BasPa)[[nmMod]],
+            {
+              ModelMM.1=eval(Form1c)
+              try({
+                # PrintMod.23(ModelMM.1,nmMod,dtp,AjAx = T,NmModP = Form1b)
+                NNN.1 <-  AdjParms.G(ModelMM.1)
+                ResM.1= data.table(GenTypeM=GenTypeM,ClasType=ClasType,
+                                   Model=Model, Id= nmMod, Algor ="nls2", 
+                                   Converg=ModelMM.1$convInfo$isConv,
+                                   NNN.1)
+                ResM.1
+              })
+            })
+    }
+    
+    ExtrMiModF.gg.werr <- function(nmMod='RegAs1',BasPa="NLM.MM",dtp,AjAx=FALSE) {
+      with( get(BasPa)[[nmMod]],
+            {
+              ModelMM.1=eval(Form1c)
+              try({
+                grpM <-PrintMod.gg(DTg = dtp, modP = ModelMM.1, ElTit = Model,NmModP = Form1b, AjAx=AjAx)
+                # PrintMod.23(ModelMM.1,nmMod,dtp,AjAx = T,NmModP = Form1b)
+                NNN.1 <-  AdjParms.G(ModelMM.1)
+                ResM.1= list(Params=data.table(GenTypeM=GenTypeM,ClasType=ClasType,
+                                               Model=Model,
+                                               Converg=ModelMM.1$convInfo$isConv,
+                                               NNN.1),Grp=grpM)
+                ResM.1
+              })
+            })
+    }
+    
+    
     Devuelvnls2 <-function(iMp,dtp) {
-      gg<-ExtrMiModF.gg(nmMod =  iMp ,BasPa = "NLM.MM",dtp = dtp,AjAx = TRUE)$Grp
+      gg<-ExtrMiModF.gg.werr(nmMod =  iMp ,BasPa = "NLM.MM",dtp = dtp,AjAx = TRUE)$Grp
       gg
     }
     
@@ -7135,7 +7371,7 @@
     # change names of parameters "Theta"
     ChangeSymb <- function(EqQuo, SymToCh) {
       # It also serves
-       # str2expression(gsub("theta[1]", "a", Eq.1b, fixed = TRUE))
+      # str2expression(gsub("theta[1]", "a", Eq.1b, fixed = TRUE))
       Exp2<-parse(text = gsub("f[theta]", "f", as.expression(EqQuo), fixed = TRUE))
       Exp2<-parse(text = gsub("theta[1]", SymToCh[1], Exp2, fixed = TRUE))
       Exp2<-parse(text = gsub("theta[2]", SymToCh[2], Exp2, fixed = TRUE))
@@ -7147,7 +7383,7 @@
     # change original names of parameters in SSasymp or drc
     ChangeSymbAR <- function(EqQuo, SymRes, SymToCh=c("Asym","R0","lrc"),LaX="x",LaY="Y") {
       # It also serves
-       # str2expression(gsub("theta[1]", "a", Eq.1b, fixed = TRUE))
+      # str2expression(gsub("theta[1]", "a", Eq.1b, fixed = TRUE))
       Exp2<-parse(text = gsub("input", LaX, EqQuo, fixed = TRUE))
       Exp2<-parse(text = gsub("response", LaY, Exp2, fixed = TRUE))
       for (i in 1:length(SymToCh)) {Exp2<-parse(text = gsub(SymToCh[i], SymRes[i], Exp2, fixed = TRUE))}
@@ -7208,7 +7444,7 @@
       Res
     }
     
-    AdjParms.G <- function(MPas,Ty=1){
+    AdjParms.G.por_si2 <- function(MPas,Ty=1){
       AllLin=c('nls','lm', 'nlsLM')
       TyMP=as.character(MPas$call[[1]])
       for (i in 1:length(TyMP)) if(TyMP[i]=='nlsLM') TyMP='nlsLM'
@@ -7237,6 +7473,45 @@
         #SE= sigma(MPas),
         SE=SEp,
         coefs =Resf))
+      Res
+    }
+    
+    AdjParms.G <- function(MPas,Ty=1){
+      AllLin=c('nls','lm', 'nlsLM')
+      TyMP=as.character(MPas$call[[1]])
+      for (i in 1:length(TyMP)) if(TyMP[i]=='nlsLM') TyMP='nlsLM'
+      for (i in 1:length(TyMP)) if(TyMP[i]=='nls') TyMP='nls'
+      for (i in 1:length(TyMP)) if(TyMP[i]=='lm') TyMP='lm'
+      Smm<-summary(MPas)
+      Coef<-data.table(Smm$coefficients)
+      Estim<-frmMM(c(Coef[,'Estimate'][[1]]),2)
+      if (TyMP %in% AllLin) Lasp=Coef$`Pr(>|t|`
+      if (TyMP=='drm') Lasp=Coef$`p-value`
+      Lasp[is.nan(Lasp)]=1
+      Estim[Lasp<=.05]<-paste0(Estim[Lasp<=.05],"*")
+      SEp=ifelse(TyMP=="drm", sqrt(summary(MPas)$resVar),summary(MPas)$sigma)
+      
+      Resf=NA
+      if (Ty==1&(TyMP %in% AllLin)) Resf <-paste0(rownames(Smm$coefficients),"= ", Estim,collapse="; ")
+      if (Ty==2&(TyMP %in% AllLin)) {Resf<-data.table(rbind(Estim));names(Resf)<-rownames(Smm$coefficients)}
+      
+      if (Ty==1&TyMP=='drm') Resf<-paste0(MPas$parNames[[2]],"= ", Estim,collapse="; ")
+      if (Ty==2&TyMP=='drm') {Resf<-data.table(rbind(Estim));names(Resf)<-MPas$parNames[[2]]}
+      
+      Converg=NA
+      if (TyMP=='drm') Converg=  MPas$fit$convergence
+      if (TyMP=='nlsLM') Converg=  MPas$convInfo$isConv
+      if (TyMP=='nls') Converg=  MPas$convInfo$isConv
+      if (TyMP=='lm') Converg=  TRUE
+      
+      Res=NA
+      Res= as.data.table(list(
+        AIC=AIC(MPas),
+        LogLik=logLik(MPas)[[1]],
+        #SE= sigma(MPas),
+        SE=SEp,
+        coefs =Resf,
+        Converg=Converg))
       Res
     }
     
@@ -7300,6 +7575,53 @@
       ResMo
     }
     
+    ProcMod.werr <- function(DatP, ModPasP,NmModP,TyGen="S.Mod", sTy="Gompertz") {
+      ExtrParDRCInt<-function(MPas)  {
+        Smm<-summary(MPas)
+        Coef<-data.table(Smm$coefficients)
+        Estim<-frmMM(c(Coef[,'Estimate'][[1]]),2)
+        Lasp=c(Coef[,'p-value'][[1]])
+        Lasp[is.nan(Lasp)]=1
+        Estim[Lasp<=.05]<-paste0(Estim[Lasp<=.05],"*")
+        Resf<-paste0(MPas$parNames[[2]],"= ", Estim,collapse="; ")
+        Resf
+      }
+      
+      AdjParms.DRC.Int<-function(MPas){
+        list(
+          AIC=AIC(MPas),
+          LogLik=logLik(MPas)[[1]],
+          #SE= sigma(MPas),
+          SE=sqrt(summary(MPas)$resVar),
+          coefs =ExtrParDRCInt(MPas),
+          Converg= MPas$fit$convergence
+        )}
+      
+      NNN<-mclapply(1:length(ModPasP), function(j){
+        ModP=NULL
+        try(ModP<-drm(Y ~ X,data = DatP,fct=ModPasP[[j]]))
+        if(!is.null(ModP)) AdjParms.DRC.Int(ModP)
+      })
+      LosNul<-unlist(Map(is.null, NNN));
+      NQueda=sum(!LosNul)
+      if (NQueda==0) ResMo<-data.table(GenTypeM = TyGen, ClasType= sTy, Id =NA, Algor=NA, Model=NA, AIC =NA, LogLik=NA, SE=NA, coefs=NA, Converg=NA)
+      if (NQueda>0) {
+        NNN<-Filter(Negate(is.null), NNN)
+        ResMo= data.table(GenTypeM=rep(TyGen,NQueda),
+                          ClasType=rep(sTy,NQueda),
+                          Model=NmModP[!LosNul],
+                          Id=NmModP[!LosNul],
+                          Algor ="drc",
+                          do.call("rbind", NNN))
+        ResMo$AIC<-unlist(ResMo$AIC)
+        ResMo$LogLik<-unlist(ResMo$LogLik)
+        ResMo$SE<-unlist(ResMo$SE)
+        ResMo$coefs<-unlist(ResMo$coefs)
+        ResMo$Converg<- unlist(ResMo$Converg)
+      }
+      ResMo
+    }
+    
     # Efs,BCModel.nls,NmBCModel.nls,"M.Mod","Brain-Cousens"
     #DatP=Efs;ModPasP=BCModel.nls;NmModP=NmBCModel.nls; TyGen="M.Mod";sTy="Brain-Cousens"
     ProcMod3 <- function(DatP, ModPasP,NmModP,TyGen="S.Mod", sTy="Gompertz") {
@@ -7327,11 +7649,35 @@
       ResMo
     }
     
-   
+    ProcMod3.werr <- function(DatP, ModPasP,NmModP,TyGen="S.Mod", sTy="Gompertz") {
+      NNN<-mclapply(1:length(ModPasP), function(j){
+        ModP=NULL
+        try(ModP<-eval(ModPasP[[j]]))
+        if(!is.null(ModP)) AdjParms.G(ModP)
+      })
+      LosNul<-unlist(Map(is.null, NNN));
+      NQueda=sum(!LosNul)
+      if (NQueda==0) ResMo<-data.table(GenTypeM = TyGen, ClasType= sTy, Id =NA, Algor=NA, Model=NA, AIC =NA, LogLik=NA, SE=NA, coefs=NA, Converg=NA)
+      if (NQueda>0) {
+        NNN<-Filter(Negate(is.null), NNN)
+        ResMo= data.table(GenTypeM=rep(TyGen,NQueda),
+                          ClasType=rep(sTy,NQueda),
+                          Model=NmModP[!LosNul],
+                          Id=NmModP[!LosNul],
+                          Algor ="nls1",
+                          do.call("rbind", NNN))
+        ResMo$AIC<-unlist(ResMo$AIC)
+        ResMo$LogLik<-unlist(ResMo$LogLik)
+        ResMo$SE<-unlist(ResMo$SE)
+        ResMo$coefs<-unlist(ResMo$coefs)
+      }
+      ResMo
+    }
+    
     
     # ElModP=ModelMM[[NmMod]];NmMod=NmMod;LasMedP=LasMed;AjAx = T;NmModP = Expon1.q
     # TyLbl=TRUE;xLb="X";yLb="Y";xmaxp=10;yminp=0;cexP=1
-    
+   
     # To visualize specific models
     PrintMod.23<-function(ElModP,ElTit,LasMedP,TyLbl=TRUE,xLb="X",yLb="Y",xmaxp=10,yminp=0,AjAx=FALSE,cexP=1,NmModP=NULL) {
       XMin=head(LasMedP$X,1)
@@ -7393,8 +7739,8 @@
       grph = grph +
         scale_color_manual(name = "", values = colorline, label = as.expression(NmModP)) + 
         theme(axis.text = element_text(size = textsize, color = "black",
-                                      family = fontfamily), axis.title = element_text(size = textsize,
-                                      color = "black", family = fontfamily), legend.position = legend.position, 
+                                       family = fontfamily), axis.title = element_text(size = textsize,
+                                                                                       color = "black", family = fontfamily), legend.position = legend.position, 
               legend.text = element_text(size = textsize, family = fontfamily), 
               legend.direction = "vertical", legend.text.align = 0, 
               legend.justification = 0) + ylab(ylab) + xlab(xlab)
@@ -7406,51 +7752,10 @@
     
     
     # Final function to scrutinize the models
-      # LasMedP=Efs; TyLbl=JnEq; xLb="Decile";yLb="Pearson's Correlation"; xmaxp=10; yminp=-1;PIp=NULL;LineRate=TRUE;pointXMed="p";RootG=TRUE;MaxG=FALSE;InflG=FALSE
-      # PIp Possible Inflection Point that I pass directly to the chart, so that it can be included.
-    
-    ExtrParDRC<-function(MPas)  {
-      Smm<-summary(MPas)
-      Coef<-data.table(Smm$coefficients)
-      Estim<-frmMM(c(Coef[,'Estimate'][[1]]),2)
-      Lasp=c(Coef[,'p-value'][[1]])
-      Lasp[is.nan(Lasp)]=1
-      Estim[Lasp<=.05]<-paste0(Estim[Lasp<=.05],"*")
-      Resf<-paste0(MPas$parNames[[2]],"= ", Estim,collapse="; ")
-      Resf
-    }
-    
-    AdjParms.DRC<-function(MPas){
-      list(
-        AIC=AIC(MPas),
-        LogLik=logLik(MPas)[[1]],
-        #SE= sigma(MPas),
-        SE=sqrt(summary(MPas)$resVar),
-        coefs =ExtrParDRC(MPas)
-      )}
-    
-    ExtrParLM<-function(MPas)  {
-      Smm<-summary(MPas)
-      Coef<-data.table(Smm$coefficients)
-      Estim<-frmMM(c(Coef[,'Estimate'][[1]]),2)
-      Lasp=c(Coef[,'Pr(>|t|)'][[1]])
-      Lasp[is.nan(Lasp)]=1
-      Estim[Lasp<=.05]<-paste0(Estim[Lasp<=.05],"*")
-      Resf<-paste0(rownames(Smm$coefficients),"= ", Estim,collapse="; ")
-      Resf
-    }
-    
-    AdjParms.LM<-function(MPas){
-      list(
-        AIC=AIC(MPas),
-        LogLik=logLik(MPas)[[1]],
-        #SE= sigma(MPas),
-        SE=summary(MPas)$sigma,
-        coefs =ExtrParLM(MPas)
-      )}
-    
+    # LasMedP=Efs; TyLbl=JnEq; xLb="Decile";yLb="Pearson's Correlation"; xmaxp=10; yminp=-1;PIp=NULL;LineRate=TRUE;pointXMed="p";RootG=TRUE;MaxG=FALSE;InflG=FALSE
+    # PIp Possible Inflection Point that I pass directly to the chart, so that it can be included.
     AdjMod.23.f<-function(LasMedP,TyLbl=NULL,xLb="X",yLb="Y",xmaxp=10,yminp=0,PIp=NULL,
-                          LineRate=TRUE,pointXMed="p",pointXMedLb="OnAx",RootG=FALSE,MaxG=FALSE,InflG=FALSE) {
+                             LineRate=TRUE,pointXMed="p",pointXMedLb="OnAx",RootG=FALSE,MaxG=FALSE,InflG=FALSE) {
       chkPkg(c("shape","RootsExtremaInflections"))
       decilecolors=c("#7F7FCE", "#7F7FF7", "#88A9F9", "#93D2FB", "#A0FCFE",
                      "#BDFDD7", "#DDFEB3", "#FFFF91", "#F8D68B", "#F3AE86" )
@@ -7619,216 +7924,1067 @@
       save_kable(ResTKbl ,paste0(PathPas,"/",EtiqMas,"ANOVA Table of ",ModPas$Type,".html"))
       ResTKbl
     }
+   
+    
   }
   # ▲▲▲------------------- Revised & Checked --------------------▲▲▲
-
+  
   
   # They need to be debugged
   # Some of them I have rescued from long ago
   # I will test the old code and add improvements to it
- {
-   
-   nlsGen <- function(FormulP, Formul.NLS, DataP, VInicP) {
-     fit <- NULL
-     try(fit <- nls(Formul.NLS, data=DataP, trace = TRUE,control = list(maxiter = 500)))
-     if(!is.null(fit)){
-       res <- fit; print ("Salió a la primera, estimando los valores iniciales")
-     } else{
-       try(fit <- nls(Formul.NLS, start = VInicP, data=DataP, trace = TRUE,control = list(maxiter = 500)))
-       if(!is.null(fit)){
-         res <- fit; print ("Salió a la segunda, fijando los valores iniciales")
-       } else{
-         try(fit <- nls(FormulP, start = VInicP, data=DataP, trace = TRUE,control = list(maxiter = 500)))
-         if(!is.null(fit)){
-           res <- fit; print ("Salió a la tercera, concretando la fórmula y además estimando los valores iniciales")
-         } else{
-           try(fit <- nlsLM(Formul.NLS, start = VInicP, data=DataP, trace = TRUE,control = list(maxiter = 500)))
-           if(!is.null(fit)){
-             res <- fit; print ("Salió a la 4ª, Con estimaciones Librería nlsLM")
-           } else{	
-             res =NA; print ("No Salió")
-           }
-         }
-       }  
-     }
-     res
-   }
-   
-   nlsGen2 <- function(FormulP, DataP, VInicP) {
-     fit <- NULL
-     try(fit <- nls(FormulP, start = VInicP, data=DataP, trace = TRUE,control = list(maxiter = 500)))
-     if(!is.null(fit)){
-       res <- fit; print ("Salió a la primera")
-     } else{
-       try(fit <- nlsLM(FormulP, start = VInicP, data=DataP, trace = TRUE,control = list(maxiter = 500)))
-       if(!is.null(fit)){
-         res <- fit; print ("Salió a la 2ª, Con estimaciones Librería nlsLM")
-       } else{	
-         res =NA; print ("No Salió")
-       }
-     }  
-     res
-   }
-   
-   # Comprobar que puedo prescindir de todas las que vienen a continuación
-   nlsAsym <- function(YMin,YMax,Rate,LasMed) {
-     ### Regresión Asintótica
-     VInic=list(Asym = YMin, R0 = YMax, lrc = log(-Rate,base = exp(1)))  
-     fit <- NULL
-     try(fit <- nls(Y ~ SSasymp(X, Asym, R0, lrc), data=LasMed, trace = TRUE,control = list(maxiter = 500)))
-     if(!is.null(fit)){
-       res <- fit
-       print ("Salió a la primera, estimando los valores iniciales")
-     } else{
-       try(fit<-nls(Y ~ SSasymp(X, Asym, R0, lrc),start = VInic, data=LasMed, trace = TRUE,control = list(maxiter = 500)))
-       if(!is.null(fit)){
-         res <- fit
-         print ("Salió a la segunda, fijando los valores iniciales")
-       } else{
-         Asymreg1<-formula(Y~Asym+(R0-Asym)*exp(-exp(lrc)*X))
-         try(fit<-nls(Asymreg1, data = LasMed, start = VInic, trace = TRUE,control = list(maxiter = 500)))
-         if(!is.null(fit)){
-           res <- fit
-           print ("Salió a la tercera, concretando la fórmula y además estimando los valores iniciales")
-         } else{
-           res =NA
-           print ("No Salió")
-         }
-       }  
-     }
-     res
-   }
-   
-   nlsAsym2 <- function(YMin,YMax,Rate,LasMed) {
-     ### Regresión Asintótica
-     VInic=list(Asym = YMin, R0 = YMax, lrc = log(Rate,base = exp(1)))  
-     fit <- NULL
-     try(fit <- nls(Y ~ SSasymp(X, Asym, R0, lrc), data=LasMed, trace = TRUE,control = list(maxiter = 500)))
-     if(!is.null(fit)){
-       res <- fit
-       print ("Salió a la primera, estimando los valores iniciales")
-     } else{
-       try(fit<-nls(Y ~ SSasymp(X, Asym, R0, lrc),start = VInic, data=LasMed, trace = TRUE,control = list(maxiter = 500)))
-       if(!is.null(fit)){
-         res <- fit
-         print ("Salió a la segunda, fijando los valores iniciales")
-       } else{
-         Asymreg1<-formula(Y~Asym+(R0-Asym)*exp(-exp(lrc)*X))
-         try(fit<-nls(Asymreg1, data = LasMed, start = VInic, trace = TRUE,control = list(maxiter = 500)))
-         if(!is.null(fit)){
-           res <- fit
-           print ("Salió a la tercera, concretando la fórmula y además estimando los valores iniciales")
-         } else{
-           res =NA
-           print ("No Salió")
-         }
-       }  
-     }
-     res
-   }
-   
-   nlsExp1 <- function(YMax,Rate,LasMed) {
-     ### Regresión Asintótica
-     VInic=list(b0 = YMax, b1 = Rate)
-     fit <- NULL
-     ExpMod1<-formula(Y~ I(exp(1)^(b0 + b1 * X)))
-     try(fit<-nls(ExpMod1, data = LasMed, start = VInic, trace = TRUE,control = list(maxiter = 500)))
-     if(!is.null(fit)){
-       res <- fit
-       print ("Salió a la primera, estimando los valores iniciales")
-     } else{      
-       res =NA
-       print ("No Salió")
-     }
-     res
-   }
-   
-   nlsExp2 <- function(YMax,Rate,LasMed) {
-     ### Regresión Asintótica
-     VInic=list(b0 = YMax, b1 = Rate)
-     fit <- NULL
-     ExpMod1<-formula(Y ~ b0*exp(b1*X))
-     try(fit<-nls(ExpMod1, data = LasMed, start = VInic, trace = TRUE,control = list(maxiter = 500)))
-     if(!is.null(fit)){
-       res <- fit
-       print ("Salió a la primera, estimando los valores iniciales")
-     } else{      
-       res =NA
-       print ("No Salió")
-     }
-     res
-   }
-   
-   nlsExp3 <- function(YMax,Rate,LasMed) {
-     ### Regresión Asintótica
-     VInic=list(b1 = Rate)
-     fit <- NULL
-     ExpMod1<-formula(Y ~ exp(b1*X))
-     try(fit<-nls(ExpMod1, data = LasMed, start = VInic, trace = TRUE,control = list(maxiter = 500)))
-     if(!is.null(fit)){
-       res <- fit
-       print ("Salió a la primera, estimando los valores iniciales")
-     } else{      
-       res =NA
-       print ("No Salió")
-     }
-     res
-   }
-   
-   nlsExp4 <- function(YMin,YMax,Rate,LasMed) {
-     ### Regresión Asintótica
-     VInic=list(b0 = YMin, b1 = Rate, b2 = YMax)
-     fit <- NULL
-     ExpMod1<-formula(Y ~ b0*(1-exp(b1*(X-b2))))
-     try(fit<-nls(ExpMod1, data = LasMed, start = VInic, trace = TRUE,control = list(maxiter = 500)))
-     if(!is.null(fit)){
-       res <- fit
-       print ("Salió a la primera, estimando los valores iniciales")
-     } else{      
-       res =NA
-       print ("No Salió")
-     }
-     res
-   }
-   
-   nlsWeib <- function(AsymP, DropP, lrcP, pwrP,LasMed) {
-     ### Weibull
-     VInic=list(Asym = AsymP, Drop = DropP, lrc = lrcP, pwr=pwrP)
-     fit <- NULL
-     try(fit <- nls(Y ~ SSweibull(X, Asym, Drop, lrc, pwr), data=LasMed, trace = TRUE,control = list(maxiter = 500)))
-     if(!is.null(fit)){
-       res <- fit
-       print ("Salió a la primera, estimando los valores iniciales")
-     } else{
-       try(fit<-nls(Y ~ SSweibull(X, Asym, Drop, lrc, pwr),start = VInic, data=LasMed, trace = TRUE,control = list(maxiter = 500)))
-       if(!is.null(fit)){
-         res <- fit
-         print ("Salió a la segunda, fijando los valores iniciales")
-       } else{
-         AsymWeib1<-formula(Y~Asym-Drop*exp(-exp(lrc)*X^pwr))
-         #Asymreg1<-formula(Y~Asym+(R0-Asym)*exp(-exp(lrc)*X))
-         try(fit<-nls(AsymWeib1, data = LasMed, start = VInic, trace = TRUE,control = list(maxiter = 500)))
-         if(!is.null(fit)){
-           res <- fit
-           print ("Salió a la tercera, concretando la fórmula y además estimando los valores iniciales")
-         } else{
-           res =NA
-           print ("No Salió")
-         }
-       }  
-     }
-     res
-   }
-   
-   
-   
-   
- }
+  {
+    
+    
+    #Params para probarla
+    #ElMod=ModelMM[[NmMod]]
+    #ElTit=EtTxt
+    #LasMed=LasMed
+    #TyLbl=FALSE
+    #xLb="Nº Essay"
+    #yLb="Fixation Frequency"
+    
+    
+    
+    # PrintMod<-function(ElMod,ElTit,LasMed,TyLbl=TRUE,xLb="X",yLb="Y") {
+    #   XMin=head(LasMed$X,1)
+    #   XMax=tail(LasMed$X,1)
+    #   YMax=LasMed[LasMed$X==XMin,]$Y;
+    #   YMin=LasMed[LasMed$X==XMax,]$Y;
+    #   Rate=-(YMax-YMin)/(XMax-XMin);
+    #   xPred <- seq(0, XMax, length = 1000);
+    #   RSq=round(1 - var(residuals(ElMod))/var(LasMed$Y),4)
+    #   PredMod=predict(ElMod, data.frame(X = xPred)) 
+    #   plot(xPred, PredMod,lty=1,lwd=3,xlab=xLb,ylab=yLb,type="l",xlim=c(0,50),ylim=c(0, max(max(PredMod),max(LasMed$Y))),frame.plot=FALSE,cex.lab=1.25)
+    #   with(LasMed, lines(X,Y,type="b",pch=16));
+    #   if (TyLbl) title(main=paste0(ElTit," R2 = ", RSq)) else title(main=ElTit)
+    #   print(ElMod)
+    #   summary(ElMod)
+    # }
+    
+    # PrintModMas<-function(ElMod,ElTit,LasMed,TyLbl=TRUE,xLb="X",yLb="Y") {
+    #   XMin=head(LasMed$X,1)
+    #   XMax=tail(LasMed$X,1)
+    #   YMax=LasMed[LasMed$X==XMin,]$Y;
+    #   YMin=LasMed[LasMed$X==XMax,]$Y;
+    #   Rate=-(YMax-YMin)/(XMax-XMin);
+    #   xPred <- seq(0, XMax, length = 1000);
+    #   RSq=round(1 - var(residuals(ElMod))/var(LasMed$Y),4)
+    #   PredMod=predict(ElMod, data.frame(X = xPred)) 
+    #   plot(xPred, PredMod,lty=1,lwd=3,xlab=xLb,ylab=yLb,type="l",xlim=c(0,50),ylim=c(0, max(max(PredMod),max(LasMed$Y))),frame.plot=FALSE,cex.lab=1.25)
+    #   with(LasMed, lines(X,Y,type="b",pch=16,cex=1.5));
+    #   if (TyLbl) title(main=paste0(ElTit," R2 = ", RSq)) else title(main=ElTit)
+    #   print(ElMod)
+    #   summary(ElMod)
+    # }
+    
+    # PrintModGrande<-function(ElMod,ElTit,LasMed,TyLbl=TRUE,xLb="X",yLb="Y") {
+    #   XMin=head(LasMed$X,1)
+    #   XMax=tail(LasMed$X,1)
+    #   YMax=LasMed[LasMed$X==XMin,]$Y;
+    #   YMin=LasMed[LasMed$X==XMax,]$Y;
+    #   Rate=-(YMax-YMin)/(XMax-XMin);
+    #   xPred <- seq(0, XMax, length = 1000);
+    #   RSq=round(1 - var(residuals(ElMod))/var(LasMed$Y),4)
+    #   PredMod=predict(ElMod, data.frame(X = xPred)) 
+    #   plot(xPred, PredMod,lty=1,lwd=3,xlab=xLb,ylab=yLb,type="l",xlim=c(0,50),ylim=c(0,25),frame.plot=FALSE)
+    #   with(LasMed, lines(X,Y,type="b"));
+    #   if (TyLbl) title(main=paste0(ElTit," R2 = ", RSq)) else title(main=ElTit)
+    #   print(ElMod)
+    #   summary(ElMod)
+    # }
+    
+    # He sustituido PrintMod por PrintMod.23, donde puedo alterar los topes de los ejes y además he mejorado el título
+    # Tb he incorporado PrintModMas mediante AjAx
+    # Y PrintModGrande mediante cexP
+    
+    
+    
+    # ElModP=ModelMM[[NmMod]];NmMod=NmMod;LasMedP=LasMed;AjAx = T;NmModP = Expon1.q
+    # TyLbl=TRUE;xLb="X";yLb="Y";xmaxp=10;yminp=0;cexP=1
+    # PrintMod.23 --> Definitive
+    
+    # I'll leave them for illustrative purposes, but I've grouped them all together in --> AdjMod.23.f
+    AdjMod.23<-function(LasMedP,TyLbl=TRUE,xLb="X",yLb="Y",xmaxp=10,yminp=0, PIp=NULL) {
+      ResF<-list()
+      XMin=head(LasMedP$X,1)
+      XMax=tail(LasMedP$X,1)
+      YMax=LasMedP[LasMedP$X==XMin,]$Y;
+      YMin=LasMedP[LasMedP$X==XMax,]$Y;
+      Rate=-(YMax-YMin)/(XMax-XMin);
+      xPred <- seq(XMin, XMax, length = 1000);
+      with(LasMedP, plot(X,Y,type="b"));
+      
+      NmMod="RegAs1"
+      MinPas=min(LasMedP$Y)
+      MaxPas=max(LasMedP$Y)
+      RatePas=(max(LasMedP$Y)-min(LasMedP$Y))/(LasMedP[LasMedP$Y==max(LasMedP$Y),"X"]-LasMedP[LasMedP$Y==min(LasMedP$Y),"X"])
+      
+      fit<-NA
+      #VInic=list(Asym = YMin, R0 = YMax, lrc = log(Rate,base = exp(1)))  
+      #VInic=list(Asym = 1, R0 = 6, lrc = -1.5) #VInic=list(Asym = 24, R0 = 11, lrc = -1.5)
+      #try(fit<-nls(Y ~ SSasymp(X, Asym, R0, lrc),start = VInic, data=LasMedP, trace = TRUE,control = list(maxiter = 500)))
+      
+      #Otros intentos x si:
+      #Para Curva Negativa
+      #try(fit<-nlsAsym(YMin,YMax,Rate,LasMed))
+      
+      #Para Curva Postitiva
+      try(fit<-nlsAsym2(YMin,YMax,Rate,LasMedP))
+      #try(fit<-nlsAsym2(MinPas,MaxPas,exp(-RatePas),LasMed))
+      
+      ResF$Type=NmMod
+      ResF$Model<-fit
+      ResF$Rsq<-round(1 - var(residuals(fit))/var(LasMedP$Y),4)
+      ResF$SE<-SEMod(fit)
+      ResF$Summ <- summary(fit)
+      EtTxt=bquote(.("Asymptotic Regression")*~(RSE==.(round(SEMod(fit),4))))
+      
+      
+      xPred <- seq(0, XMax, length = 1000);
+      PredMod=predict(fit, data.frame(X = xPred)) 
+      plot(xPred, PredMod,lty=1,lwd=3,xlab=xLb,ylab=yLb,type="l",xlim=c(0,xmaxp),ylim=c(yminp, 1),frame.plot=FALSE,cex.lab=1.25)
+      with(LasMedP, lines(X,Y,type="b",pch=16));
+      if (TyLbl) title(main=paste0(EtTxt," R2 = ", RSq)) else title(main=EtTxt)
+      
+      
+      lrcStim=coefficients(fit)[[3]]
+      AsymStim=coefficients(fit)[[1]]
+      R0Stim=coefficients(fit)[[2]]
+      xMed=log(2)/(exp(lrcStim))
+      PredxMed=predict(fit, data.frame(X = xMed))
+      
+      ResF$Par<-c(coefficients(fit),XHalf=xMed,y_Xhalf=(AsymStim+R0Stim)/2)
+      
+      points(xMed, PredxMed[[1]],pch=16,cex=2,col="red")
+      lines(c(0,xMed),c(PredxMed[[1]],PredxMed[[1]]),lty=2,lwd=2)
+      lines(c(xMed,xMed),c(PredxMed[[1]],-1),lty=2,lwd=2)
+      #text(xMed+3, PredxMed,expression(X[0.5]%~~%.(xMed)))
+      text(xMed+3, PredxMed[[1]],bquote(X[0.5]==.(ceiling(xMed))),cex=1.5)
+      abline(h=AsymStim,lty=2,lwd=2)
+      if(!is.null(PIp)) {
+        abline(v=PIp,lty=3,lwd=1)
+        text(PIp, 1,"IP",cex=1)
+      }
+      ResF$BondAj<-AdjParms(fit,LasMedP$Y)
+      ResF
+    }  
+    
+    AdjMod.23b<-function(LasMedP,TyLbl=TRUE,xLb="X",yLb="Y",xmaxp=10,yminp=0,PIp=NULL) {
+      ResF<-list()
+      XMin=head(LasMedP$X,1)
+      XMax=tail(LasMedP$X,1)
+      YMax=LasMedP[LasMedP$X==XMin,]$Y;
+      YMin=LasMedP[LasMedP$X==XMax,]$Y;
+      Rate=-(YMax-YMin)/(XMax-XMin);
+      xPred <- seq(XMin, XMax, length = 1000);
+      with(LasMedP, plot(X,Y,type="b"));
+      
+      
+      NmMod="RegAs1"
+      MinPas=min(LasMedP$Y)
+      MaxPas=max(LasMedP$Y)
+      RatePas=(max(LasMedP$Y)-min(LasMedP$Y))/(LasMedP[LasMedP$Y==max(LasMedP$Y),"X"]-LasMedP[LasMedP$Y==min(LasMedP$Y),"X"])
+      
+      fit<-NA
+      #VInic=list(Asym = YMin, R0 = YMax, lrc = log(Rate,base = exp(1)))  
+      #VInic=list(Asym = 1, R0 = 6, lrc = -1.5) #VInic=list(Asym = 24, R0 = 11, lrc = -1.5)
+      #try(fit<-nls(Y ~ SSasymp(X, Asym, R0, lrc),start = VInic, data=LasMedP, trace = TRUE,control = list(maxiter = 500)))
+      
+      #Otros intentos x si:
+      #Para Curva Negativa
+      #try(fit<-nlsAsym(YMin,YMax,Rate,LasMed))
+      
+      #Para Curva Postitiva
+      try(fit<-nlsAsym2(YMin,YMax,Rate,LasMedP))
+      #try(fit<-nlsAsym2(MinPas,MaxPas,exp(-RatePas),LasMed))
+      
+      ResF$Type=NmMod
+      ResF$Model<-fit
+      ResF$Rsq<-round(1 - var(residuals(fit))/var(LasMedP$Y),4)
+      ResF$SE<-SEMod(fit)
+      ResF$Summ <- summary(fit)
+      #EtTxt=bquote(.("Asymptotic Regression")*~(R^2==.(round(ResF$Rsq,3))))
+      EtTxt=bquote(.("Asymptotic Regression")*~(RSE==.(round(SEMod(fit),4))))
+      main = quote("Parameters in the SSasymp model " ~
+                     {f[phi](x) == phi[1] + (phi[2]-phi[1])*~e^{-e^{phi[3]}*~x}})
+      
+      xPred <- seq(0, XMax, length = 1000);
+      PredMod=predict(fit, data.frame(X = xPred)) 
+      plot(xPred, PredMod,lty=1,lwd=3,xlab=xLb,ylab=yLb,type="l",xlim=c(0,xmaxp),ylim=c(yminp, 1),frame.plot=FALSE,cex.lab=1.25)
+      mtext(quote({f[theta](x) == theta[1] + (theta[2]-theta[1])*~e^{-e^{theta[3]}*~x}}~
+                    list(theta[1] == "Asymp", theta[2] == "Origin", theta[3] == "Rate Log")),cex=1)
+      with(LasMedP, lines(X,Y,type="b",pch=16));
+      if (TyLbl) title(main=paste0(EtTxt," R2 = ", RSq)) else title(main=EtTxt)
+      
+      lrcStim=coefficients(fit)[[3]]
+      AsymStim=coefficients(fit)[[1]]
+      R0Stim=coefficients(fit)[[2]]
+      xMed=log(2)/(exp(lrcStim))
+      PredxMed=predict(fit, data.frame(X = xMed))
+      
+      ResF$Par<-c(coefficients(fit),XHalf=xMed,y_Xhalf=(AsymStim+R0Stim)/2)
+      points(xMed, PredxMed[[1]],pch=16,cex=2,col="red")
+      lines(c(0,xMed),c(PredxMed[[1]],PredxMed[[1]]),lty=2,lwd=1)
+      lines(c(xMed,xMed),c(PredxMed[[1]],-1),lty=2,lwd=1)
+      #text(xMed+3, PredxMed,expression(X[0.5]%~~%.(xMed)))
+      #text(xMed+1.5, PredxMed,bquote(X[0.5]==.(ceiling(xMed))),cex=1.5)
+      text(xMed+.5, PredxMed[[1]],
+           quote({f(x[0.5]) == frac(theta[1]+theta[2],2)}~{} %=>% {}~~
+                   {x[0.5] == frac(log(2), e^{theta[3]})}~ {} %=>% {}~~ {x[0.5] ==1}), 
+           adj = c(0, 0.5),
+           cex=1)
+      abline(h=AsymStim,lty=2,lwd=1)
+      abline(h=R0Stim,lty=2,lwd=1)
+      if(!is.null(PIp)) {
+        abline(v=PIp,lty=3,lwd=1)
+        text(PIp, 1,"IP",cex=1)
+      }
+      text(x = 0.5, y= PredxMed[[1]],labels=expression(frac(theta[1]+theta[2],2)),cex=.75)
+      axis(side=2, at = R0Stim, labels= expression(theta[2]), pos=-.5, las=1)
+      axis(side=2, at = AsymStim, labels= expression(theta[1]), pos=-.5, las=1)
+      #axis(2, at = PredxMed[[1]], labels= expression(frac(theta[1]+theta[2],2)), 
+      #                pos=-.25, las=1,cex=2)
+      ResF$BondAj<-AdjParms(fit,LasMedP$Y)
+      ResF
+    }
+    
+    AdjMod.23b.2<-function(LasMedP,TyLbl=TRUE,xLb="X",yLb="Y",xmaxp=10,yminp=0,PIp=NULL) {
+      decilecolors=c("#7F7FCE", "#7F7FF7", "#88A9F9", "#93D2FB", "#A0FCFE",
+                     "#BDFDD7", "#DDFEB3", "#FFFF91", "#F8D68B", "#F3AE86" )
+      ResF<-list()
+      XMin=head(LasMedP$X,1)
+      XMax=tail(LasMedP$X,1)
+      YMax=LasMedP[LasMedP$X==XMin,]$Y;
+      YMin=LasMedP[LasMedP$X==XMax,]$Y;
+      Rate=-(YMax-YMin)/(XMax-XMin);
+      xPred <- seq(XMin, XMax, length = 1000);
+      # with(LasMedP, plot(X,Y,type="b"));
+      
+      
+      NmMod="RegAs1"
+      MinPas=min(LasMedP$Y)
+      MaxPas=max(LasMedP$Y)
+      RatePas=(max(LasMedP$Y)-min(LasMedP$Y))/(LasMedP[LasMedP$Y==max(LasMedP$Y),"X"]-LasMedP[LasMedP$Y==min(LasMedP$Y),"X"])
+      
+      fit<-NA
+      #VInic=list(Asym = YMin, R0 = YMax, lrc = log(Rate,base = exp(1)))  
+      #VInic=list(Asym = 1, R0 = 6, lrc = -1.5) #VInic=list(Asym = 24, R0 = 11, lrc = -1.5)
+      #try(fit<-nls(Y ~ SSasymp(X, Asym, R0, lrc),start = VInic, data=LasMedP, trace = TRUE,control = list(maxiter = 500)))
+      
+      #Otros intentos x si:
+      #Para Curva Negativa
+      #try(fit<-nlsAsym(YMin,YMax,Rate,LasMed))
+      
+      #Para Curva Postitiva
+      try(fit<-nlsAsym2(YMin,YMax,Rate,LasMedP))
+      #try(fit<-nlsAsym2(MinPas,MaxPas,exp(-RatePas),LasMed))
+      
+      ResF$Type=NmMod
+      ResF$XPred=xPred
+      ResF$Model<-fit
+      ResF$Rsq<-round(1 - var(residuals(fit))/var(LasMedP$Y),4)
+      ResF$SE<-SEMod(fit)
+      ResF$Summ <- summary(fit)
+      #EtTxt=bquote(.("Asymptotic Regression")*~(R^2==.(round(ResF$Rsq,3))))
+      EtTxt=bquote(.("Asymptotic Regression")*~(RSE==.(round(SEMod(fit),4))))
+      main = quote("Parameters in the SSasymp model " ~
+                     {f[phi](x) == phi[1] + (phi[2]-phi[1])*~e^{-e^{phi[3]}*~x}})
+      
+      xPred <- seq(0, XMax, length = 1000);
+      PredMod=predict(fit, data.frame(X = xPred)) 
+      plot(xPred, PredMod,lty=1,lwd=3,xlab=xLb,ylab=yLb,type="l",xlim=c(0,xmaxp),ylim=c(yminp, 1),frame.plot=FALSE,cex.lab=1.25)
+      mtext(quote({f[theta](x) == theta[1] + (theta[2]-theta[1])*~e^{-e^{theta[3]}*~x}}~
+                    list(theta[1] == "Asymp", theta[2] == "Origin", theta[3] == "Log of Rate")),cex=1)
+      with(LasMedP, lines(X,Y,type="b",pch=16));
+      with(LasMedP, points(X,Y,pch=16, cex = 1.45));
+      with(LasMedP, points(X,Y,pch=16, col=decilecolors,cex = 1.25));
+      if (TyLbl) title(main=paste0(EtTxt," R2 = ", RSq)) else title(main=EtTxt)
+      
+      lrcStim=coefficients(fit)[[3]]
+      AsymStim=coefficients(fit)[[1]]
+      R0Stim=coefficients(fit)[[2]]
+      xMed=log(2)/(exp(lrcStim))
+      PredxMed=predict(fit, data.frame(X = xMed))
+      c=exp(lrcStim)
+      
+      newx <- 1
+      pred0 <- data.frame(x=newx, y=AsymRegMM(newx,AsymStim,R0Stim,c))
+      pred1 <- data.frame(x=newx, y=DrvAsymReg(newx,AsymStim,R0Stim,c))
+      yint <- pred0$y - (pred1$y*newx)
+      xint <- -yint/pred1$y
+      
+      lines(xPred, yint + pred1$y*xPred, lty=2,lwd=1) # tangent (1st deriv. of spline at newx)
+      #points(xint, 0, col=3, pch=19) # x intercept
+      text(2, .75,"Max Rate at x = 1",srt=70,adj=c(0.75,0),cex=.90)
+      
+      
+      ResF$Par<-c(coefficients(fit),XHalf=xMed,y_Xhalf=(AsymStim+R0Stim)/2)
+      # Alternative
+      # points(xMed, PredxMed[[1]],pch=4,cex=1.5,col=rgb(red = 0, green = 1, blue = 1))
+      points(xMed, PredxMed[[1]],pch=16,cex=1.5,col=rgb(red = 1, green = 0, blue = 0, alpha = 0.5))
+      lines(c(0,xMed),c(PredxMed[[1]],PredxMed[[1]]),lty=2,lwd=1)
+      lines(c(xMed,xMed),c(PredxMed[[1]],-1),lty=2,lwd=1)
+      #text(xMed+3, PredxMed,expression(X[0.5]%~~%.(xMed)))
+      #text(xMed+1.5, PredxMed,bquote(X[0.5]==.(ceiling(xMed))),cex=1.5)
+      text(xMed+.5, PredxMed[[1]],
+           quote({f(x[0.5]) == frac(theta[1]+theta[2],2)}~{} %=>% {}~~
+                   {x[0.5] == frac(log(2), e^{theta[3]})}~ {} %=>% {}~~ {x[0.5] %~~%1}), 
+           adj = c(0, 0.5),
+           cex=1)
+      abline(h=AsymStim,lty=2,lwd=1)
+      abline(h=R0Stim,lty=2,lwd=1)
+      if(!is.null(PIp)) {
+        abline(v=PIp,lty=3,lwd=1)
+        text(PIp, 1,"IP",cex=1)
+      }
+      text(x = 0.5, y= PredxMed[[1]],labels=expression(frac(theta[1]+theta[2],2)),cex=.75)
+      axis(side=2, at = R0Stim, labels= expression(theta[2]), pos=-.5, las=1)
+      axis(side=2, at = AsymStim, labels= expression(theta[1]), pos=-.5, las=1)
+      #axis(2, at = PredxMed[[1]], labels= expression(frac(theta[1]+theta[2],2)), 
+      #                pos=-.25, las=1,cex=2)
+      ResF$BondAj<-AdjParms(fit,LasMedP$Y)
+      ResF
+    }
+    
+    AdjMod.23b.3<-function(LasMedP,TyLbl=TRUE,xLb="X",yLb="Y",xmaxp=10,yminp=0,PIp=NULL) {
+      decilecolors=c("#7F7FCE", "#7F7FF7", "#88A9F9", "#93D2FB", "#A0FCFE",
+                     "#BDFDD7", "#DDFEB3", "#FFFF91", "#F8D68B", "#F3AE86" )
+      ResF<-list()
+      XMin=head(LasMedP$X,1)
+      XMax=tail(LasMedP$X,1)
+      YMax=LasMedP[LasMedP$X==XMin,]$Y;
+      YMin=LasMedP[LasMedP$X==XMax,]$Y;
+      Rate=-(YMax-YMin)/(XMax-XMin);
+      xPred <- seq(XMin, XMax, length = 1000);
+      # with(LasMedP, plot(X,Y,type="b"));
+      
+      
+      NmMod="RegAs1"
+      MinPas=min(LasMedP$Y)
+      MaxPas=max(LasMedP$Y)
+      RatePas=(max(LasMedP$Y)-min(LasMedP$Y))/(LasMedP[LasMedP$Y==max(LasMedP$Y),"X"]-LasMedP[LasMedP$Y==min(LasMedP$Y),"X"])
+      
+      fit<-NA
+      #VInic=list(Asym = YMin, R0 = YMax, lrc = log(Rate,base = exp(1)))  
+      #VInic=list(Asym = 1, R0 = 6, lrc = -1.5) #VInic=list(Asym = 24, R0 = 11, lrc = -1.5)
+      #try(fit<-nls(Y ~ SSasymp(X, Asym, R0, lrc),start = VInic, data=LasMedP, trace = TRUE,control = list(maxiter = 500)))
+      
+      #Otros intentos x si:
+      #Para Curva Negativa
+      #try(fit<-nlsAsym(YMin,YMax,Rate,LasMed))
+      
+      #Para Curva Postitiva
+      try(fit<-nlsAsym2(YMin,YMax,Rate,LasMedP))
+      #try(fit<-nlsAsym2(MinPas,MaxPas,exp(-RatePas),LasMed))
+      
+      ResF$Type=NmMod
+      ResF$XPred=xPred
+      ResF$Model<-fit
+      ResF$Rsq<-round(1 - var(residuals(fit))/var(LasMedP$Y),4)
+      ResF$SE<-SEMod(fit)
+      ResF$Summ <- summary(fit)
+      #EtTxt=bquote(.("Asymptotic Regression")*~(R^2==.(round(ResF$Rsq,3))))
+      EtTxt=bquote(.("Asymptotic Regression")*~(RSE==.(round(SEMod(fit),4))))
+      main = quote("Parameters in the SSasymp model " ~
+                     {f[phi](x) == phi[1] + (phi[2]-phi[1])*~e^{-e^{phi[3]}*~x}})
+      
+      xPred <- seq(0, XMax, length = 1000);
+      PredMod=predict(fit, data.frame(X = xPred)) 
+      plot(xPred, PredMod,lty=1,lwd=3,xlab=xLb,ylab=yLb,type="l",xlim=c(0,xmaxp),ylim=c(yminp, 1),frame.plot=FALSE,cex.lab=1.25)
+      mtext(quote({f[theta](x) == theta[1] + (theta[2]-theta[1])*~e^{-e^{theta[3]}*~x}}~
+                    list(theta[1] == "Asymp", theta[2] == "Origin", theta[3] == "Log of Rate")),cex=1)
+      with(LasMedP, lines(X,Y,type="b",pch=16));
+      with(LasMedP, points(X,Y,pch=16, cex = 1.45));
+      with(LasMedP, points(X,Y,pch=16, col=decilecolors,cex = 1.25));
+      if (TyLbl) title(main=paste0(EtTxt," R2 = ", RSq)) else title(main=EtTxt)
+      
+      lrcStim=coefficients(fit)[[3]]
+      AsymStim=coefficients(fit)[[1]]
+      R0Stim=coefficients(fit)[[2]]
+      xMed=log(2)/(exp(lrcStim))
+      PredxMed=predict(fit, data.frame(X = xMed))
+      c=exp(lrcStim)
+      
+      newx <- 1
+      pred0 <- data.frame(x=newx, y=AsymRegMM(newx,AsymStim,R0Stim,c))
+      pred1 <- data.frame(x=newx, y=DrvAsymReg(newx,AsymStim,R0Stim,c))
+      yint <- pred0$y - (pred1$y*newx)
+      xint <- -yint/pred1$y
+      
+      lines(xPred, yint + pred1$y*xPred, lty=2,lwd=1) # tangent (1st deriv. of spline at newx)
+      #points(xint, 0, col=3, pch=19) # x intercept
+      text(2, .75,"Max Rate at x = 1",srt=70,adj=c(0.75,0),cex=.90)
+      
+      
+      ResF$Par<-c(coefficients(fit),XHalf=xMed,y_Xhalf=(AsymStim+R0Stim)/2)
+      # Alternative
+      # points(xMed, PredxMed[[1]],pch=4,cex=1.5,col=rgb(red = 0, green = 1, blue = 1))
+      points(xMed, PredxMed[[1]],pch=16,cex=1.5,col=rgb(red = 1, green = 0, blue = 0, alpha = 0.5))
+      lines(c(0,xMed),c(PredxMed[[1]],PredxMed[[1]]),lty=2,lwd=1)
+      lines(c(xMed,xMed),c(PredxMed[[1]],-1),lty=2,lwd=1)
+      #text(xMed+3, PredxMed,expression(X[0.5]%~~%.(xMed)))
+      #text(xMed+1.5, PredxMed,bquote(X[0.5]==.(ceiling(xMed))),cex=1.5)
+      text(xMed+.5, PredxMed[[1]],
+           quote({x[0.5] %~~%1}), 
+           adj = c(0, 0.5),
+           cex=1)
+      abline(h=AsymStim,lty=2,lwd=1)
+      abline(h=R0Stim,lty=2,lwd=1)
+      if(!is.null(PIp)) {
+        abline(v=PIp,lty=3,lwd=1)
+        text(PIp, 1,"IP",cex=1)
+      }
+      # axis(side=1, at = xMed, labels= expression(frac(log(2), e^{theta[3]})), pos=-1.25,las=1,adj=0,cex=.75)
+      par(xpd=TRUE)
+      text(x = -1.3, y= .1,labels=expression(frac(theta[1]+theta[2],2)),adj=c(.5,0),cex=.75)
+      text(x = xMed, y= -1.25,labels=expression(frac(log(2), e^{theta[3]})),cex=.75)
+      par(xpd=FALSE)
+      axis(side=2, at = R0Stim, labels= expression(theta[2]), pos=-.5, las=1)
+      axis(side=2, at = AsymStim, labels= expression(theta[1]), pos=-.5, las=1)
+      #axis(2, at = PredxMed[[1]], labels= expression(frac(theta[1]+theta[2],2)), 
+      #                pos=-.25, las=1,cex=2)
+      
+      ResF$BondAj<-AdjParms(fit,LasMedP$Y)
+      ResF
+    }
+    
+    AdjMod.23b.4<-function(LasMedP,TyLbl=TRUE,xLb="X",yLb="Y",xmaxp=10,yminp=0,PIp=NULL) {
+      chkPkg("shape")
+      decilecolors=c("#7F7FCE", "#7F7FF7", "#88A9F9", "#93D2FB", "#A0FCFE",
+                     "#BDFDD7", "#DDFEB3", "#FFFF91", "#F8D68B", "#F3AE86" )
+      ResF<-list()
+      XMin=head(LasMedP$X,1)
+      XMax=tail(LasMedP$X,1)
+      YMax=LasMedP[LasMedP$X==XMin,]$Y;
+      YMin=LasMedP[LasMedP$X==XMax,]$Y;
+      Rate=-(YMax-YMin)/(XMax-XMin);
+      xPred <- seq(XMin, XMax, length = 1000);
+      # with(LasMedP, plot(X,Y,type="b"));
+      
+      
+      NmMod="RegAs1"
+      MinPas=min(LasMedP$Y)
+      MaxPas=max(LasMedP$Y)
+      RatePas=(max(LasMedP$Y)-min(LasMedP$Y))/(LasMedP[LasMedP$Y==max(LasMedP$Y),"X"]-LasMedP[LasMedP$Y==min(LasMedP$Y),"X"])
+      
+      fit<-NA
+      #VInic=list(Asym = YMin, R0 = YMax, lrc = log(Rate,base = exp(1)))  
+      #VInic=list(Asym = 1, R0 = 6, lrc = -1.5) #VInic=list(Asym = 24, R0 = 11, lrc = -1.5)
+      #try(fit<-nls(Y ~ SSasymp(X, Asym, R0, lrc),start = VInic, data=LasMedP, trace = TRUE,control = list(maxiter = 500)))
+      
+      #Otros intentos x si:
+      #Para Curva Negativa
+      #try(fit<-nlsAsym(YMin,YMax,Rate,LasMed))
+      
+      #Para Curva Postitiva
+      try(fit<-nlsAsym2(YMin,YMax,Rate,LasMedP))
+      #try(fit<-nlsAsym2(MinPas,MaxPas,exp(-RatePas),LasMed))
+      
+      ResF$Type=NmMod
+      ResF$XPred=xPred
+      ResF$Model<-fit
+      ResF$Rsq<-round(1 - var(residuals(fit))/var(LasMedP$Y),4)
+      ResF$SE<-SEMod(fit)
+      ResF$Summ <- summary(fit)
+      #EtTxt=bquote(.("Asymptotic Regression")*~(R^2==.(round(ResF$Rsq,3))))
+      EtTxt=bquote(.("Asymptotic Regression")*~(RSE==.(round(SEMod(fit),4))))
+      # main = quote("Parameters in the SSasymp model " ~
+      #                {f[phi](x) == phi[1] + (phi[2]-phi[1])*~e^{-e^{phi[3]}*~x}})
+      
+      xPred <- seq(0, XMax, length = 1000);
+      PredMod=predict(fit, data.frame(X = xPred)) 
+      plot(xPred, PredMod,lty=1,lwd=3,xlab=xLb,ylab=yLb,type="l",xlim=c(0,xmaxp),ylim=c(yminp, 1),frame.plot=FALSE,cex.lab=1.25)
+      mtext(quote({"Asymtotic Regression:"}~{f[theta](x) == theta[1] + (theta[2]-theta[1])*~e^{-e^{theta[3]}*~x}}
+      ),cex=1,line=2)
+      mtext(quote({"First derivative:"}~{f*" '"[theta](x) == {e^{theta[3]}*~(theta[1]-f[theta](x))}}),cex=1,line=1)
+      mtext(quote({"Params:"}~list(theta[1] == "Asymp", theta[2] == "Origin", theta[3] == "Log of Rate;")~{Rate==e^{theta[3]}}),cex=1,line=0)
+      
+      
+      with(LasMedP, lines(X,Y,type="b",pch=16));
+      with(LasMedP, points(X,Y,pch=16, cex = 1.45));
+      with(LasMedP, points(X,Y,pch=16, col=decilecolors,cex = 1.25));
+      # if (TyLbl) title(main=paste0(EtTxt," R2 = ", RSq)) else title(main=EtTxt)
+      
+      lrcStim=coefficients(fit)[[3]]
+      AsymStim=coefficients(fit)[[1]]
+      R0Stim=coefficients(fit)[[2]]
+      xMed=log(2)/(exp(lrcStim))
+      PredxMed=predict(fit, data.frame(X = xMed))
+      c=exp(lrcStim)
+      
+      newx <- 1
+      pred0 <- data.frame(x=newx, y=AsymRegMM(newx,AsymStim,R0Stim,c))
+      pred1 <- data.frame(x=newx, y=DrvAsymReg(newx,AsymStim,R0Stim,c))
+      yint <- pred0$y - (pred1$y*newx)
+      xint <- -yint/pred1$y
+      
+      lines(xPred, yint + pred1$y*xPred, lty=2,lwd=1) # tangent (1st deriv. of spline at newx)
+      #points(xint, 0, col=3, pch=19) # x intercept
+      text(2, .75,"Max Rate at x = 1",srt=70,adj=c(0.75,0),cex=.90)
+      
+      #log(2)
+      ResF$Par<-c(coefficients(fit),XHalf=xMed,y_Xhalf=(AsymStim+R0Stim)/2)
+      # Alternative
+      # points(xMed, PredxMed[[1]],pch=4,cex=1.5,col=rgb(red = 0, green = 1, blue = 1))
+      points(xMed, PredxMed[[1]],pch=16,cex=1.5,col=rgb(red = 1, green = 0, blue = 0, alpha = 0.5))
+      lines(c(0,xMed),c(PredxMed[[1]],PredxMed[[1]]),lty=2,lwd=1)
+      lines(c(xMed,xMed),c(PredxMed[[1]],-1),lty=2,lwd=1)
+      #text(xMed+3, PredxMed,expression(X[0.5]%~~%.(xMed)))
+      #text(xMed+1.5, PredxMed,bquote(X[0.5]==.(ceiling(xMed))),cex=1.5)
+      
+      text(xMed+.5, PredxMed[[1]],
+           quote({x[0.5] %~~%1}), 
+           adj = c(0, 0.5),
+           cex=1)
+      abline(h=AsymStim,lty=2,lwd=1)
+      abline(h=R0Stim,lty=2,lwd=1)
+      if(!is.null(PIp)) {
+        abline(v=PIp,lty=3,lwd=1)
+        text(PIp, 1,"IP",cex=1)
+      }
+      axis(side=2, at = PredxMed[[1]], labels= "",las=1, cex=.75)
+      axis(side=1, at = xMed, labels= "",las=1, cex=.75)
+      par(xpd=TRUE)
+      text(x = -1.3, y= .1,labels=expression(frac(theta[1]+theta[2],2)),adj=c(.5,0),cex=.75)
+      text(x = xMed, y= -1.4,labels=expression(frac(log(2), e^{theta[3]})==frac(log(2), Rate)),cex=.75)
+      Arrows(-1,.15,-.4,PredxMed[[1]], arr.length = .25, arr.type="triangle", arr.adj = 1)
+      Arrows(1,-1.35,1,-1.1, arr.length = .25, arr.type="triangle", arr.adj = 1 )
+      par(xpd=FALSE)
+      axis(side=2, at = R0Stim, labels= expression(theta[2]), pos=-.5, las=1)
+      axis(side=2, at = AsymStim, labels= expression(theta[1]), pos=-.5, las=1)
+      #axis(2, at = PredxMed[[1]], labels= expression(frac(theta[1]+theta[2],2)), 
+      #                pos=-.25, las=1,cex=2)
+      
+      ResF$BondAj<-AdjParms(fit,LasMedP$Y)
+      ResF
+    }
+    
+    AdjMod.23Analitic<-function(LasMedP,TyLbl=TRUE,xLb="X",yLb="Y",xmaxp=10,yminp=0) {
+      ResF<-list()
+      # plot(LasMedP$X, LasMedP$Y,lty=1,lwd=3,xlab=xLb,ylab=yLb,type="p",xlim=c(0,xmaxp),ylim=c(yminp, 1),frame.plot=FALSE,cex.lab=1.25)
+      
+      PredMod<-rootxiGraph(LasMedP$X,LasMedP$Y,1,length(LasMedP$X),5,5,TRUE)
+      plot(LasMedP$X, PredMod,lty=1,lwd=2,xlab=xLb,ylab=yLb,type="l",xlim=c(0,xmaxp),ylim=c(yminp, 1),frame.plot=FALSE,cex.lab=1.25,col="darkgrey")
+      with(LasMedP, lines(X,Y,type="p",pch=16));
+      
+      #Find root, plot results, print Taylor coefficients and rho estimation:
+      b<-rootxi(LasMedP$X,LasMedP$Y,1,length(LasMedP$X),5,5,plots=F);b$froot[2]
+      #Find extreme, plot results, print Taylor coefficients and rho estimation:
+      c<-extremexi(LasMedP$X,LasMedP$Y,1,length(LasMedP$X),5,5,plots=F);c$fextr[2]
+      #Find inflection point, plot results, print Taylor coefficients and rho estimation:
+      d<-inflexi(LasMedP$X,LasMedP$Y,1,length(LasMedP$X),5,5,plots=F);d$finfl[2]
+      
+      
+      abline(v=b$froot[2],lty=3,lwd=1)
+      text(b$froot[2],1, paste0("Root = ",b$froot[2]),cex=1)
+      
+      abline(v=c$fextr[2],lty=3,lwd=1)
+      text(c$fextr[2],1, paste0("Extreme = ",c$fextr[2]),cex=1)
+      
+      abline(v=d$finfl[2],lty=3,lwd=1)
+      text(d$finfl[2],1, paste0("Inflection = ",d$finfl[2]),cex=1)
+      
+      if (TyLbl) title(main="Significant points of Correlation function using Taylor's method") else title(main="")
+      
+      legend("center", col = c("darkgrey"), lty = c(1), 
+             lwd = c(2), legend = c(paste0("Taylor fit (", 
+                                           5, " )")), bty = "n", cex = 0.7)
+      
+      ResF$root$an<-b$an
+      ResF$root$froot<-b$froot
+      ResF$extr$an <-c$an
+      ResF$extr$fextr <-c$fextr
+      ResF$inflexi$an<-d$an
+      ResF$inflexi$finfl<-d$finfl
+      ResF
+    }    
+    
+    AdjMod.23Analitic.2<-function(LasMedP,LasMedP2=NULL,TyLbl=TRUE,xLb="X",yLb="Y",xmaxp=10,yminp=0,RootG=FALSE,MaxG=FALSE,InflG=FALSE) {
+      decilecolors=c("#7F7FCE", "#7F7FF7", "#88A9F9", "#93D2FB", "#A0FCFE",
+                     "#BDFDD7", "#DDFEB3", "#FFFF91", "#F8D68B", "#F3AE86" )
+      ResF<-list()
+      # plot(LasMedP$X, LasMedP$Y,lty=1,lwd=3,xlab=xLb,ylab=yLb,type="p",xlim=c(0,xmaxp),ylim=c(yminp, 1),frame.plot=FALSE,cex.lab=1.25)
+      colorsdef=rep(decilecolors, each=6)
+      
+      PredMod<-rootxiGraph(LasMedP$X,LasMedP$Y,1,length(LasMedP$X),5,5,TRUE)
+      plot(LasMedP$X, PredMod,lty=1,lwd=2,xlab=xLb,ylab=yLb,type="l",xlim=c(0,xmaxp),ylim=c(yminp, 1),frame.plot=FALSE,cex.lab=1.25,col="darkgrey")
+      
+      if (!is.null(LasMedP2)){
+        #with(LasMedP, points(X,Y,pch=16, cex = 1.45));
+        with(LasMedP, points(X,Y,pch=16, col=addTrans(colorsdef,200),cex = 1.25))
+        with(LasMedP2, points(X,Y,pch=18, cex = 2));
+        with(LasMedP2, points(X,Y,pch=18, col=decilecolors,cex = 1.55))
+        # with(LasMedP, lines(X,Y,type="p",pch=16, col=addTrans(colorsdef,100)));
+        # with(LasMedP2, lines(X,Y,type="p",pch=16, col=decilecolors,cex=2));
+      }
+      
+      if (is.null(LasMedP2)){
+        with(LasMedP, points(X,Y,pch=16, cex = 1.45));
+        with(LasMedP, points(X,Y,pch=16, col=decilecolors,cex = 1.25));
+      }
+      
+      #Find root, plot results, print Taylor coefficients and rho estimation:
+      b<-rootxi(LasMedP$X,LasMedP$Y,1,length(LasMedP$X),5,5,plots=F);b$froot[2]
+      #Find extreme, plot results, print Taylor coefficients and rho estimation:
+      c<-extremexi(LasMedP$X,LasMedP$Y,1,length(LasMedP$X),5,5,plots=F);c$fextr[2]
+      #Find inflection point, plot results, print Taylor coefficients and rho estimation:
+      d<-inflexi(LasMedP$X,LasMedP$Y,1,length(LasMedP$X),5,5,plots=F);d$finfl[2]
+      
+      if (RootG) {
+        abline(v=b$froot[2],lty=3,lwd=1)
+        text(b$froot[2],1, paste0("Root = ",b$froot[2]),cex=1)}
+      
+      if (MaxG) {
+        abline(v=c$fextr[2],lty=3,lwd=1)
+        text(c$fextr[2],1, paste0("Extreme = ",c$fextr[2]),cex=1)}
+      
+      if (InflG){
+        abline(v=d$finfl[2],lty=3,lwd=1)
+        text(d$finfl[2],1, paste0("Inflection = ",d$finfl[2]),cex=1)}
+      
+      if (TyLbl) title(main="Significant points of Correlation function using Taylor's method") else title(main="")
+      
+      legend("center", col = c("darkgrey"), lty = c(1), 
+             lwd = c(2), legend = c(paste0("Taylor fit (Polynomial Order ", 
+                                           5, ")")), bty = "n", cex = 0.7)
+      
+      ResF$root$an<-b$an
+      ResF$root$froot<-b$froot
+      ResF$extr$an <-c$an
+      ResF$extr$fextr <-c$fextr
+      ResF$inflexi$an<-d$an
+      ResF$inflexi$finfl<-d$finfl
+      ResF
+    }
+    
+    AdjMod.Funde <- function(LasMedP,TyLbl=TRUE,xLb="X",yLb="Y",xmaxp=10,yminp=0,PIp=NULL) {
+      decilecolors=c("#7F7FCE", "#7F7FF7", "#88A9F9", "#93D2FB", "#A0FCFE",
+                     "#BDFDD7", "#DDFEB3", "#FFFF91", "#F8D68B", "#F3AE86" )
+      ResF<-list()
+      XMin=head(LasMedP$X,1)
+      XMax=tail(LasMedP$X,1)
+      YMax=LasMedP[LasMedP$X==XMin,]$Y;
+      YMin=LasMedP[LasMedP$X==XMax,]$Y;
+      Rate=-(YMax-YMin)/(XMax-XMin);
+      xPred <- seq(XMin, XMax, length = 1000);
+      with(LasMedP, plot(X,Y,type="b"));
+      
+      
+      NmMod="RegAs1"
+      MinPas=min(LasMedP$Y)
+      MaxPas=max(LasMedP$Y)
+      RatePas=(max(LasMedP$Y)-min(LasMedP$Y))/(LasMedP[LasMedP$Y==max(LasMedP$Y),"X"]-LasMedP[LasMedP$Y==min(LasMedP$Y),"X"])
+      
+      fit<-NA
+      #VInic=list(Asym = YMin, R0 = YMax, lrc = log(Rate,base = exp(1)))  
+      #VInic=list(Asym = 1, R0 = 6, lrc = -1.5) #VInic=list(Asym = 24, R0 = 11, lrc = -1.5)
+      #try(fit<-nls(Y ~ SSasymp(X, Asym, R0, lrc),start = VInic, data=LasMedP, trace = TRUE,control = list(maxiter = 500)))
+      
+      #Otros intentos x si:
+      #Para Curva Negativa
+      #try(fit<-nlsAsym(YMin,YMax,Rate,LasMed))
+      
+      #Para Curva Postitiva
+      try(fit<-nlsAsym2(YMin,YMax,Rate,LasMedP))
+      #try(fit<-nlsAsym2(MinPas,MaxPas,exp(-RatePas),LasMed))
+      
+      ResF$Type=NmMod
+      ResF$Model<-fit
+      ResF$Rsq<-round(1 - var(residuals(fit))/var(LasMedP$Y),4)
+      ResF$SE<-SEMod(fit)
+      ResF$Summ <- summary(fit)
+      #EtTxt=bquote(.("Asymptotic Regression")*~(R^2==.(round(ResF$Rsq,3))))
+      EtTxt=bquote(.("Asymptotic Regression")*~(RSE==.(round(SEMod(fit),4))))
+      main = quote("Parameters in the SSasymp model " ~
+                     {f[phi](x) == phi[1] + (phi[2]-phi[1])*~e^{-e^{phi[3]}*~x}})
+      
+      xPred <- seq(0, XMax, length = 1000);
+      PredMod=predict(fit, data.frame(X = xPred)) 
+      plot(xPred, PredMod,lty=1,lwd=3,xlab=xLb,ylab=yLb,type="l",xlim=c(0,xmaxp),ylim=c(yminp, 1),frame.plot=FALSE,cex.lab=1.25)
+      #with(LasMedP, lines(X,Y,type="b",pch=16));
+      with(LasMedP, points(X,Y,pch=16, cex = 1.45));
+      with(LasMedP, points(X,Y,pch=16, col=decilecolors,cex = 1.25));
+      
+      lrc=lrcStim=coefficients(fit)[[3]]
+      Asym=AsymStim=coefficients(fit)[[1]]
+      R0=R0Stim=coefficients(fit)[[2]]
+      xMed=log(2)/(exp(lrcStim))
+      PredxMed=predict(fit, data.frame(X = xMed))
+      c=exp(lrcStim)
+      
+      points(xMed, PredxMed[[1]],pch=4,cex=1.5,col=rgb(red = 0, green = 1, blue = 1))
+      text(xMed+.5, PredxMed[[1]],
+           quote(
+             {x[0.5] %~~%1}), 
+           adj = c(0, 0.5),
+           cex=1)
+      
+      
+      PredMod<-rootxiGraph(LasMedP$X,LasMedP$Y,1,length(LasMedP$X),5,5,TRUE)
+      lines(LasMedP$X, PredMod,lty=1,lwd=1,type="l",col="red")
+      
+      b<-rootxi(LasMedP$X,LasMedP$Y,1,length(LasMedP$X),5,5,plots=F);b$froot[2]
+      #Find extreme, plot results, print Taylor coefficients and rho estimation:
+      c<-extremexi(LasMedP$X,LasMedP$Y,1,length(LasMedP$X),5,5,plots=F);c$fextr[2]
+      #Find inflection point, plot results, print Taylor coefficients and rho estimation:
+      d<-inflexi(LasMedP$X,LasMedP$Y,1,length(LasMedP$X),5,5,plots=F);d$finfl[2]
+      
+      
+      abline(v=b$froot[2],lty=3,lwd=1)
+      text(b$froot[2],1, paste0("Root = ",b$froot[2]),cex=1)
+      
+      legend(2,-.5, col = c("red"), lty = 1, 
+             lwd = 1, legend = c(paste0("Taylor fit (Polynomial Order 5)")), bty = "n", cex = 0.7)
+      legend(2,-.65, col = c("black"), lty = 1, 
+             lwd = 3, legend = EtTxt, bty = "n", cex = 0.7)
+      
+      lrc=lrcStim=coefficients(fit)[[3]]
+      Asym=AsymStim=coefficients(fit)[[1]]
+      R0=R0Stim=coefficients(fit)[[2]]
+      xMed=log(2)/(exp(lrcStim))
+      PredxMed=predict(fit, data.frame(X = xMed))
+      c=exp(lrcStim)
+      newx <- 1
+      pred0 <- data.frame(x=newx, y=AsymRegMM(newx,AsymStim,R0Stim,c))
+      pred1 <- data.frame(x=newx, y=DrvAsymReg(newx,AsymStim,R0Stim,c))
+      yint <- pred0$y - (pred1$y*newx)
+      xint <- -yint/pred1$y
+      
+      lines(xPred, yint + pred1$y*xPred, lty=2,lwd=1) # tangent (1st deriv. of spline at newx)
+      #points(xint, 0, col=3, pch=19) # x intercept
+      text(2, .75,"Max Rate at x=1",srt=72,adj=c(0.75,0),cex=.90)
+    }
+    # I'll leave them for illustrative purposes, but I've grouped them all together in --> AdjMod.23.f
+    
+    
+    # I'll leave them for illustrative purposes, but I've grouped them all together in --> AdjParms.G
+    ExtrParDRC<-function(MPas)  {
+      Smm<-summary(MPas)
+      Coef<-data.table(Smm$coefficients)
+      Estim<-frmMM(c(Coef[,'Estimate'][[1]]),2)
+      Lasp=c(Coef[,'p-value'][[1]])
+      Lasp[is.nan(Lasp)]=1
+      Estim[Lasp<=.05]<-paste0(Estim[Lasp<=.05],"*")
+      Resf<-paste0(MPas$parNames[[2]],"= ", Estim,collapse="; ")
+      Resf
+    }
+    
+    AdjParms.DRC<-function(MPas){
+      list(
+        AIC=AIC(MPas),
+        LogLik=logLik(MPas)[[1]],
+        #SE= sigma(MPas),
+        SE=sqrt(summary(MPas)$resVar),
+        coefs =ExtrParDRC(MPas)
+      )}
+    
+    ExtrParLM<-function(MPas)  {
+      Smm<-summary(MPas)
+      Coef<-data.table(Smm$coefficients)
+      Estim<-frmMM(c(Coef[,'Estimate'][[1]]),2)
+      Lasp=c(Coef[,'Pr(>|t|)'][[1]])
+      Lasp[is.nan(Lasp)]=1
+      Estim[Lasp<=.05]<-paste0(Estim[Lasp<=.05],"*")
+      Resf<-paste0(rownames(Smm$coefficients),"= ", Estim,collapse="; ")
+      Resf
+    }
+    
+    AdjParms.LM<-function(MPas){
+      list(
+        AIC=AIC(MPas),
+        LogLik=logLik(MPas)[[1]],
+        #SE= sigma(MPas),
+        SE=summary(MPas)$sigma,
+        coefs =ExtrParLM(MPas)
+      )}
+    # I'll leave them for illustrative purposes, but I've grouped them all together in --> AdjParms.G
+    
+    
+    # Drv --> It is already up as "DrvAsymReg"
+    # addTrans --> Previous section
+    
+    # These two I think I'm going to remove
+    PrintModLines<-function(ElMod,ElTit,LasMed,TyLbl=TRUE,xLb="X",yLb="Y") {
+      XMin=head(LasMed$X,1)
+      XMax=tail(LasMed$X,1)
+      YMax=LasMed[LasMed$X==XMin,]$Y;
+      YMin=LasMed[LasMed$X==XMax,]$Y;
+      Rate=-(YMax-YMin)/(XMax-XMin);
+      xPred <- seq(0, XMax, length = 1000);
+      RSq=round(1 - var(residuals(ElMod))/var(LasMed$Y),4)
+      PredMod=predict(ElMod, data.frame(X = xPred)) 
+      lines(xPred, PredMod,lty=1,lwd=3,type="l")
+      with(LasMed, lines(X,Y,type="b",pch=15));
+      print(ElMod)
+      summary(ElMod)
+    }
+    
+    PrintModLinesMas<-function(ElMod,ElTit,LasMed,TyLbl=TRUE,xLb="X",yLb="Y") {
+      XMin=head(LasMed$X,1)
+      XMax=tail(LasMed$X,1)
+      YMax=LasMed[LasMed$X==XMin,]$Y;
+      YMin=LasMed[LasMed$X==XMax,]$Y;
+      Rate=-(YMax-YMin)/(XMax-XMin);
+      xPred <- seq(0, XMax, length = 1000);
+      RSq=round(1 - var(residuals(ElMod))/var(LasMed$Y),4)
+      PredMod=predict(ElMod, data.frame(X = xPred)) 
+      lines(xPred, PredMod,lty=1,lwd=3,type="l")
+      with(LasMed, lines(X,Y,type="b",pch=15,cex=1.5));
+      print(ElMod)
+      summary(ElMod)
+    }
+    # These two I think I'm going to remove
+    
+    ChDataAreas <-function(TheFile="/Volumes/RMmRa_Sep14/Design_EyeTrak/EyeTracking_largo_48/ResPhLearFreqSPSS.txt",TheExp="b_Largo48",TyArea="Cx") {
+      NmDirPas<-TheFile    
+      Result<-read.table(NmDirPas,header=TRUE,sep=" ",dec=",",na.strings="NA")
+      Result$RelFreq<-as.numeric(as.character(Result$RelFreq))
+      
+      Result=Result[Result$Cond==TheExp,]
+      Result$NEssay;Result$RelFreq
+      if (TyArea=="Cx") ResultSel=subset(Result,Area=="LCx Area"|Area=="RCx Area",sel=c(NEssay, Stim, RelFreq))
+      if (TyArea=="Cue") ResultSel=subset(Result,Area=="CCx Area",sel=c(NEssay, Stim, RelFreq))
+      if (TyArea=="CxSin") {
+        ResultSel1=subset(Result,(Stim=="XL"|Stim=="YL"|Stim=="F1L"|Stim=="F2L")&Area=="LCx Area",sel=c(NEssay, Stim, RelFreq))
+        ResultSel2=subset(Result,(Stim=="XR"|Stim=="YR"|Stim=="F1R"|Stim=="F2R")&Area=="RCx Area",sel=c(NEssay, Stim, RelFreq))
+        ResultSel<-rbind(ResultSel1, ResultSel2)
+      }
+      levels(ResultSel$Stim) <- sub("XR", "X", levels(ResultSel$Stim))
+      levels(ResultSel$Stim) <- sub("XL", "X", levels(ResultSel$Stim))
+      levels(ResultSel$Stim) <- sub("YR", "Y", levels(ResultSel$Stim))
+      levels(ResultSel$Stim) <- sub("YL", "Y", levels(ResultSel$Stim))
+      levels(ResultSel$Stim) <- sub("F1R", "F1", levels(ResultSel$Stim))
+      levels(ResultSel$Stim) <- sub("F1L", "F1", levels(ResultSel$Stim))
+      levels(ResultSel$Stim) <- sub("F2R", "F2", levels(ResultSel$Stim))
+      levels(ResultSel$Stim) <- sub("F2L", "F2", levels(ResultSel$Stim))
+      ResultSel$Stim<-factor(ResultSel$Stim)
+      ResultSel
+      #Lo que le pesaré a la función general	
+    }
+    
+    
+    
+    # Check that I can dispense with all of the following
+    nlsGen <- function(FormulP, Formul.NLS, DataP, VInicP) {
+      fit <- NULL
+      try(fit <- nls(Formul.NLS, data=DataP, trace = TRUE,control = list(maxiter = 500)))
+      if(!is.null(fit)){
+        res <- fit; print ("Salió a la primera, estimando los valores iniciales")
+      } else{
+        try(fit <- nls(Formul.NLS, start = VInicP, data=DataP, trace = TRUE,control = list(maxiter = 500)))
+        if(!is.null(fit)){
+          res <- fit; print ("Salió a la segunda, fijando los valores iniciales")
+        } else{
+          try(fit <- nls(FormulP, start = VInicP, data=DataP, trace = TRUE,control = list(maxiter = 500)))
+          if(!is.null(fit)){
+            res <- fit; print ("Salió a la tercera, concretando la fórmula y además estimando los valores iniciales")
+          } else{
+            try(fit <- nlsLM(Formul.NLS, start = VInicP, data=DataP, trace = TRUE,control = list(maxiter = 500)))
+            if(!is.null(fit)){
+              res <- fit; print ("Salió a la 4ª, Con estimaciones Librería nlsLM")
+            } else{	
+              res =NA; print ("No Salió")
+            }
+          }
+        }  
+      }
+      res
+    }
+    
+    nlsGen2 <- function(FormulP, DataP, VInicP) {
+      fit <- NULL
+      try(fit <- nls(FormulP, start = VInicP, data=DataP, trace = TRUE,control = list(maxiter = 500)))
+      if(!is.null(fit)){
+        res <- fit; print ("Salió a la primera")
+      } else{
+        try(fit <- nlsLM(FormulP, start = VInicP, data=DataP, trace = TRUE,control = list(maxiter = 500)))
+        if(!is.null(fit)){
+          res <- fit; print ("Salió a la 2ª, Con estimaciones Librería nlsLM")
+        } else{	
+          res =NA; print ("No Salió")
+        }
+      }  
+      res
+    }
+    
+    nlsAsym <- function(YMin,YMax,Rate,LasMed) {
+      ### Regresión Asintótica
+      VInic=list(Asym = YMin, R0 = YMax, lrc = log(-Rate,base = exp(1)))  
+      fit <- NULL
+      try(fit <- nls(Y ~ SSasymp(X, Asym, R0, lrc), data=LasMed, trace = TRUE,control = list(maxiter = 500)))
+      if(!is.null(fit)){
+        res <- fit
+        print ("Salió a la primera, estimando los valores iniciales")
+      } else{
+        try(fit<-nls(Y ~ SSasymp(X, Asym, R0, lrc),start = VInic, data=LasMed, trace = TRUE,control = list(maxiter = 500)))
+        if(!is.null(fit)){
+          res <- fit
+          print ("Salió a la segunda, fijando los valores iniciales")
+        } else{
+          Asymreg1<-formula(Y~Asym+(R0-Asym)*exp(-exp(lrc)*X))
+          try(fit<-nls(Asymreg1, data = LasMed, start = VInic, trace = TRUE,control = list(maxiter = 500)))
+          if(!is.null(fit)){
+            res <- fit
+            print ("Salió a la tercera, concretando la fórmula y además estimando los valores iniciales")
+          } else{
+            res =NA
+            print ("No Salió")
+          }
+        }  
+      }
+      res
+    }
+    
+    nlsAsym2 <- function(YMin,YMax,Rate,LasMed) {
+      ### Regresión Asintótica
+      VInic=list(Asym = YMin, R0 = YMax, lrc = log(Rate,base = exp(1)))  
+      fit <- NULL
+      try(fit <- nls(Y ~ SSasymp(X, Asym, R0, lrc), data=LasMed, trace = TRUE,control = list(maxiter = 500)))
+      if(!is.null(fit)){
+        res <- fit
+        print ("Salió a la primera, estimando los valores iniciales")
+      } else{
+        try(fit<-nls(Y ~ SSasymp(X, Asym, R0, lrc),start = VInic, data=LasMed, trace = TRUE,control = list(maxiter = 500)))
+        if(!is.null(fit)){
+          res <- fit
+          print ("Salió a la segunda, fijando los valores iniciales")
+        } else{
+          Asymreg1<-formula(Y~Asym+(R0-Asym)*exp(-exp(lrc)*X))
+          try(fit<-nls(Asymreg1, data = LasMed, start = VInic, trace = TRUE,control = list(maxiter = 500)))
+          if(!is.null(fit)){
+            res <- fit
+            print ("Salió a la tercera, concretando la fórmula y además estimando los valores iniciales")
+          } else{
+            res =NA
+            print ("No Salió")
+          }
+        }  
+      }
+      res
+    }
+    
+    nlsExp1 <- function(YMax,Rate,LasMed) {
+      ### Regresión Asintótica
+      VInic=list(b0 = YMax, b1 = Rate)
+      fit <- NULL
+      ExpMod1<-formula(Y~ I(exp(1)^(b0 + b1 * X)))
+      try(fit<-nls(ExpMod1, data = LasMed, start = VInic, trace = TRUE,control = list(maxiter = 500)))
+      if(!is.null(fit)){
+        res <- fit
+        print ("Salió a la primera, estimando los valores iniciales")
+      } else{      
+        res =NA
+        print ("No Salió")
+      }
+      res
+    }
+    
+    nlsExp2 <- function(YMax,Rate,LasMed) {
+      ### Regresión Asintótica
+      VInic=list(b0 = YMax, b1 = Rate)
+      fit <- NULL
+      ExpMod1<-formula(Y ~ b0*exp(b1*X))
+      try(fit<-nls(ExpMod1, data = LasMed, start = VInic, trace = TRUE,control = list(maxiter = 500)))
+      if(!is.null(fit)){
+        res <- fit
+        print ("Salió a la primera, estimando los valores iniciales")
+      } else{      
+        res =NA
+        print ("No Salió")
+      }
+      res
+    }
+    
+    nlsExp3 <- function(YMax,Rate,LasMed) {
+      ### Regresión Asintótica
+      VInic=list(b1 = Rate)
+      fit <- NULL
+      ExpMod1<-formula(Y ~ exp(b1*X))
+      try(fit<-nls(ExpMod1, data = LasMed, start = VInic, trace = TRUE,control = list(maxiter = 500)))
+      if(!is.null(fit)){
+        res <- fit
+        print ("Salió a la primera, estimando los valores iniciales")
+      } else{      
+        res =NA
+        print ("No Salió")
+      }
+      res
+    }
+    
+    nlsExp4 <- function(YMin,YMax,Rate,LasMed) {
+      ### Regresión Asintótica
+      VInic=list(b0 = YMin, b1 = Rate, b2 = YMax)
+      fit <- NULL
+      ExpMod1<-formula(Y ~ b0*(1-exp(b1*(X-b2))))
+      try(fit<-nls(ExpMod1, data = LasMed, start = VInic, trace = TRUE,control = list(maxiter = 500)))
+      if(!is.null(fit)){
+        res <- fit
+        print ("Salió a la primera, estimando los valores iniciales")
+      } else{      
+        res =NA
+        print ("No Salió")
+      }
+      res
+    }
+    
+    nlsWeib <- function(AsymP, DropP, lrcP, pwrP,LasMed) {
+      ### Weibull
+      VInic=list(Asym = AsymP, Drop = DropP, lrc = lrcP, pwr=pwrP)
+      fit <- NULL
+      try(fit <- nls(Y ~ SSweibull(X, Asym, Drop, lrc, pwr), data=LasMed, trace = TRUE,control = list(maxiter = 500)))
+      if(!is.null(fit)){
+        res <- fit
+        print ("Salió a la primera, estimando los valores iniciales")
+      } else{
+        try(fit<-nls(Y ~ SSweibull(X, Asym, Drop, lrc, pwr),start = VInic, data=LasMed, trace = TRUE,control = list(maxiter = 500)))
+        if(!is.null(fit)){
+          res <- fit
+          print ("Salió a la segunda, fijando los valores iniciales")
+        } else{
+          AsymWeib1<-formula(Y~Asym-Drop*exp(-exp(lrc)*X^pwr))
+          #Asymreg1<-formula(Y~Asym+(R0-Asym)*exp(-exp(lrc)*X))
+          try(fit<-nls(AsymWeib1, data = LasMed, start = VInic, trace = TRUE,control = list(maxiter = 500)))
+          if(!is.null(fit)){
+            res <- fit
+            print ("Salió a la tercera, concretando la fórmula y además estimando los valores iniciales")
+          } else{
+            res =NA
+            print ("No Salió")
+          }
+        }  
+      }
+      res
+    }
+    
+    
+    PrintMod.23.porsi<-function(ElModP,ElTit,LasMedP,TyLbl=TRUE,xLb="X",yLb="Y",xmaxp=10,yminp=0,AjAx=FALSE,cexP=1,NmModP=NULL) {
+      XMin=head(LasMedP$X,1)
+      XMax=tail(LasMedP$X,1)
+      YMax=LasMedP[LasMedP$X==XMin,]$Y;
+      YMin=LasMedP[LasMedP$X==XMax,]$Y;
+      Rate=-(YMax-YMin)/(XMax-XMin);
+      xPred <- seq(0, XMax, length = 1000);
+      SE=round(SEMod(ElModP),4)
+      #RSq=round(1 - var(residuals(ElModP))/var(LasMedP$Y),4)
+      PredMod=predict(ElModP, data.frame(X = xPred))
+      if (AjAx) plot(xPred, PredMod,lty=1,lwd=3,xlab=xLb,ylab=yLb,type="l",xlim=c(0,xmaxp),ylim=c(yminp, max(max(PredMod),max(LasMedP$Y))),frame.plot=FALSE,cex.lab=1.25)
+      if (!AjAx) plot(xPred, PredMod,lty=1,lwd=3,xlab=xLb,ylab=yLb,type="l",xlim=c(0,xmaxp),ylim=c(yminp, 1),frame.plot=FALSE,cex.lab=1.25)
+      with(LasMedP, lines(X,Y,type="b",pch=16,cex=cexP));
+      EtTxt=bquote(.(ElTit)*~(RSE==.(SE)))
+      
+      if (TyLbl) title(main=EtTxt) else title(main=ElTit)
+      if (!is.null(NmModP) ) mtext(NmModP)
+      print(ElModP)
+      summary(ElModP)
+    }
+    
+  }
   
   # ▼▼▼------------------- Main Function  --------------------▼▼▼
   
   # DTPas = DTPas;ModSel =  "SSasymp Original"
-  MkAllMod <-function(DTPas, ModSel="SSasymp Original") {
+  MkAllMod.Old <-function(DTPas, ModSel="SSasymp Original") {
     
     # Very important: load the data at the beginning
     DTPas<-data.table(DTPas)
@@ -7851,7 +9007,7 @@
     
     AllModSor<-copy(AllMod)
     setorder(AllModSor, cols = "AIC")
-  
+    
     # nls
     R.RegModel.nls=ProcMod3(DTPas,RegModel.nls,NmRegModel.nls,"E.Mod","AsymRegres")
     R.MMModel.nls=ProcMod3(DTPas,MMModel.nls,NmMModel.nls,"E.Mod","MM")
@@ -7909,10 +9065,93 @@
     )
     ResMk
   }
+  
+  # Enhanced version that processes the convergence field
+  MkAllMod <-function(DTPas, ModSel="SSasymp Original") {
+    
+    # Very important: load the data at the beginning
+    DTPas<-data.table(DTPas)
+    
+    # drc
+    R.RegModel=ProcMod.werr(DTPas,RegModel,NmRegModel,"E.Mod","AsymRegres")
+    R.MMModel=ProcMod.werr(DTPas,MMModel,NmMModel,"E.Mod","MM")
+    R.LogModel=ProcMod.werr(DTPas,LogModel,NmLogModel,"S.Mod","Log")
+    R.GModel=ProcMod.werr(DTPas,GModel,NmGModel,"S.Mod","Gompertz")
+    R.WModel=ProcMod.werr(DTPas,WModel,NmWModel,"S.Mod","Weibull")
+    R.BCModel=ProcMod.werr(DTPas,BCModel,NmBCModel,"M.Mod","Brain-Cousens")
+    R.CRSModel=ProcMod.werr(DTPas,CRSModel,NmCRSModel,"M.Mod","CRS")
+    R.BragModel=ProcMod.werr(DTPas,BragModel,NmBragModel,"M.Mod","Bragg")
+    R.SpModel=ProcMod.werr(DTPas,SpModel,NmSpModel,"M.Mod","RareMod")
+    AllMod = rbind(R.RegModel, R.MMModel,
+                   R.LogModel, R.GModel, R.WModel,
+                   R.BCModel, R.CRSModel, R.BragModel, R.SpModel)
+    AllMod<-AllMod[!is.na(Model)]
+    NulModelsGlob= AllModels.Nm[AllModels.Nm %ni%  AllMod$Model]
+    
+    AllModSor<-copy(AllMod)
+    setorder(AllModSor, cols = "AIC")
+    
+    # nls
+    R.RegModel.nls=ProcMod3(DTPas,RegModel.nls,NmRegModel.nls,"E.Mod","AsymRegres")
+    R.MMModel.nls=ProcMod3(DTPas,MMModel.nls,NmMModel.nls,"E.Mod","MM")
+    R.LogModel.nls=ProcMod3(DTPas,LogModel.nls,NmLogModel.nls,"S.Mod","Log")
+    R.GModel.nls=ProcMod3(DTPas,GModel.nls,NmGModel.nls,"S.Mod","Gompertz")
+    R.WModel.nls=ProcMod3(DTPas,WModel.nls,NmWModel.nls,"S.Mod","Weibull")
+    R.BCModel.nls=ProcMod3(DTPas,BCModel.nls,NmBCModel.nls,"M.Mod","Brain-Cousens")
+    R.CRSModel.nls=ProcMod3(DTPas,CRSModel.nls,NmCRSModel.nls,"M.Mod","CRS")
+    R.BragModel.nls=ProcMod3(DTPas,BragModel.nls,NmBragModel.nls,"M.Mod","Bragg")
+    R.SpModel.nls=ProcMod3(DTPas,SpModel.nls,NmSpModel.nls,"M.Mod","RareMod")
+    AllMod.nls = rbind(R.RegModel.nls, R.MMModel.nls,
+                       R.LogModel.nls, R.GModel.nls, R.WModel.nls,
+                       R.BCModel.nls, R.CRSModel.nls, R.BragModel.nls, R.SpModel.nls)
+    AllMod.nls<-AllMod.nls[!is.na(Model)]
+    NulModelsGlob.nls= AllModels.Nm.nls[AllModels.Nm.nls %ni%  AllMod.nls$Model]
+    
+    # Combine both drc & nls
+    AllModJn<-rbind(AllMod,AllMod.nls)
+    NulModelsGlobJn <- c(NulModelsGlob, NulModelsGlob.nls)
+    
+    # To obtain them automatically
+    DTPas<-data.table(Dose=1,DTPas)
+    
+    MMa<-mclapply (labels(NLM.MM), function(ii) {
+      achk<-NULL;
+      try(achk<-ExtrMiModF.werr(ii,'NLM.MM',DTPas));
+      achk}, mc.cores = parallel::detectCores(), mc.allow.recursive = TRUE)
+    
+    NulModels= labels(NLM.MM)[which(unlist(Map(is.null, MMa)))]
+    MMa<- data.table(do.call("rbind", MMa)) 
+    
+    AllMod2<-rbind(AllModJn,MMa) # 247
+    AllModSor2<-copy(AllMod2)
+    setorder(AllModSor2, cols = "AIC")
+    
+    AllModSor2<-AllModSor2 %>% 
+      mutate_at(c("GenTypeM", "ClasType", "Model"), factor) 
+    
+    AllModF<-data.table(cbind(Num=c(1:nrow(AllModSor2)),AllModSor2))
+    TxtNote<-c("Orange: Reference Model; Red: E-Models; Green: S-Models; Blue: M-Models\n",
+               "Unestimated models: ",
+               NulModelsGlobJn,NulModels)
+    
+    PosModSel= percent( AllModF[Model==ModSel,Num]/nrow(AllModF))
+    TxtNote2<-c(TxtNote, paste0("Position of the selected model: ",PosModSel))
+    kblAll<-kableTablCol(AllModF,"SSasymp Original",NoteFor = TxtNote2 )
+    kblAll
+    
+    # AllGrp<- lapply(1:nrow(AllModF), function(x){ SwtTypMod(idx = x, type = AllModF[x,Algor], dtp = DTPas)})
+    
+    ResMk <-list(
+      AllModF = AllModF,
+      kblAll = kblAll #,
+      #AllGrp =AllGrp
+    )
+    ResMk
+  }
   # ▲▲▲-------------------  Main Function --------------------▲▲▲
 }
 # ▲▲▲======================== Adj Func ========================▲▲▲
-    
+
 
 
 # ▼▼▼======================== ggCorrPlot ========================▼▼▼
@@ -8366,7 +9605,7 @@
       GrpPat = ggCor)
     ResF
   }
-    
+  
 }
 # ▲▲▲======================== ggCorrPlot ========================▲▲▲
 
