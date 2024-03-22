@@ -666,6 +666,15 @@
 # ▼▼▼=========== Statistics & Mathematics: General ============▼▼▼
 # They are debugged
 {
+  
+  EqA<-function(x) substitute(a ~ b , list(a = quote(Y), b = x))
+  
+  OdPr<- function(x) x[order(names(x))]
+  
+  CrFun <- function(EqP,ParP) eval(parse(text=paste("function(X,",paste( ParP,collapse = ", "),"){",as.expression(EqP),"}",collapse=" ")))
+  
+  CrFun2 <- function(EqP,ParP) eval(parse(text=paste("function(",paste( ParP,collapse = ", "),"){",as.expression(EqP),"}",collapse=" ")))
+  
   ExtrSig<-function(DTPas,decim=4) {
     #chkPkg("data.table")
     DTpp<-copy(DTPas)
@@ -2025,6 +2034,18 @@
     RsAOV
     
   }
+  
+  OneSmRob<-function(xp, tr=.2,nb=5000) {
+    x<-elimna(xp)
+    df<-length(x)-2*floor(tr*length(x))-1
+    Estat<-trimciv2_vMM(xp,null.value = 0.5,pr=F)
+    EfSize <- D.akp.effect.ci(xp,null.value = 0.5, nboot=nb/10)
+    ResRob <- trimpb(xp,null.value = 0.5,nboot = nb,pr=F)
+    with(Estat,  paste0("Estimate = ",frmMM(estimate,2),", tw(",df,") = ", frmMM(test.stat,2), ", ",
+                        greek$xi," = ",frmMM(Effect.Size,2), " (",InterpExplana(Effect.Size)," Effect) , p = ",frmMM(ResRob$p.value,4),
+                        ", p.Eff = ", frmMM(EfSize$p.value,4)))
+  }
+  
   
   # h is the number of observations in the jth group after trimming.
   hMM<-function(x,tr=.2,na.rm=FALSE){if(na.rm)x<-na.del(x);length(x) - 2 * floor(tr * length(x))}
@@ -3743,8 +3764,10 @@
     # Required libraries
     list.of.packages <- c("data.table","dplyr", "ggplot2", "knitr", "kableExtra", 
                           "inflection", "deSolve", 
-                          "nlme","car", "drc", "aomisc", "RootsExtremaInflections", "minpack.lm",
-                          "ggplotify","nlraa","vegan", "ggtrendline", "HydroMe", "NRAIA", "NISTnls", "rTPC", "nls.multstart")
+                          "nlme","car", "drc", "aomisc", "rootSolve", "RootsExtremaInflections", "minpack.lm",
+                          "ggplotify","nlraa","vegan", "ggtrendline", "HydroMe", "NRAIA", "NISTnls", "rTPC", "nls.multstart",
+                          "growthmodels", "Deriv", "FSA", "broom", "purrr")
+
     #source("https://github.com/ManuMi68/StatMmRa/raw/main/Mas_aosmic.R")
     chkPkg(list.of.packages)
     new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
@@ -6395,6 +6418,703 @@
       }
       
       
+      # Specifically for study Inflection Points
+      {
+        # https://rdrr.io/github/npjc/growr/src/R/metrics.R
+        # Smooth
+        nls_start_Mix <- function(x, y) {
+          gompertz_start <- nls_start_gompertz(x, y)
+          c(gompertz_start, list(nu = min(y)))
+        }
+        
+        nls_start_gompertz <- function(x, y) {
+          ss <- fit_smooth_spline(x, y)$components
+          list(
+            A = ss$y_max_y,
+            mu = ss$dy_max_m,
+            lambda = ss$dy_max_y0_x)
+        }
+        
+        nls_start_richards <- function(x, y) {
+          gompertz_start <- nls_start_gompertz(x, y)
+          c(gompertz_start, list(nu = 0.1))
+        }
+        
+        nls_start_logistic <- function(x, y) {
+          nls_start_gompertz(x, y)
+        }
+        
+        fit_smooth_spline <- function(x, y, metric_funs = list(metric_ymax, metric_dymax, metric_auc, metric_min_dbl), ...) {
+          fit <- smooth.spline(x, y, cv = TRUE, ...)
+          
+          md <- broom::glance(fit)
+          
+          od <- broom::augment(fit)
+          od$.dy <- dy(fit)
+          
+          cd <- purrr::map_dfc(
+            metric_funs,
+            ~.x(x = od$x, y = od$.fitted, dy = od$.dy, fit = fit)
+          )
+          
+          list(
+            model = md,
+            components = cd,
+            observations = od
+          )
+        }
+        #' Maximum value reached
+        #'
+        #' x and y coordinates of first point of maximum y
+        #'
+        #' @export
+        metric_ymax <- function(x, y, ...) {
+          y_max_i <- which.max(y)
+          tibble::tibble(
+            y_max_x = x[y_max_i],
+            y_max_y = y[y_max_i]
+          )
+        }
+        
+        #' Maximum slope reached
+        #'
+        #' x,y coordinates of first point of maximum dy. slope (m), y intercept (b),
+        #' x intercept (y0_x) of tangent line
+        #'
+        #' @export
+        metric_dymax <- function(x, y, dy, ...) {
+          dy_max_i <- which.max(dy)
+          tibble::tibble(
+            dy_max_x = x[dy_max_i],
+            dy_max_y = y[dy_max_i],
+            dy_max_m = dy[dy_max_i],
+            #  y = mx + b for max slope line...
+            # y intercept (y @ x = 0); b = y - mx
+            dy_max_b = dy_max_y - (dy_max_m * dy_max_x),
+            # x intecept (x @ y = 0); x = y - b / m
+            dy_max_y0_x = 0 - dy_max_b / dy_max_m
+          )
+        }
+        
+        #' Area under the curve (integral of fit over range)
+        #'
+        #' @param fit model object with fitted values
+        #' @param limits <num> vector of length; lower and upper limits of integration
+        #'
+        #' @export
+        metric_auc <- function(fit, x, ...) UseMethod("metric_auc")
+        
+        #' @export
+        metric_auc.smooth.spline <- function(fit, x, ...) {
+          auc <- integrate(
+            f = function(x) {p <- predict(object = fit, x = x); p$y},
+            lower = min(x),
+            upper = max(x)
+          )
+          tibble::tibble(fit_int = auc$value)
+        }
+        
+        #' @export
+        metric_auc.nls <- function(fit, x, ...) {
+          auc <- integrate(
+            f = function(x) {
+              p <- predict(fit, newdata = data.frame(x = x))
+              p
+            },
+            lower = min(x),
+            upper = max(x)
+          )
+          tibble::tibble(fit_int = auc$value)
+        }
+        
+        
+        #' coefficients of a model fit
+        #'
+        #' @param fit <obj> model object from which coefficients are extracted
+        #'
+        #' @export
+        metric_coefs <- function(fit, ...) {
+          tibble::as_tibble(as.list(stats::coef(fit)))
+        }
+        
+        #' Minimum Doubling or Generation Time
+        #'
+        #' Finds the point of maximum growth rate then treating that as the midpoint
+        #' of a doubling period, computes the doubling time at point.
+        #'
+        #' @export
+        metric_min_dbl <- function(x, y, dy, ...) {
+          i <- which.max(dy)
+          m <- dy[i]
+          midpoint_x = x[i]
+          
+          midpoint <- y[i]
+          y2 <- midpoint * sqrt(2)
+          y1 <- midpoint * sqrt(.5)
+          
+          # m = ∆y / ∆x; ∆x = ∆y / m = (y2 - y1) / m
+          xdbl <- (y2 - y1) / m
+          
+          tibble::tibble(
+            min_dbl = xdbl,
+            min_dbl_midpoint_y = midpoint,
+            min_dbl_midpoint_x = midpoint_x,
+            min_dbl_y1 = y1,
+            min_dbl_y2 = y2
+          )
+        }
+        
+        #' Average Doubling or Generation Time from start until max rate.        #'
+        #' x,y coordinates of first point of maximum dy. slope (m), y intercept (b),
+        #' x intercept (y0_x) of tangent line        #'
+        #' Finds the point of maximum growth rate then treating that as the end point,
+        #' computes the average
+        #'
+        #' @keywords internal
+        metric_avg_dbl <- function(x, y, dy, ...) {
+          i <- which.max(dy)
+          m <- dy[i]
+          dy_max_x <- x[i]
+          dy_max_y <- y[i]
+          y0 <- min(y)
+          x0 <- min(x)
+          
+          avg_m = (dy_max_y - y0) / (dy_max_x - x0)
+          n_dbl = log2(dy_max_y / y0)
+          avg_dbl = n_dbl / avg_m
+          
+          tibble::tibble(
+            avg_dbl = avg_dbl,
+            avg_dbl_y1 = y0,
+            avg_dbl_y2 = dy_max_y,
+            avg_dbl_x1 = x0,
+            avg_dbl_x2 = dy_max_x,
+            avg_dbl_n = n_dbl
+          )
+        }
+        
+        #' @export
+        dy <- function(x) UseMethod("dy")
+        
+        #' @export
+        dy.smooth.spline <- function(x) {
+          dy <- stats::predict(x, deriv = 1)
+          dy$y
+        }
+        
+        #' @export
+        dy.nls <- function(x) {
+          stats::predict(x, deriv = 1)
+        }
+        
+        # A) Logistic
+        EqLog <-quote(b0/(1 + b1 * exp(-b2 * X)));
+        ParLog<-c("b0","b1","b2")
+        LogiMM.1 <-list(
+          Name ="Logistic",
+          Eq.1=EqLog,
+          Eq.0=EqA(EqLog),
+          Par =ParLog,
+          Eq.G = quote(Y == frac(Asym, (1+ scal %.% ~e^{-k %.% ~X}))),
+          Eq.PIx <- quote(b0/2),
+          Eq.PIy <- quote(log(b1)/b2),
+          Init = (Y ~ SSlogis(X, b0, b1, b2)),
+          Func = CrFun(EqLog, ParLog),
+          FuncPIx = CrFun2(quote(b0/2), c("b0")),
+          FuncPIy = CrFun2(quote(log(b1)/b2), c("b1","b2")),
+          PAsym1="b0",
+          PAsym2=NULL
+        )
+        
+        # B) Von Bertalanffy B.1 Von Bertalanffy-III  (Init from FSA::vbStarts)
+        EqVb <-quote(b0 * (1 - b1 * exp(-b2 * X))^3)
+        ParVb<-c("b0","b1","b2")
+        MM.VBert.Mod <- CrFun(EqVb, ParVb)
+        #function(X, b0, b1,b2) {b0 * (1 - b1 * exp(-b2 * X))^3}
+        MM.VBert.Init <- function(mCall, LHS, data,...) {
+          xy <- sortedXyData(mCall[["X"]], LHS, data)
+          x <- xy[, "x"]
+          y <- xy[, "y"]
+          coefs <- vbStarts(y~x,type="typical")
+          Linf <- coefs[[1]]
+          K <- coefs[[2]]
+          t0 <- coefs[[3]]
+          value <- c(Linf, K, t0)
+          names(value) <- mCall[c("b0", "b1", "b2")]
+          value
+        }
+        SSMMVBert <- selfStart(MM.VBert.Mod, MM.VBert.Init, ParVb)
+        VonBertMM.1 <-list(
+          Name ="Von Bertalanffy-III",
+          Eq.1=EqVb,
+          Eq.0=EqA(EqVb),
+          Par =ParVb,
+          Eq.G = quote(Y == Asym %.%  (1 - scal %.% ~e^{-k %.% ~X})^3),
+          Eq.PIx <- quote(8*b0/27),
+          Eq.PIy <- quote((log(3*b1))/b2),
+          Init = (Y ~ SSMMVBert(X, b0, b1, b2)),
+          Func = CrFun(EqVb, ParVb),
+          FuncPIx = CrFun2(quote(8*b0/27), c("b0")),
+          FuncPIy = CrFun2( quote((log(3*b1))/b2), c("b1","b2")),
+          PAsym1="b0",
+          PAsym2=NULL
+        )
+        
+        EqVb2 <-quote(b0 * (1 - exp(-b1 * (X - b2))))
+        ParVb2<-c("b0","b1","b2")
+        VonBertMM.2 <-list(
+          Name ="Von Bertalanffy Typical",
+          Eq.1=EqVb2,
+          Eq.0=EqA(EqVb2),
+          Par =ParVb2,
+          Eq.G = "",
+          Eq.PIx <- quote(8*b0/27),
+          Eq.PIy <- quote((log(3*b1))/b2),
+          Init = (Y ~ SSMMVBert(X, b0, b1, b2)),
+          Func = CrFun(EqVb2,ParVb2),
+          FuncPIx = CrFun2(quote(8*b0/27), c("b0")),
+          FuncPIy = CrFun2( quote((log(3*b1))/b2), c("b1","b2")),
+          PAsym1="b0",
+          PAsym2=NULL
+        )
+        
+        # 101) Rational
+        EqRat <-quote( (a*X^c)/(1+b*X^d) )
+        ParRat<-c("a","b","c", "d")
+        RatioMM.1 <- list(
+          Name ="Rational Bril et al. (1994)",
+          Eq.1=EqRat,
+          Eq.0=EqA(EqRat),
+          Par =ParRat,
+          Eq.G = quote(Y == frac(a*X^c,1+b*X^d)),
+          Eq.PIx <- NA,
+          Eq.PIy <- NA,
+          Init = (Y ~ SSratio(X, a, b, c, d)),
+          Func = CrFun(EqRat, ParRat),
+          FuncPIx = NA,
+          FuncPIy = NA,
+          PAsym1=NULL,
+          PAsym2=NULL
+        )
+        
+        EqRat2 <-quote( (b + c*X) / (1 + a*X) )
+        ParRat2<-c("a","b","c")
+        RatioMM.2 <- list(
+          Name ="Rational aosmic",
+          Eq.1=EqRat2,
+          Eq.0=EqA(EqRat2),
+          Par = ParRat2,
+          Eq.G = quote(Y == frac(b + c * X,1 + a * X)),
+          Eq.PIx <- NA,
+          Eq.PIy <- NA,
+          Init = (Y ~ NLS.Rational(X, a, b, c)),
+          Func = CrFun(EqRat2, ParRat2),
+          FuncPIx = NA,
+          FuncPIy = NA,
+          PAsym1=NULL,
+          PAsym2=NULL
+        )
+        
+        # C) Gompertz
+        EqGmp1 <-quote(Asym * exp(-b2 * b3^X))
+        ParGmp1<-c("Asym", "b2", "b3")
+        GomperMM.1 <- list(
+          Name ="Gompertz",
+          Eq.1=EqGmp1,
+          Eq.0=EqA(EqGmp1),
+          Par =ParGmp1,
+          Eq.G = quote(Y == Asym %.%  ~ e^{-scal %.% ~k^X}),
+          Eq.PIx <- NA,
+          Eq.PIy <- NA,
+          Init = (Y ~ SSgompertz(X, Asym, b2, b3)),
+          Func = CrFun(EqGmp1, ParGmp1),
+          FuncPIx = NA,
+          FuncPIy = NA,
+          PAsym1="Asym",
+          PAsym2=NULL
+        )
+        
+        EqGmp2 <-quote(b0 * exp(-b1 * exp(-b2 * X)))
+        ParGmp2<-c("b0", "b1", "b2")
+        GomperMM.2 <- list(
+          Name ="Gompertz 2",
+          Eq.1=EqGmp2,
+          Eq.0=EqA(EqGmp2),
+          Par =ParGmp2,
+          Eq.G = quote(Y == Asym %.%  ~ e^{-scal %.% ~ e^~{-k  %.%X}}),
+          Eq.PIx <- quote(b0/exp(1)),
+          Eq.PIy <- quote(log(b2)/b3),
+          Init = (Y ~ SSgompertz(X, b0, b1, b2)),
+          Func = CrFun(EqGmp2, ParGmp2),
+          FuncPIx = CrFun2(quote(b0/exp(1)), c("b0")),
+          FuncPIy = CrFun2(quote(log(b2)/b3), c("b2", "b3")),
+          PAsym1="b0",
+          PAsym2=NULL
+        )
+        
+        # G) Schnute
+        EqScn<-quote( Asym*(1-d*exp(-a*X))^(1/b))
+        ParScn<-c("Asym", "a","b","d")
+        # MM.Schnute.Mod <- function(X, Asym, a, b, d) {Asym*(1-d*exp(-a*X))^(1/b)}
+        MM.Schnute.Mod <- CrFun(EqScn, ParScn)
+        MM.Schnute.Init <- function(mCall, LHS, data,...) {
+          xy <- sortedXyData(mCall[["X"]], LHS, data)
+          x <- xy[, "x"]
+          y <- xy[, "y"]
+          coefs <- stats::getInitial(Y ~ SSasymp(X, Asym, d, a),data)
+          Asym <- coefs[[1]]
+          a <- exp(coefs[[3]])
+          b <- .1
+          d <- 1
+          value <- c(Asym, a, b, d)
+          names(value) <- mCall[c("Asym","a", "b", "d")]
+          value
+        }
+        SSMMSchnute <- selfStart(MM.Schnute.Mod, MM.Schnute.Init,ParScn)
+        
+        SchnuteMM.1 <-list(
+          Name ="Schnute",
+          Eq.1=EqScn,
+          Eq.0=EqA(EqScn),
+          Par =ParScn,
+          Eq.G = quote(Y == Asym %.%  (1 - scal %.% ~e^{-k %.% ~X})^(1/b)),
+          Eq.PIx <- NA,
+          Eq.PIy <- NA,
+          Init = (Y ~ SSMMSchnute(X, Asym, a, b, d)),
+          Func = CrFun(EqScn, ParScn),
+          FuncPIx = NA,
+          FuncPIy = NA,
+          PAsym1="Asym",
+          PAsym2=NULL
+        )
+        
+        # D) Janoschek
+        EqJn=quote(b0-(b0-b3)*exp(-b1*X^b2) )
+        ParJn<-c("b0","b1","b2","b3")
+        MM.Janoschek.Mod <- CrFun(EqJn, ParJn)
+        MM.Janoschek.Init <- function(mCall, LHS, data,...) {
+          xy <- sortedXyData(mCall[["X"]], LHS, data)
+          x <- xy[, "x"]
+          y <- xy[, "y"]
+          coefs <- coef(drm(Y ~ X, data = data,fct=W2.4()))
+          b0 <- coefs[[1]]
+          b1 <- coefs[[2]]
+          b2 <- coefs[[3]]
+          b3 <- coefs[[4]]
+          value <- c(b0, b1, b2, b3)
+          names(value) <- mCall[c("b0","b1","b2","b3")]
+          value
+        }
+        SSMMJanoschek <- selfStart(MM.Janoschek.Mod, MM.Janoschek.Init,ParJn)
+        
+        JanoschekMM.1 <-list(
+          Name ="Janoschek",
+          Eq.1=EqJn,
+          Eq.0=EqA(EqJn),
+          Par =ParJn,
+          Eq.G = quote( Y == Asym1 - (Asym1 - Asym2) %.% ~ e^{-k %.% ~ X^d}),
+          Eq.PIx <- quote( ((b2-1)/(b1*b2))^(1/b2) ),
+          Eq.PIy <- quote(b0-(b0-b3)*exp(-(b2-1)/b2) ),
+          Init = (Y ~ SSMMJanoschek(X, b0, b1, b2, b3)),
+          Func = CrFun(EqJn, ParJn),
+          FuncPIx = CrFun2(quote( ((b2-1)/(b1*b2))^(1/b2) ), c("b1", "b2")),
+          FuncPIy = CrFun2(quote(b0-(b0-b3)*exp(-(b2-1)/b2) ), c("b0", "b2", "b3")),
+          PAsym1="b0",
+          PAsym2="b3"
+        )
+        
+        # E) Levakovic, from SSasymp
+        # has been chosen: quote( b0 * ( 1 + b1*X^-2)^-b3 ),
+        # which is equivalent to the one that sometimes appears as: quote( a * ( X^2/(b+X^2)  )^c )
+        # where b0=a, b1=b y b3=c
+        # I have not implemented the more complex model because it causes many problems.
+        # EqLv2 <-  quote( b0 * ( 1 + b1*X^-b2)^-b3 )
+        EqLv=quote( b0 * ( 1 + b1*X^-2)^-b3 )
+        ParLv<-c("b0","b1","b3")
+        MM.Levakovic.Mod <- CrFun(EqLv, ParLv)
+        MM.Levakovic.Init <- function(mCall, LHS, data,...) {
+          xy <- sortedXyData(mCall[["X"]], LHS, data)
+          x <- xy[, "x"]
+          y <- xy[, "y"]
+          coefs <- stats::getInitial(Y ~ SSasymp(X, Asym, d, a), data)
+          b0 <- coefs[[1]]
+          b1 <- coefs[[3]]
+          b3 <- coefs[[2]]
+          value <- c(b0, b1, b3)
+          names(value) <- mCall[c("b0","b1", "b3")]
+          value
+        }
+        SSMMLevakovic <- selfStart(MM.Levakovic.Mod, MM.Levakovic.Init,ParLv)
+        LevakovicMM.1 <-list(
+          Name ="Levakovic Quadratic",
+          Eq.1=EqLv,
+          Eq.0=EqA(EqLv),
+          Par =ParLv,
+          Eq.G = quote( Y == b0 %.% ~ (1+b1 %.% ~ X^{-2})^{-b3}),
+          Eq.PIx <- quote( ( (b1*((b3*b2)-1))/(b2+1))^(1/b2) ),
+          Eq.PIy <- quote(  b0*(((b3*b2)-1)/(b2*(b3+1)))^b3 ),
+          Init = (Y ~ SSMMLevakovic(X, b0, b1, b3)),
+          Func = CrFun(EqLv, ParLv),
+          FuncPIx = CrFun2(quote( ( (b1*((b3*b2)-1))/(b2+1))^(1/b2) ), c("b1", "b2" , "b3")),
+          FuncPIy = CrFun2(quote(  b0*(((b3*b2)-1)/(b2*(b3+1)))^b3 ), c("b0", "b2", "b3")),
+          PAsym1="b0",
+          PAsym2=NULL
+        )
+        
+        # For future developments
+        EqLv2 <-  quote( b0 * ( 1 + b1*X^-b2)^-b3 )
+        ParLv2<-c("b0","b1", "b2","b3")
+        
+        # 100) Exponential
+        EqExp=quote(A1-(A1-A2)*exp(-k*X) )
+        ParExp<-c("A1","A2","k")
+        MM.Expon.Mod <- CrFun(EqExp, ParExp)
+        MM.Expon.Init <- function(mCall, LHS, data,...) {
+          xy <- sortedXyData(mCall[["X"]], LHS, data)
+          x <- xy[, "x"]
+          y <- xy[, "y"]
+          coefs <- nls_start_gompertz(x,y)
+          A1 <- coefs[[1]]
+          A2 <- coefs[[2]]
+          k <-  coefs[[3]]
+          value <- c(A1, A2, k)
+          names(value) <- mCall[c("A1","A2", "k")]
+          value
+        }
+        SSMMExpon <- selfStart(MM.Expon.Mod, MM.Expon.Init,ParExp)
+        
+        ExponMM.1 <-list(
+          Name ="Exponential",
+          Eq.1=EqExp,
+          Eq.0=EqA(EqExp),
+          Par =ParExp,
+          Eq.G = quote( Y == Asym1 - (Asym1 - Asym2) %.% ~ e^{-k %.% ~ X}),
+          Eq.PIx <- NA,
+          Eq.PIy <- NA,
+          Init = (Y ~ SSMMExpon(X, A1, A2, k)),
+          Func = CrFun(EqExp, ParExp),
+          FuncPIx = NA,
+          FuncPIy = NA,
+          PAsym1="A1",
+          PAsym2="A2"
+        )
+        
+        
+        # F) Richards
+        # From {FSA} library
+        Eq.Rrd.1a <- quote(Linf*(1-a*exp(-k*X))^b)
+        Par.Rrd.1a <- c("Linf","k","b","a")
+        Eq.Rrd.1b <- quote(Linf*(1-(1/b)*exp(-k*(X-ti)))^b)
+        Par.Rrd.1b <- c("Linf","k","b","ti")
+        Eq.Rrd.1c <- quote(Linf/((1+b*  exp(-k*(X-ti)))^(1/b)))
+        Par.Rrd.1c <- c("Linf","k","b","ti")
+        Eq.Rrd.1d <- quote(Linf*(1+(b-1)*exp(-k*(X-ti)))^(1/(1-b)))
+        Par.Rrd.1d <- c("Linf","k","b","ti")
+        Eq.Rrd.1e <- quote(Linf*(1+(((L0/Linf)^(1-b))-1)*exp(-k*X))^(1/(1-b)))
+        Par.Rrd.1e <- c("Linf","k","b","L0")
+        Eq.Rrd.1f <- quote(Lninf+(Linf-Lninf)*(1+(b-1)*exp(-k*(X-ti)))^(1/(1-b)))
+        Par.Rrd.1f <- c("Linf","k","b","ti", "Lninf")
+        #               "  where Linf = upper asymptotic mean length\n", 
+        #               "       Lninf = lower asymptotic mean length\n", 
+        #               "           k = controls the slope at the PI", 
+        #               "          ti = X/Y at the inflection point\n", 
+        #               "           a = dimensionless parameter that controls PIx", 
+        #               "           b = dimensionless parameter that controls PIy")
+        #               "          L0 = mean length at X=0\
+        
+        MM.Richards1.Mod <- CrFun(Eq.Rrd.1a, Par.Rrd.1a)
+        MM.Richards1.Init <- function(mCall, LHS, data,...) {
+          xy <- sortedXyData(mCall[["X"]], LHS, data)
+          x <- xy[, "x"]
+          y <- xy[, "y"]
+          coefs0 <- stats::getInitial(Y ~ SSMMSchnute(X, Asym, a, b, d),data)
+          coefs <- nlsLM(Y ~ Asym * (1 - d * exp(-a * X))^(1/b),data=data,start=as.list(coefs0))
+          coefs<-coef(coefs)
+          Linf <- coefs[[1]]
+          k <-    coefs[[2]]
+          b <-  1/coefs[[3]]
+          a <-    coefs[[4]]
+          value <- c(Linf, k, b, a)
+          names(value) <- mCall[c("Linf","k","b","a")]
+          value
+        }
+        SSMMRichards1 <- selfStart(MM.Richards1.Mod, MM.Richards1.Init,Par.Rrd.1a)
+        RichardsMM.1 <-list(
+          Name ="Chapman-Richard-I",
+          Eq.1=Eq.Rrd.1a,
+          Eq.0=EqA(Eq.Rrd.1a),
+          Par =Par.Rrd.1a,
+          Eq.G = "",
+          Eq.PIx <- NA,
+          Eq.PIy <- NA,
+          Init = (Y ~ SSMMRichards1(X, Linf, k, b, a)),
+          Func = CrFun(Eq.Rrd.1a, Par.Rrd.1a),
+          FuncPIx = NA,
+          FuncPIy = NA,
+          PAsym1="Linf",
+          PAsym2=NULL
+        )
+        
+        MM.Richards2.Mod <- CrFun(Eq.Rrd.1b, Par.Rrd.1b)
+        MM.Richards2.Init <- function(mCall, LHS, data,...) {
+          xy <- sortedXyData(mCall[["X"]], LHS, data)
+          x <- xy[, "x"]
+          y <- xy[, "y"]
+          coefs <- stats::getInitial(Y ~ SSMMRichards1(X, Linf, k, b, a),data)
+          Linf <- coefs[[1]]
+          k <-    coefs[[2]]
+          b <-    coefs[[3]]
+          ti <-   coefs[[4]]
+          value <- c(Linf, k, b, ti)
+          names(value) <- mCall[c("Linf","k","b","ti")]
+          value
+        }
+        SSMMRichards2 <- selfStart(MM.Richards2.Mod, MM.Richards2.Init,Par.Rrd.1b)
+        RichardsMM.2 <-list(
+          Name ="Chapman-Richard-II",
+          Eq.1=Eq.Rrd.1b,
+          Eq.0=EqA(Eq.Rrd.1b),
+          Par =Par.Rrd.1b,
+          Eq.G = "",
+          Eq.PIx <- NA,
+          Eq.PIy <- NA,
+          Init = (Y ~ SSMMRichards2(X, Linf, k, b, ti)),
+          Func = CrFun(Eq.Rrd.1b, Par.Rrd.1b),
+          FuncPIx = NA,
+          FuncPIy = NA,
+          PAsym1="Linf",
+          PAsym2=NULL
+        )
+        
+        MM.Richards3.Mod <- CrFun(Eq.Rrd.1c, Par.Rrd.1c)
+        MM.Richards3.Init <- function(mCall, LHS, data,...) {
+          xy <- sortedXyData(mCall[["X"]], LHS, data)
+          x <- xy[, "x"]
+          y <- xy[, "y"]
+          coefs <- stats::getInitial(Y ~ SSMMRichards1(X, Linf, k, b, a),data)
+          Linf <- coefs[[1]]
+          k <-    coefs[[2]]
+          b <-    coefs[[3]]
+          ti <-   coefs[[4]]
+          value <- c(Linf, k, b, ti)
+          names(value) <- mCall[c("Linf","k","b","ti")]
+          value
+        }
+        SSMMRichards3 <- selfStart(MM.Richards3.Mod, MM.Richards3.Init,Par.Rrd.1c)
+        RichardsMM.3 <-list(
+          Name ="Chapman-Richard-III",
+          Eq.1=Eq.Rrd.1c,
+          Eq.0=EqA(Eq.Rrd.1c),
+          Par =Par.Rrd.1c,
+          Eq.G = "",
+          Eq.PIx <- NA,
+          Eq.PIy <- NA,
+          Init = (Y ~ SSMMRichards3(X, Linf, k, b, ti)),
+          Func = CrFun(Eq.Rrd.1c, Par.Rrd.1c),
+          FuncPIx = NA,
+          FuncPIy = NA,
+          PAsym1="Linf",
+          PAsym2=NULL
+        )
+        
+        MM.Richards4.Mod <- CrFun(Eq.Rrd.1d, Par.Rrd.1d)
+        MM.Richards4.Init <- function(mCall, LHS, data,...) {
+          xy <- sortedXyData(mCall[["X"]], LHS, data)
+          x <- xy[, "x"]
+          y <- xy[, "y"]
+          coefs <- stats::getInitial(Y ~ SSMMRichards1(X, Linf, k, b, a),data)
+          Linf <- coefs[[1]]
+          k <-    coefs[[2]]
+          b <-    coefs[[3]]
+          ti <-   coefs[[4]]
+          value <- c(Linf, k, b, ti)
+          names(value) <- mCall[c("Linf","k","b","ti")]
+          value
+        }
+        SSMMRichards4 <- selfStart(MM.Richards4.Mod, MM.Richards4.Init,Par.Rrd.1d)
+        RichardsMM.4 <-list(
+          Name ="Chapman-Richard-IV",
+          Eq.1=Eq.Rrd.1d,
+          Eq.0=EqA(Eq.Rrd.1d),
+          Par =Par.Rrd.1d,
+          Eq.G = "",
+          Eq.PIx <- NA,
+          Eq.PIy <- NA,
+          Init = (Y ~ SSMMRichards4(X, Linf, k, b, ti)),
+          Func = CrFun(Eq.Rrd.1d, Par.Rrd.1d),
+          FuncPIx = NA,
+          FuncPIy = NA,
+          PAsym1="Linf",
+          PAsym2=NULL
+        )
+        
+        MM.Richards5.Mod <- CrFun(Eq.Rrd.1e, Par.Rrd.1e)
+        MM.Richards5.Init <- function(mCall, LHS, data,...) {
+          xy <- sortedXyData(mCall[["X"]], LHS, data)
+          x <- xy[, "x"]
+          y <- xy[, "y"]
+          coefs <- stats::getInitial(Y ~ SSMMRichards1(X, Linf, k, b, a),data)
+          Linf <- coefs[[1]]
+          k <-    coefs[[2]]
+          b <-    coefs[[3]]
+          L0 <-   coefs[[4]]
+          value <- c(Linf, k, b, L0)
+          names(value) <- mCall[c("Linf","k","b","L0")]
+          value
+        }
+        SSMMRichards5 <- selfStart(MM.Richards5.Mod, MM.Richards5.Init,Par.Rrd.1e)
+        RichardsMM.5 <-list(
+          Name ="Chapman-Richard-IV",
+          Eq.1=Eq.Rrd.1e,
+          Eq.0=EqA(Eq.Rrd.1e),
+          Par =Par.Rrd.1e,
+          Eq.G = "",
+          Eq.PIx <- NA,
+          Eq.PIy <- NA,
+          Init = (Y ~ SSMMRichards5(X, Linf, k, b, L0)),
+          Func = CrFun(Eq.Rrd.1e, Par.Rrd.1e),
+          FuncPIx = NA,
+          FuncPIy = NA,
+          PAsym1="Linf",
+          PAsym2=NULL
+        )
+        
+        EqRop.5=quote(alpha + delta * (X^eta / (X^eta + nu * phi^eta))^(1 / nu)) 
+        ParRop.5 <- c("alpha","delta","eta", "phi", "nu")
+        MM.Richards10.Mod <- CrFun(EqRop.5, ParRop.5)
+        MM.Richards10.Init <- function(mCall, LHS, data,...) {
+          xy <- sortedXyData(mCall[["X"]], LHS, data)
+          x <- xy[, "x"]
+          y <- xy[, "y"]
+          coefs <- coef(drda(Y ~ X, data = data, mean_function = "loglogistic5"))
+          alpha <- coefs[[1]]
+          delta <-    coefs[[2]]
+          eta <-    coefs[[3]]
+          phi <-   coefs[[4]]
+          nu <-   coefs[[5]]
+          value <- c(alpha, delta, eta, phi, nu)
+          names(value) <- mCall[c("alpha","delta","eta", "phi", "nu")]
+          value
+        }
+        
+        SSMMRichards10 <- selfStart(MM.Richards10.Mod, MM.Richards10.Init,ParRop.5)
+        RichardsMM.10 <-list(
+          Name ="Richards lollogistic5",
+          Eq.1=EqRop.5,
+          Eq.0=EqA(EqRop.5),
+          Par =ParRop.5,
+          Eq.G = "",
+          Eq.PIx <- NA,
+          Eq.PIy <- NA,
+          Init = (Y ~ SSMMRichards10(X, alpha, delta, eta, phi, nu)),
+          Func = CrFun(EqRop.5, ParRop.5),
+          FuncPIx = NA,
+          FuncPIy = NA,
+          PAsym1="alpha",
+          PAsym2=NULL
+        )
+        
+      }
       
       # Database with functions
       {
@@ -7161,11 +7881,196 @@
             Form1c =expression(lm(Y ~ X, copy(DTPas) %>% mutate(Y=Y/X))),
             Grp = NA,
             Inv=TRUE
+          ),
+          'GrowIP_Logistic' = list(
+            GenTypeM="S.Mod",
+            ClasType="GrowIP1 Logistic from SSlogis",
+            Model="SSlogis (from eq)",
+            Form1  =  expression(Y ~ b0/(1 + b1 * exp(-b2 * X))),
+            Form1b = quote(Y == frac(Asym, (1 + scal %.% ~e^{
+              -k %.% ~X
+            }))),
+            Form1c = expression(AdjModBas(LogiMM.1, copy(DTPas))$Mod),
+            Grp = NA,
+            Inv=FALSE
+          ),
+          'GrowIP_VonBert1' = list(
+            GenTypeM="S.Mod",
+            ClasType="GrowIP2 Von Bertalanffy-III",
+            Model="SSMMVBert (from eq)",
+            Form1  =  expression(Y ~ b0 * (1 - b1 * exp(-b2 * X))^3),
+            Form1b = quote(Y == Asym %.% (1 - scal %.% ~e^{
+              -k %.% ~X
+            })^3),
+            Form1c = expression(AdjModBas(VonBertMM.1, copy(DTPas))$Mod),
+            #Form1c =expression(nlsLM(Y ~ SSMMVBert(X, b0, b1, b2), data = DTPas)),
+            Grp = NA,
+            Inv=FALSE
+          ),
+          'GrowIP_VonBert2' = list(
+            GenTypeM="S.Mod",
+            ClasType="GrowIP3 Von Bertalanffy Typical",
+            Model="SSMMVBert (from eq)",
+            Form1  =  expression(Y ~ b0 * (1 - exp(-b1 * (X - b2)))),
+            Form1b = NA,
+            Form1c = expression(AdjModBas(VonBertMM.2, copy(DTPas))$Mod),
+            #Form1c =expression(nlsLM(Y ~ SSMMVBert(X, b0, b1, b2), data = DTPas)),
+            Grp = NA,
+            Inv=FALSE
+          ),
+          'GrowIP_Gompertz1' = list(
+            GenTypeM="S.Mod",
+            ClasType="GrowIP4 Gompertz",
+            Model="SSgompertz (from eq)",
+            Form1  =  expression(Y ~ Asym * exp(-b2 * b3^X)),
+            Form1b = quote(Y == Asym %.% ~e^{
+              -scal %.% ~k^X
+            }),
+            Form1c = expression(AdjModBas( GomperMM.1, copy(DTPas))$Mod),
+            Grp = NA,
+            Inv=FALSE
+          ),
+          'GrowIP_Gompertz2' = list(
+            GenTypeM="S.Mod",
+            ClasType="GrowIP5 Gompertz 2",
+            Model="SSgompertz (from eq)",
+            Form1  =  expression(Y ~ b0 * exp(-b1 * exp(-b2 * X))),
+            Form1b = quote(Y == Asym %.% ~e^{
+              -scal %.% ~e^~{
+                -k %.% X
+              }
+            }),
+            Form1c = expression(AdjModBas(GomperMM.2,  copy(DTPas))$Mod),
+            Grp = NA,
+            Inv=FALSE
+          ),
+          'GrowIP_Janoschek' = list(
+            GenTypeM="S.Mod",
+            ClasType="GrowIP6 Janoschek",
+            Model="SSMMJanoschek (from eq)",
+            Form1  =  expression(Y ~ b0 - (b0 - b3) * exp(-b1 * X^b2)),
+            Form1b = quote(Y == Asym1 - (Asym1 - Asym2) %.% ~e^{
+              -k %.% ~X^d
+            }),
+            Form1c = expression(AdjModBas(JanoschekMM.1, copy(DTPas))$Mod),
+            Grp = NA,
+            Inv=FALSE
+          ),
+          'GrowIP_Levakovic' = list(
+            GenTypeM="S.Mod",
+            ClasType="GrowIP7 Levakovic",
+            Model="SSMMLevakovic (from eq)",
+            Form1  =  expression(Y ~ b0 * (1 + b1 * X^-2)^-b3),
+            Form1b = quote(Y == b0 %.% ~(1 + b1 %.% ~X^{
+              -2
+            })^{
+              -b3
+            }),
+            Form1c = expression(AdjModBas(LevakovicMM.1,  copy(DTPas))$Mod),
+            Grp = NA,
+            Inv=FALSE
+          ),
+          'GrowIP_Richards1' = list(
+            GenTypeM="S.Mod",
+            ClasType="GrowIP8 Richards 1",
+            Model="SSMMRichards1 (from eq)",
+            Form1  =  expression(Y ~ Linf * (1 - a * exp(-k * X))^b),
+            Form1b = NA,
+            Form1c = expression(AdjModBas(RichardsMM.1,  copy(DTPas))$Mod),
+            Grp = NA,
+            Inv=FALSE
+          ),
+          'GrowIP_Richards2' = list(
+            GenTypeM="S.Mod",
+            ClasType="GrowIP9 Richards 2",
+            Model="SSMMRichards2 (from eq)",
+            Form1  =  expression(Y ~ Linf * (1 - (1/b) * exp(-k * (X - ti)))^b),
+            Form1b = NA,
+            Form1c = expression(AdjModBas(RichardsMM.2,  copy(DTPas))$Mod),
+            Grp = NA,
+            Inv=FALSE
+          ),
+          'GrowIP_Richards3' = list(
+            GenTypeM="S.Mod",
+            ClasType="GrowIP10 Richards 3",
+            Model="SSMMRichards3 (from eq)",
+            Form1  =  expression(Y ~ Linf/((1 + b * exp(-k * (X - ti)))^(1/b))),
+            Form1b = NA,
+            Form1c = expression(AdjModBas(RichardsMM.3,  copy(DTPas))$Mod),
+            Grp = NA,
+            Inv=FALSE
+          ),
+          'GrowIP_Richards4' = list(
+            GenTypeM="S.Mod",
+            ClasType="GrowIP11 Richards 4",
+            Model="SSMMRichards4 (from eq)",
+            Form1  =  expression(Y ~ Linf * (1 + (b - 1) * exp(-k * (X - ti)))^(1/(1 - b))),
+            Form1b = NA,
+            Form1c = expression(AdjModBas(RichardsMM.4,  copy(DTPas))$Mod),
+            Grp = NA,
+            Inv=FALSE
+          ),
+          'GrowIP_Richards5' = list(
+            GenTypeM="S.Mod",
+            ClasType="GrowIP12 Richards 5",
+            Model="SSMMRichards5 (from eq)",
+            Form1  =  expression(Y ~ Linf * (1 + (((L0/Linf)^(1 - b)) - 1) * exp(-k * X))^(1/(1 - b))),
+            Form1b = NA,
+            Form1c = expression(AdjModBas(RichardsMM.5,  copy(DTPas))$Mod),
+            Grp = NA,
+            Inv=FALSE
+          ),
+          'GrowIP_Schnute' = list(
+            GenTypeM="S.Mod",
+            ClasType="GrowIP13 Schnute",
+            Model="SSMMSchnute (from eq)",
+            Form1  =  expression(Y ~ Asym * (1 - d * exp(-a * X))^(1/b)),
+            Form1b = quote(Y == Asym %.% (1 - scal %.% ~e^{
+              -k %.% ~X
+            })^(1/b)
+            ),
+            Form1c = expression(AdjModBas(SchnuteMM.1,  copy(DTPas))$Mod),
+            Grp = NA,
+            Inv=FALSE
+          ),
+          'GrowIP_Exponential' = list(
+            GenTypeM="E.Mod",
+            ClasType="GrowIP14 Exponential (reference)",
+            Model="SSMMExpon (from eq)",
+            Form1  =  expression(Y ~ A1 - (A1 - A2) * exp(-k * X)),
+            Form1b = quote(Y == Asym1 - (Asym1 - Asym2) %.% ~e^{
+              -k %.% ~X
+            }),
+            Form1c = expression(AdjModBas(ExponMM.1,  copy(DTPas))$Mod),
+            Grp = NA,
+            Inv=FALSE
+          ),
+          'GrowIP_Rational1' = list(
+            GenTypeM="S.Mod",
+            ClasType="GrowIP15 Rational1",
+            Model="SSratio (from eq)",
+            Form1  =  expression(Y ~ (a * X^c)/(1 + b * X^d)),
+            Form1b = quote(Y == frac(a*X^c,1+b*X^d)),
+            Form1c = expression(AdjModBas(RatioMM.1,  copy(DTPas))$Mod),
+            Grp = NA,
+            Inv=FALSE
+          ),
+          'GrowIP_Rational2' = list(
+            GenTypeM="S.Mod",
+            ClasType="GrowIP16 Rational2",
+            Model="NLS.Rational (from eq)",
+            Form1  =  expression(Y ~ (b + c * X)/(1 + a * X)),
+            Form1b = quote(Y == frac(b + c * X,1 + a * X)),
+            Form1c = expression(AdjModBas(RatioMM.2,  copy(DTPas))$Mod),
+            Grp = NA,
+            Inv=FALSE
           )
         )
       }
       
       
+      
+     
     }
     
     InitRegAsym <-function(DTPas) {
@@ -7388,6 +8293,19 @@
       Exp2<-parse(text = gsub("response", LaY, Exp2, fixed = TRUE))
       for (i in 1:length(SymToCh)) {Exp2<-parse(text = gsub(SymToCh[i], SymRes[i], Exp2, fixed = TRUE))}
       Exp2
+    }
+    
+    # Version 2 to change the names
+    ChangeSymbAR2<- function(EqQuo, SymRes, SymToCh=c("Asym","R0","lrc"),LaX="x") {
+      Exp2<-as.expression(EqQuo)
+      for (i in 1:length(SymToCh)) {Exp2<-parse(text = gsub(SymToCh[i], SymRes[i], Exp2, fixed = TRUE))}
+      Exp2
+    }
+    
+    RateRel <- function(x,EqTh) {
+      numer<-Deriv(EqTh,"X",n = 1)(x)
+      denom<-EqTh(x)
+      numer/denom
     }
     
     AdjParms <-function(ModelP,DataP) {
@@ -7675,6 +8593,77 @@
     }
     
     
+    GrowtMod_PorSi<- function(fPas, ParPas, InitParam, DataPas) {
+      LaFun <-eval(parse(text=paste("function(X,",paste(ParPas,collapse = ", "),"){",as.expression(fPas),"}",collapse=" ")))
+      Eq0.I=substitute(a ~ b , list(a = quote(Y), b = fPas)) 
+      names(InitParam) <-ParPas
+      M.I <- nlsLM(Eq0.I,data=DataPas,start=as.list(InitParam))
+      EqTheta = ChangeSymbAR2(fPas,coef(M.I),ParPas)
+      EqTheta = eval(parse(text=paste("function(X){",EqTheta,"}",collapse=" ")))
+      
+      Minx=min(DataPas$X); Maxx=max(DataPas$X)
+      dd<-Deriv(EqTheta,"X",n = 2)
+      d1<-Deriv(EqTheta,"X",n = 1)
+      PIx=uniroot(dd, interval = c(Minx,Maxx))$root
+      PIy= predict(M.I,data.frame(X = PIx))
+      
+      # plot(dd(c(-1:100)))
+      NewData<- cbind(Efs,Rate=d1(DataPas$X),RateRel=RateRel(DataPas$X,EqTheta))
+      
+      gPlotR <-ggplot(data = NewData, aes(x = X, y = Rate)) + geom_line() + xlim(0, Maxx) + labs(title = "Rate Growth Changes") + theme_bw_MM()
+      gPlotR2 <-ggplot(data = NewData, aes(x = X, y = RateRel)) + geom_line() + xlim(0, Maxx) + labs(title = "Relative Rate Growth Changes") + theme_bw_MM()
+      GrpJn  <- plot_grid(gPlotR, gPlotR2, labels = "AUTO")
+      
+      Result<-list(
+        InflecX=PIx,
+        InflecY=PIy,
+        RatesForX=NewData,
+        Grp<-GrpJn
+      )
+      Result
+    }
+    
+    GrowtMod <-function(fPas, ParPas, InitParam, DataPas) {
+      LaFun <-eval(parse(text=paste("function(X,",paste(ParPas,collapse = ", "),"){",as.expression(fPas),"}",collapse=" ")))
+      Eq0.I=substitute(a ~ b , list(a = quote(Y), b = fPas)) 
+      names(InitParam) <-ParPas
+      M.I <- nlsLM(Eq0.I,data=DataPas,start=as.list(InitParam))
+      EqTheta = ChangeSymbAR2(fPas,coef(M.I),ParPas)
+      EqTheta = eval(parse(text=paste("function(X){",EqTheta,"}",collapse=" ")))
+      
+      Minx=min(DataPas$X); Maxx=max(DataPas$X)
+      dd<-Deriv(EqTheta,"X",n = 2)
+      d1<-Deriv(EqTheta,"X",n = 1)
+      
+      NewData<- cbind(DataPas,Rate=d1(DataPas$X),RateRel=RateRel(DataPas$X,EqTheta))
+      
+      gPlotR <-ggplot(data = NewData, aes(x = X, y = Rate)) + geom_line() + 
+        xlim(0, Maxx) + labs(title = "Rate Growth Changes") + theme_bw_MM()
+      gPlotR2 <-ggplot(data = NewData, aes(x = X, y = RateRel)) + geom_line() + xlim(0, Maxx) +
+        labs(title = "Relative Rate Growth Changes") + theme_bw_MM()
+      GrpJn  <- plot_grid(gPlotR, gPlotR2, labels = "AUTO")
+      Result<-list(
+        InflecX=NA,
+        InflecY=NA,
+        RatesForX=NewData,
+        Grp<-GrpJn
+      )
+      
+      PIx=NULL
+      try(PIx<-uniroot(dd, interval = c(Minx,Maxx))$root)
+      
+      if(!is.null(PIx)) {
+        PIy= predict(M.I,data.frame(X = PIx))
+        Result<-list(
+          InflecX=PIx,
+          InflecY=PIy,
+          RatesForX=NewData,
+          Grp<-GrpJn
+        )
+      }
+      Result
+    }
+    
     # ElModP=ModelMM[[NmMod]];NmMod=NmMod;LasMedP=LasMed;AjAx = T;NmModP = Expon1.q
     # TyLbl=TRUE;xLb="X";yLb="Y";xmaxp=10;yminp=0;cexP=1
    
@@ -7749,9 +8738,100 @@
       grph
     }
     
-    
+    PrintMod.gg2 <-function (DTg,modP, ElTit="Example", NmModP=NULL, AjAx=FALSE,
+                             sample.curve = 1000, ylab = "Dependent", 
+                             xlab = "Independent", theme = theme_classic(), legend.position = "top", 
+                             r2 = "all", ic = FALSE, fill.ic = "gray70", alpha.ic = 0.5, 
+                             error = "SE", point = "all", width.bar = NA, scale = "none", 
+                             textsize = 12, pointsize = 3, linesize = 2, linetype = 1, 
+                             pointshape = 21, fillshape = "gray40", colorline = "blue", 
+                             round = NA, xname.formula = "x", yname.formula = "y", comment = NA, 
+                             fontfamily = "sans",MinB=0) {
+      
+      DTg2<-as.data.table(copy(DTg))
+      if (ElTit=="NLS.MMLin1.MM (from renz)") {DTg2=1/DTg; xlab=paste0("1/ ",xlab); ylab=paste0("1/ ",ylab)}
+      if (ElTit=="NLS.MMLin2.MM (from renz)") {DTg2[,Y:=X/Y]; ylab=paste0(xlab," / ",ylab)}
+      if (ElTit=="NLS.MMLin3.MM (from renz)") {DTg2[,Y:=Y/X]; ylab=paste0(ylab," / ",xlab)}
+      
+      IV=DTg2$X
+      DV=DTg2$Y
+      SE=round(SEMod(modP),4)
+      EtTxt=bquote(.(ElTit)*~(RSE==.(SE)))
+      MinX =min(IV)
+      if (AjAx) MinX=MinB
+      IV.p = seq(MinX, max(IV), length.out = sample.curve)
+      DF.p = data.frame(X = IV.p, Y = predict(modP, newdata = data.frame(X = IV.p))) 
+      
+      grph = ggplot(DTg2, aes(x = X, y = Y))
+      grph = grph + geom_point(size=pointsize, shape=pointshape, fill=fillshape, colour="white")
+      
+      #geom_point(aes(color = "black"), size = pointsize, 
+      #      shape = pointshape, fill = fillshape)
+      
+      
+      grph = grph + theme + geom_line(data = DF.p, aes(x = X, y = Y, color = "black"), linewidth = linesize, lty = linetype) +
+        geom_line(data = DTg2, aes(x = X, y = Y, color = "black"), linewidth = .15, lty = linetype) +
+        ggtitle(EtTxt)
+      grph = grph +
+        scale_color_manual(name = "", values = colorline, label = as.expression(NmModP)) + 
+        theme(axis.text = element_text(size = textsize, color = "black",
+                                       family = fontfamily), axis.title = element_text(size = textsize,
+                                                                                       color = "black", family = fontfamily), legend.position = legend.position, 
+              legend.text = element_text(size = textsize, family = fontfamily), 
+              legend.direction = "vertical", legend.text.align = 0, 
+              legend.justification = 0) + ylab(ylab) + xlab(xlab)
+      grph = grph + geom_point(size=pointsize, shape=pointshape, fill=fillshape, colour="white", stroke=pointsize+.25)
+      
+      grph
+    }
     
     # Final function to scrutinize the models
+    
+    AdjModBas <- function(ModPas,DTPasX,AjAx=FALSE,MinB=0) {
+      InitParamI <- stats::getInitial(ModPas$Init, data = DTPasX)
+      MAdj <- nlsLM(ModPas$Eq.0,data=DTPasX,start=as.list(InitParamI))
+      CfAdj<-coef(MAdj)
+      Grw <- GrowtMod(ModPas$Eq.1, ModPas$Par, InitParamI, DTPasX)
+      list(
+        InPar =  InitParamI,
+        Mod   =  MAdj,
+        Coefs =  CfAdj,
+        Growth = Grw
+      )
+    }
+    
+    # Alternative version incorporating growth and Inflection Points
+    AdjMod <-function(ModPas,DTPasX,AjAx=FALSE,MinB=0) {
+      InitParamI <- stats::getInitial(ModPas$Init, data = DTPasX)
+      MAdj <- nlsLM(ModPas$Eq.0,data=DTPasX,start=as.list(InitParamI))
+      CfAdj<-coef(MAdj)
+      Grw <- GrowtMod(ModPas$Eq.1, ModPas$Par, InitParamI, DTPasX)
+      ggrI<-PrintMod.gg2(DTg = DTPasX, modP = MAdj, ElTit = ModPas$Name,NmModP = ModPas$Eq.G, AjAx=AjAx,MinB =MinB)
+      
+      if (!is.na(Grw$InflecX) & !is.na(Grw$InflecY)) {
+        DF.IP<-data.frame(X=Grw$InflecX, Y=Grw$InflecY)
+        ggrI <- ggrI + geom_point(data = DF.IP, aes(x = X, y = Y),colour="red", pch=18 ,size=4) +
+          annotate(geom="text", x=DF.IP$X, y=DF.IP$Y, label="Inflection", color="red", hjust=-.1, vjust=-.1) 
+      }
+      if (!is.null(ModPas$PAsym1)) {
+        ValAsy <-coef(MAdj)[[ModPas$PAsym1]]
+        ggrI <- ggrI + geom_hline(yintercept=ValAsy, linetype="dashed", color = "gray30", linewidth=1) +
+          annotate(geom="text", x=0, y=ValAsy, label="Asymptote", color="gray30", hjust=-.1, vjust=-.1)
+      }  
+      if (!is.null(ModPas$PAsym2)) {
+        ValAsy <-coef(MAdj)[[ModPas$PAsym2]]
+        ggrI <- ggrI + geom_hline(yintercept=ValAsy, linetype="dashed", color = "gray30", linewidth=1) +
+          annotate(geom="text", x=0, y=ValAsy, label="Asymptote", color="gray30", hjust=-.1, vjust=-.1)
+      }
+      list(
+        InPar =  InitParamI,
+        Mod   =  MAdj,
+        Coefs =  CfAdj,
+        Growth = Grw,
+        Grp    = ggrI
+      )
+    }
+    
     # LasMedP=Efs; TyLbl=JnEq; xLb="Decile";yLb="Pearson's Correlation"; xmaxp=10; yminp=-1;PIp=NULL;LineRate=TRUE;pointXMed="p";RootG=TRUE;MaxG=FALSE;InflG=FALSE
     # PIp Possible Inflection Point that I pass directly to the chart, so that it can be included.
     AdjMod.23.f<-function(LasMedP,TyLbl=NULL,xLb="X",yLb="Y",xmaxp=10,yminp=0,PIp=NULL,
@@ -7902,6 +8982,8 @@
       )
       ResF
     }
+    
+  
     
     MkKblMod <-function(ModPas,PathPas="Results",EtiqMas="",EqMOd="") {
       Ranv<-SummToTable(ModPas$Summ)
@@ -9072,7 +10154,7 @@
     # Very important: load the data at the beginning
     DTPas<-data.table(DTPas)
     
-    # drc
+    # 1) drc
     R.RegModel=ProcMod.werr(DTPas,RegModel,NmRegModel,"E.Mod","AsymRegres")
     R.MMModel=ProcMod.werr(DTPas,MMModel,NmMModel,"E.Mod","MM")
     R.LogModel=ProcMod.werr(DTPas,LogModel,NmLogModel,"S.Mod","Log")
@@ -9089,18 +10171,20 @@
     NulModelsGlob= AllModels.Nm[AllModels.Nm %ni%  AllMod$Model]
     
     AllModSor<-copy(AllMod)
-    setorder(AllModSor, cols = "AIC")
+    setorderv(AllModSor, cols = c("Converg","AIC"),order=c(-1,1))
+    write.csv2(AllMod, paste0(DirPath,"/","ResModels_MM.csv"))
+    write.csv2(AllModSor, paste0(DirPath,"/","ResModelsOrder_MM.csv"))
     
-    # nls
-    R.RegModel.nls=ProcMod3(DTPas,RegModel.nls,NmRegModel.nls,"E.Mod","AsymRegres")
-    R.MMModel.nls=ProcMod3(DTPas,MMModel.nls,NmMModel.nls,"E.Mod","MM")
-    R.LogModel.nls=ProcMod3(DTPas,LogModel.nls,NmLogModel.nls,"S.Mod","Log")
-    R.GModel.nls=ProcMod3(DTPas,GModel.nls,NmGModel.nls,"S.Mod","Gompertz")
-    R.WModel.nls=ProcMod3(DTPas,WModel.nls,NmWModel.nls,"S.Mod","Weibull")
-    R.BCModel.nls=ProcMod3(DTPas,BCModel.nls,NmBCModel.nls,"M.Mod","Brain-Cousens")
-    R.CRSModel.nls=ProcMod3(DTPas,CRSModel.nls,NmCRSModel.nls,"M.Mod","CRS")
-    R.BragModel.nls=ProcMod3(DTPas,BragModel.nls,NmBragModel.nls,"M.Mod","Bragg")
-    R.SpModel.nls=ProcMod3(DTPas,SpModel.nls,NmSpModel.nls,"M.Mod","RareMod")
+    # 2) nls
+    R.RegModel.nls=ProcMod3.werr(DTPas,RegModel.nls,NmRegModel.nls,"E.Mod","AsymRegres")
+    R.MMModel.nls=ProcMod3.werr(DTPas,MMModel.nls,NmMModel.nls,"E.Mod","MM")
+    R.LogModel.nls=ProcMod3.werr(DTPas,LogModel.nls,NmLogModel.nls,"S.Mod","Log")
+    R.GModel.nls=ProcMod3.werr(DTPas,GModel.nls,NmGModel.nls,"S.Mod","Gompertz")
+    R.WModel.nls=ProcMod3.werr(DTPas,WModel.nls,NmWModel.nls,"S.Mod","Weibull")
+    R.BCModel.nls=ProcMod3.werr(DTPas,BCModel.nls,NmBCModel.nls,"M.Mod","Brain-Cousens")
+    R.CRSModel.nls=ProcMod3.werr(DTPas,CRSModel.nls,NmCRSModel.nls,"M.Mod","CRS")
+    R.BragModel.nls=ProcMod3.werr(DTPas,BragModel.nls,NmBragModel.nls,"M.Mod","Bragg")
+    R.SpModel.nls=ProcMod3.werr(DTPas,SpModel.nls,NmSpModel.nls,"M.Mod","RareMod")
     AllMod.nls = rbind(R.RegModel.nls, R.MMModel.nls,
                        R.LogModel.nls, R.GModel.nls, R.WModel.nls,
                        R.BCModel.nls, R.CRSModel.nls, R.BragModel.nls, R.SpModel.nls)
@@ -9111,32 +10195,39 @@
     AllModJn<-rbind(AllMod,AllMod.nls)
     NulModelsGlobJn <- c(NulModelsGlob, NulModelsGlob.nls)
     
-    # To obtain them automatically
     DTPas<-data.table(Dose=1,DTPas)
     
+    #3) BasPa='NLM.MM'
     MMa<-mclapply (labels(NLM.MM), function(ii) {
       achk<-NULL;
-      try(achk<-ExtrMiModF.werr(ii,'NLM.MM',DTPas));
+      try(achk<-ExtrMiModF(ii,'NLM.MM',DTPas));
       achk}, mc.cores = parallel::detectCores(), mc.allow.recursive = TRUE)
-    
     NulModels= labels(NLM.MM)[which(unlist(Map(is.null, MMa)))]
     MMa<- data.table(do.call("rbind", MMa)) 
     
-    AllMod2<-rbind(AllModJn,MMa) # 247
+    AllMod2<-rbind(AllModJn,MMa) # 260
     AllModSor2<-copy(AllMod2)
-    setorder(AllModSor2, cols = "AIC")
+    setorderv(AllModSor2, cols = c("Converg","AIC"),order=c(-1,1))
+    write.csv2(AllMod2, paste0(DirPath,"/","ResModels2_MM.csv"))
+    write.csv2(AllModSor2, paste0(DirPath,"/","ResModels2Order_MM.csv"))
     
     AllModSor2<-AllModSor2 %>% 
-      mutate_at(c("GenTypeM", "ClasType", "Model"), factor) 
-    
+      mutate_at(c("GenTypeM", "ClasType", "Model","Converg"), factor) 
     AllModF<-data.table(cbind(Num=c(1:nrow(AllModSor2)),AllModSor2))
+    # kableTabl(AllModF)
     TxtNote<-c("Orange: Reference Model; Red: E-Models; Green: S-Models; Blue: M-Models\n",
                "Unestimated models: ",
                NulModelsGlobJn,NulModels)
-    
+    ModSel="SSasymp Original"
     PosModSel= percent( AllModF[Model==ModSel,Num]/nrow(AllModF))
+    # Alternative
+      # ModConv <-AllModF[Converg==TRUE]
+      # ModConv$Num <- c(1:nrow(ModConv))
+      # AllModF[Converg==TRUE][Model==ModSel,Num]
+      # PosModSel= percent( ModConv[Model==ModSel,Num]/nrow(ModConv))
     TxtNote2<-c(TxtNote, paste0("Position of the selected model: ",PosModSel))
     kblAll<-kableTablCol(AllModF,"SSasymp Original",NoteFor = TxtNote2 )
+    readr::write_file(kblAll, paste0(DirPath,"/","ResModels2_MM.html"))
     kblAll
     
     # AllGrp<- lapply(1:nrow(AllModF), function(x){ SwtTypMod(idx = x, type = AllModF[x,Algor], dtp = DTPas)})
@@ -9147,6 +10238,65 @@
       #AllGrp =AllGrp
     )
     ResMk
+  }
+  
+  # Analyzes possible Inflection Points from the most important S-Shade models
+  IPModels<- function() {
+    
+    NmModIPRaw= c("Logistic", "Von.Bertalanffy", "Gompertz", "Janoschek", "Levakovic", "Richards", "Schnute", "Exponential", "Rational")
+    NmModIP <-c('ResLog1','ResVBer1','ResVBer2','ResGomp1','ResGomp2','ResJanos','ResLeva1',
+                'ResRich1','ResRich2','ResRich3','ResRich4','ResRich5','ResSchn1','ResExp1','ResRat1','ResRat2')
+    
+    NmModIPRaw2 <- c(paste0(NmModIPRaw[1]), paste0(NmModIPRaw[2],1:2), paste0(NmModIPRaw[3],1:2), paste0(NmModIPRaw[4:5]),
+                     paste0(NmModIPRaw[6],1:5), paste0(NmModIPRaw[7:8]), paste0(NmModIPRaw[9],1:2)
+    )
+    
+    ResLog1<-ResVBer1<-ResVBer2<-ResGomp1<-ResGomp2<-ResJanos<-ResLeva1<-NULL
+    ResRich1<-ResRich2<-ResRich3<-ResRich4<-ResRich5<-ResSchn1<-ResExp1<-ResRat1<-ResRat2<-NULL
+    
+    # A) Logistic A.1 (Init from SSlogis)
+    try(ResLog1 <-AdjMod(ModPas<-LogiMM.1, DTPas<-Efs,AjAx = T))
+    # B) Von Bertalanffy B.1 Von Bertalanffy-III  (Init from FSA::vbStarts)
+    try(ResVBer1 <-AdjMod(ModPas<-VonBertMM.1, DTPas<-Efs,AjAx = T))
+    try(ResVBer2 <-AdjMod(ModPas<-VonBertMM.2, DTPas<-Efs,AjAx = T))
+    # C) Gompertz
+    try(ResGomp1 <-AdjMod(ModPas<-GomperMM.1, DTPas<-Efs,AjAx = T))
+    try(ResGomp2 <-AdjMod(ModPas<-GomperMM.2, DTPas<-Efs,AjAx = T))
+    # D) Janoschek  
+    try(ResJanos <-AdjMod(ModPas<-JanoschekMM.1, DTPas<-Efs,AjAx = T,MinB = 0.9))
+    # E) Levakovic, from SSasymp
+    try(ResLeva1 <-AdjMod(ModPas<-LevakovicMM.1, DTPas<-Efs,AjAx = T,MinB = -1.5))
+    # F) Richards
+    try(ResRich1 <-AdjMod(ModPas<-RichardsMM.1, DTPas<-Efs,AjAx = T)  )
+    try(ResRich2 <-AdjMod(ModPas<-RichardsMM.2, DTPas<-Efs,AjAx = T))
+    # No funciona
+    try(ResRich3 <-AdjMod(ModPas<-RichardsMM.3, DTPas<-Efs,AjAx = T))
+    # No funciona
+    try(ResRich4 <-AdjMod(ModPas<-RichardsMM.4, DTPas<-Efs,AjAx = T))
+    # No funciona
+    try(ResRich5 <-AdjMod(ModPas<-RichardsMM.5, DTPas<-Efs,AjAx = T))
+    # G) Schnute
+    try(ResSchn1 <-AdjMod(ModPas<-SchnuteMM.1, DTPas<-Efs,AjAx = T))
+    # 100) Exponential  
+    try(ResExp1 <-AdjMod(ModPas<-ExponMM.1, DTPas<-Efs,AjAx = T))
+    # 101) Rational  
+    try(ResRat1 <-AdjMod(ModPas<-RatioMM.1, DTPas<-Efs,AjAx = T))
+    try(ResRat2 <-AdjMod(ModPas<-RatioMM.2, DTPas<-Efs,AjAx = T,MinB = .5))
+    
+    ModOK<-c(1:length(NmModIP))
+    ModNoOK <- NULL
+    for (jj in 1:length(NmModIP)) if(is.null(get(NmModIP[[jj]]))) ModNoOK<-c(ModNoOK,jj)
+    ModOK <- ModOK[-ModNoOK]
+    
+    ResIP<-lapply(ModOK, function(ii) data.table(name=NmModIPRaw2[ii],
+                                                 IPx=get(NmModIP[ii])$Growth$InflecX,
+                                                 IPy=get(NmModIP[ii])$Growth$InflecY))
+    ResIP<-na.omit(data.table(do.call("rbind", ResIP)))
+    ResIP
+    # Alternative
+    # NmModIP2<-copy(NmModIP)
+    # for (jj in 1:length(NmModIP)) if(is.null(get(NmModIP[[jj]]))) NmModIP2<-NmModIP2[-which(NmModIP2==NmModIP[jj])]
+    # ResIP<-lapply(NmModIP[-ModNoOK], function(ii) data.table(name=ii,IPx=get(ii)$Growth$InflecX, IPy=get(ii)$Growth$InflecY))
   }
   # ▲▲▲-------------------  Main Function --------------------▲▲▲
 }
