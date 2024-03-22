@@ -376,7 +376,7 @@
   
   Grph.2023<-function(DatP,Dvp,VarX="Day",VarFill="Class",LblsP=c("Preference for Displaced Object", "B","Object Preference During Test",""),
                       ylmP=NULL,hLin=F,lvIp=4,GrpSel=c(1:4),wMain=F,
-                      TyGrp="Box", Wthdot=F, Relleno=T,  ResumAd=T,Spcng=1,ColPer,ColViol="gray75") {
+                      TyGrp="Box", Wthdot=F, Relleno=T,  ResumAd=T,Spcng=1,ColPer,ColViol="gray75",hlVa0=0) {
     # TyGrp= 'Bar', 'Box', 'Violin', 'SplitViolin'
     chkPkg("ggplot2")
     ColPerI<-rep(ColPer[GrpSel],lvIp)
@@ -440,7 +440,7 @@
         
       }
       
-      if(hLin) g1 <- g1 + geom_hline(yintercept=0, linetype="dashed", color = "gray30")
+      if(hLin) g1 <- g1 + geom_hline(yintercept=hlVa0, linetype="dashed", color = "gray30")
       if(wMain) g1 <- g1 + 
           stat_summary(fun=mean, geom="point", shape=13, size=8, color="black", fill="gray30") +
           stat_summary(fun=mean, geom="point", shape=13, size=7, color="black", fill="gray75")
@@ -481,7 +481,7 @@
           stat_summary(fun=mean, geom="point", shape=18, color="black",
                        size=5,position=position_dodge(width=.75), show.legend = F) 
       }
-      if(hLin) g1 <- g1 + geom_hline(yintercept=0, linetype="dashed", color = "gray30")
+      if(hLin) g1 <- g1 + geom_hline(yintercept=hlVa0, linetype="dashed", color = "gray30")
       if(wMain) g1 <- g1 + 
           stat_summary(fun=mean, geom="point", shape=13, size=8, color="black", fill="gray30") +
           stat_summary(fun=mean, geom="point", shape=13, size=7, color="black", fill="gray30")
@@ -490,9 +490,10 @@
     g1
   }
   
+  # Enhanced version with "staplewidth" on Box Plot
   Grph.2023b<-function(DatP,Dvp,VarX="Day",VarFill="Class",LblsP=c("Preference for Displaced Object", "B","Object Preference During Test",""),
                        ylmP=NULL,hLin=F,lvIp=4,GrpSel=c(1:4),wMain=F,
-                       TyGrp="Box", Wthdot=F, Relleno=T,  ResumAd=T,Spcng=1,ColPer,ColViol="gray75") {
+                       TyGrp="Box", Wthdot=F, Relleno=T,  ResumAd=T,Spcng=1,ColPer,ColViol="gray75",hlVa0=0) {
     # TyGrp= 'Bar', 'Box', 'Violin', 'SplitViolin'
     chkPkg("ggplot2")
     ColPerI<-rep(ColPer[GrpSel],lvIp)
@@ -556,7 +557,7 @@
         
       }
       
-      if(hLin) g1 <- g1 + geom_hline(yintercept=0, linetype="dashed", color = "gray30")
+      if(hLin) g1 <- g1 + geom_hline(yintercept=hlVa0, linetype="dashed", color = "gray30")
       if(wMain) g1 <- g1 + 
           stat_summary(fun=mean, geom="point", shape=13, size=8, color="black", fill="gray30") +
           stat_summary(fun=mean, geom="point", shape=13, size=7, color="black", fill="gray75")
@@ -597,7 +598,7 @@
           stat_summary(fun=mean, geom="point", shape=18, color="black",
                        size=5,position=position_dodge(width=.75), show.legend = F) 
       }
-      if(hLin) g1 <- g1 + geom_hline(yintercept=0, linetype="dashed", color = "gray30")
+      if(hLin) g1 <- g1 + geom_hline(yintercept=hlVa0, linetype="dashed", color = "gray30")
       if(wMain) g1 <- g1 + 
           stat_summary(fun=mean, geom="point", shape=13, size=8, color="black", fill="gray30") +
           stat_summary(fun=mean, geom="point", shape=13, size=7, color="black", fill="gray30")
@@ -2041,9 +2042,13 @@
     Estat<-trimciv2_vMM(xp,null.value = 0.5,pr=F)
     EfSize <- D.akp.effect.ci(xp,null.value = 0.5, nboot=nb/10)
     ResRob <- trimpb(xp,null.value = 0.5,nboot = nb,pr=F)
-    with(Estat,  paste0("Estimate = ",frmMM(estimate,2),", tw(",df,") = ", frmMM(test.stat,2), ", ",
-                        greek$xi," = ",frmMM(Effect.Size,2), " (",InterpExplana(Effect.Size)," Effect) , p = ",frmMM(ResRob$p.value,4),
-                        ", p.Eff = ", frmMM(EfSize$p.value,4)))
+    RTTest=with(Estat,  paste0("Estimate = ", frmMM(estimate,2),", tw(",df,") = ", frmMM(test.stat,2), ", p = ",frmMM(ResRob$p.value,4)))
+    REfTest=with(Estat, paste0(greek$xi," = ",frmMM(Effect.Size,2), " (",InterpExplana(Effect.Size)," Effect) , p = ",frmMM(EfSize$p.value,4)))
+    Resf<-  list(
+      RobustTTest=paste0("Robust T-Test: ",RTTest),
+      RobustEffSizeTest=paste0("Robust Effect Size Test: ",REfTest)
+    )
+    Resf
   }
   
   
