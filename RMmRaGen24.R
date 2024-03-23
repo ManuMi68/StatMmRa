@@ -2036,7 +2036,30 @@
     
   }
   
-  OneSmRob<-function(xp, tr=.2,nb=5000) {
+  # OneSmRob_v0<-function(xp, tr=.2,nb=5000) {
+  #   x<-elimna(xp)
+  #   df<-length(x)-2*floor(tr*length(x))-1
+  #   Estat<-trimciv2_vMM(xp,null.value = 0.5,pr=F)
+  #   EfSize <- D.akp.effect.ci(xp,null.value = 0.5, nboot=nb/10)
+  #   ResRob <- trimpb(xp,null.value = 0.5,nboot = nb,pr=F)
+  #   RTTest=with(Estat,  paste0("Estimate = ", frmMM(estimate,2),", tw(",df,") = ", frmMM(test.stat,2), ", p = ",frmMM(ResRob$p.value,4)))
+  #   REfTest=with(Estat, paste0(greek$xi," = ",frmMM(Effect.Size,2), " (",InterpExplana(Effect.Size)," Effect) , p = ",frmMM(EfSize$p.value,4)))
+  #   Resf<-  list(
+  #     RobustTTest=paste0("Robust T-Test: ",RTTest),
+  #     RobustEffSizeTest=paste0("Robust Effect Size Test: ",REfTest)
+  #   )
+  #   Resf
+  # }
+  
+  OneSmRob <- function(xp, tr=.2,nb=5000) {
+    InterPInt <- function(x) {
+      dplyr::case_when(
+        x <= .001   ~ "***",
+        x <= .01    ~ "** ",
+        x <= .05    ~ "*  ",
+        x <  .10     ~ "#  ",
+        .default =    "   ")
+    }
     x<-elimna(xp)
     df<-length(x)-2*floor(tr*length(x))-1
     Estat<-trimciv2_vMM(xp,null.value = 0.5,pr=F)
@@ -2046,11 +2069,11 @@
     REfTest=with(Estat, paste0(greek$xi," = ",frmMM(Effect.Size,2), " (",InterpExplana(Effect.Size)," Effect) , p = ",frmMM(EfSize$p.value,4)))
     Resf<-  list(
       RobustTTest=paste0("Robust T-Test: ",RTTest),
-      RobustEffSizeTest=paste0("Robust Effect Size Test: ",REfTest)
+      RobustEffSizeTest=paste0("Robust Effect Size Test: ",REfTest),
+      RobustOnlyProbb = paste0("Robust Effect Size Test Probability: ", frmMM(EfSize$p.value,4)," ",InterPInt(EfSize$p.value))
     )
     Resf
   }
-  
   
   # h is the number of observations in the jth group after trimming.
   hMM<-function(x,tr=.2,na.rm=FALSE){if(na.rm)x<-na.del(x);length(x) - 2 * floor(tr * length(x))}
