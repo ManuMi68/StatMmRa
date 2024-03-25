@@ -33,7 +33,7 @@
   
   # Pos Hoc with Robust Analysis
   NotePosHoc.Rob <- paste0(
-    'IV1: Independent Variable set in the Simple Effects analysis\n',
+    'IV1: Independent Variable fixed in the Simple Effects analysis\n',
     'IV2: Independent variable that is analyzed by means of paired Pos Hoc contrasts (setting its levels two by two)\n',
     '-------------------------------------------------------------------------------\n',
     'For each of the Pos Hoc contrasts:\n',
@@ -41,16 +41,16 @@
     '  n1    & n2:    respective sample sizes\n',
     '  Dif:           Difference obtained in the contrast\n',
     '  teststat:      Test statistic\n',
-    '  df:            Degrees of Freedom associated with teststat\n',
+    '  df:            Degrees of Freedom associated to teststat\n',
     '  se:            Standard Error\n',
-    '  p.value:       Probability associated with teststat\n',
-    '  crit:          Confidence Interval width according to alpha\n',
+    '  p.value:       Probability associated to teststat\n',
+    '  crit:          Width of Confidence Interval according to alpha\n',
     '  ci1 & ci2:     Lower and upper limits of the 95% Confidence Interval\n',
     '  Effect.Size:   Magnitude of Treatment Effect (e.g. Cohens-d, η2 or Robust-𝜉)\n',
     '  Var.Explained: Percentage of explained Variance (square of Effect.Size)\n',
-    '  Tam:           Interpretation of the magnitude of the Treatment Effect, according to 3 bands (Small, Medium, Large)\n',
-    '  p.Rom:         Probability with the family-wise Rom error rate correction\n',
-    '  p.BH:          Probability with Benjamini & Hochberg family-wise error rate correction\n',
+    '  Magnitude:     Interpretation of the magnitude of the Treatment Effect, according to 3 bands (Small, Medium, Large)\n',
+    '  p.Rom:         Probability by Rom test, a family-wise error rate correction\n',
+    '  p.BH:          Probability by Benjamini & Hochberg test, a family-wise error rate correction\n',
     '  Sig.Rom & Sig.BH: The asterisk symbolizes that the contrast is significant for the Rom or BH correction respectively\n',
     'Asterisks represent p ≤ .05 (*), p ≤ .01 (**) or p ≤ .001 (***),\n',
     '                    # indicates a trend approaching the significance level we set at .05\n'
@@ -69,10 +69,10 @@
     'For each of the Pos Hoc contrasts:\n',
     ' estimate: Contrast estimation\n',
     ' SE:       Standard Error of teststat\n',
-    ' df:       Degrees of Freedom associated with teststat\n',
+    ' df:       Degrees of Freedom associated to teststat\n',
     ' t.ratio:  Test statistic\n',
-    ' p.Rom:    Probability with the family-wise Rom error rate correction\n',
-    ' p.Holm:   Probability with Holm family-wise error rate correction\n',
+    ' p.Rom:    Probability by Rom test, a family-wise error rate correction\n',
+    ' p.Holm:   Probability by Holm test, a family-wise error rate correction\n',
     'Asterisks represent p ≤ .05 (*), p ≤ .01 (**) or p ≤ .001 (***),\n',
     '                    # indicates a trend approaching the significance level we set at .05\n'
   )
@@ -82,7 +82,7 @@
     'Main results for the Pos Hoc analysis obtained from Ranked ANOVA:\n',
     ' Estimator: Contrast estimation\n',
     ' T:         Test statistic\n',
-    ' p.Value:   Probability associated with T with the Bonferroni correction\n',
+    ' p.Value:   Probability associated to T according to Bonferroni correction\n',
     ' QS:        Magnitude of Treatment Effect estimates from Quantile-Shift statistic\n',
     ' Size:      Interpretation of the magnitude of the Treatment Effect, according to 3 bands (Small, Medium, Large)\n',
     ' Lower:     Lower limit of the 95% Confidence Interval\n',
@@ -1673,7 +1673,7 @@
     ResPosRob<-data.table(do.call("rbind", yd),ext1,ext2)
     ResPosRob$p.value=frmMM( ResPosRob$p.value,4)
     for (i in (c(4,5,7:11,14)))ResPosRob[[i]]<-as.numeric(frmMM(ResPosRob[[i]],2))
-    ResPosRob<-data.table(ResPosRob, Tam= unlist(lapply(ResPosRob$Effect.Size, InterpExplana)))
+    ResPosRob<-data.table(ResPosRob, Magnitude= unlist(lapply(ResPosRob$Effect.Size, InterpExplana)))
     setorder(ResPosRob, -Sig.BH)
     
     #with (ResPosRob[1,], paste0(IV1,": ",IV2.a," - ",IV2.b," = ",dif,": ","tw(",df,") = ",
@@ -1682,7 +1682,7 @@
     
     ResAPA<-lapply(1:nrow(ResPosRob), function(i) with (ResPosRob[i,], paste0(IV1,": ",IV2.a," - ",IV2.b," = ",dif,": ","tw(",df,") = ",
                                                                               teststat, "; pROM = ", p.Rom,"; pBH = ", p.BH, "; \U1D6CF =",
-                                                                              Effect.Size, " (",Tam," effect)")))
+                                                                              Effect.Size, " (",Magnitude," effect)")))
     ResAPA2<-data.table(do.call("rbind",ResAPA))
     
     RsAOV$SimplEfa.1<- ResPosRob
@@ -1724,7 +1724,7 @@
     ResPosRob2<-data.table(do.call("rbind", yd),ext1,ext2)
     ResPosRob2$p.value=frmMM( ResPosRob2$p.value,4)
     for (i in (c(4,5,9:15)))ResPosRob2[[i]]<-as.numeric(frmMM(ResPosRob2[[i]],2))
-    ResPosRob2<-data.table(ResPosRob2, Tam= unlist(lapply(ResPosRob2$Effect.Size, InterpExplana)))  
+    ResPosRob2<-data.table(ResPosRob2, Magnitude= unlist(lapply(ResPosRob2$Effect.Size, InterpExplana)))  
     
     setorder(ResPosRob2, -Sig.BH)
     #with (ResPosRob[1,], paste0(IV1,": ",IV2.a," - ",IV2.b," = ",dif,": ","tw(",df,") = ",
@@ -1733,7 +1733,7 @@
     
     ResAPAb<-lapply(1:nrow(ResPosRob2), function(i) with (ResPosRob2[i,], paste0(IV1,": ",IV2.a," - ",IV2.b," = ",dif,": ","tw(",df,") = ",
                                                                                  teststat, "; pROM = ", p.Rom,"; pBH = ", p.BH, "; \U1D6CF =",
-                                                                                 Effect.Size, " (",Tam," effect)")))
+                                                                                 Effect.Size, " (",Magnitude," effect)")))
     ResAPA2b<-data.table(do.call("rbind",ResAPAb))
     
     RsAOV$SimplEfb.1<- ResPosRob2
@@ -1872,7 +1872,7 @@
     ResPosRob<-data.table(do.call("rbind", yd),ext1,ext2)
     ResPosRob$p.value=frmMM( ResPosRob$p.value,4)
     for (i in (c(4,5,7:11,14)))ResPosRob[[i]]<-as.numeric(frmMM(ResPosRob[[i]],2))
-    ResPosRob<-data.table(ResPosRob, Tam= unlist(lapply(ResPosRob$Effect.Size, InterpExplana)))
+    ResPosRob<-data.table(ResPosRob, Magnitude= unlist(lapply(ResPosRob$Effect.Size, InterpExplana)))
     setorder(ResPosRob, -Sig.BH)
     
     #with (ResPosRob[1,], paste0(IV1,": ",IV2.a," - ",IV2.b," = ",dif,": ","tw(",df,") = ",
@@ -1883,7 +1883,7 @@
                                                                               "tw(",df,") = ", teststat,
                                                                               "; pROM = ", p.Rom,
                                                                               "; pBH = ", p.BH, "; ",
-                                                                              greek$xi," = ", Effect.Size, " (",Tam," effect)")))
+                                                                              greek$xi," = ", Effect.Size, " (",Magnitude," effect)")))
     ResAPA2<-data.table(do.call("rbind",ResAPA))
     
     RsAOV$SimplEfa.1<- ResPosRob
@@ -1925,7 +1925,7 @@
     ResPosRob2<-data.table(do.call("rbind", yd),ext1,ext2)
     ResPosRob2$p.value=frmMM( ResPosRob2$p.value,4)
     for (i in (c(4,5,9:15)))ResPosRob2[[i]]<-as.numeric(frmMM(ResPosRob2[[i]],2))
-    ResPosRob2<-data.table(ResPosRob2, Tam= unlist(lapply(ResPosRob2$Effect.Size, InterpExplana)))  
+    ResPosRob2<-data.table(ResPosRob2, Magnitude= unlist(lapply(ResPosRob2$Effect.Size, InterpExplana)))  
     
     setorder(ResPosRob2, -Sig.BH)
     #with (ResPosRob[1,], paste0(IV1,": ",IV2.a," - ",IV2.b," = ",dif,": ","tw(",df,") = ",
@@ -1936,7 +1936,7 @@
                                                                                  "tw(",df,") = ", teststat,
                                                                                  "; pROM = ", p.Rom,
                                                                                  "; pBH = ", p.BH,
-                                                                                 "; ", greek$xi," = ", Effect.Size, " (",Tam," effect)")))
+                                                                                 "; ", greek$xi," = ", Effect.Size, " (",Magnitude," effect)")))
     ResAPA2b<-data.table(do.call("rbind",ResAPAb))
     
     RsAOV$SimplEfb.1<- ResPosRob2
@@ -2038,12 +2038,12 @@
     ResPosRob<-data.table(do.call("rbind", yd),ext1,ext2)
     ResPosRob$p.value=frmMM( ResPosRob$p.value,4)
     for (i in (c(4,5,7:11,14)))ResPosRob[[i]]<-as.numeric(frmMM(ResPosRob[[i]],2))
-    ResPosRob<-data.table(ResPosRob, Tam= unlist(lapply(ResPosRob$Effect.Size, InterpExplana)))
+    ResPosRob<-data.table(ResPosRob, Magnitude= unlist(lapply(ResPosRob$Effect.Size, InterpExplana)))
     setorder(ResPosRob, -Sig.BH)
     
     ResAPA<-lapply(1:nrow(ResPosRob), function(i) with (ResPosRob[i,], paste0(IV1,": ",IV2.a," - ",IV2.b," = ",dif,": ","tw(",df,") = ",
                                                                               teststat, "; pROM = ", p.Rom, "; ", greek$xi," = ",
-                                                                              Effect.Size, " (",Tam," effect)")))
+                                                                              Effect.Size, " (",Magnitude," effect)")))
     ResAPA2<-data.table(do.call("rbind",ResAPA))
     
     RsAOV$SimplEfa.1<- ResPosRob
@@ -2077,7 +2077,7 @@
     ResPosRob2<-data.table(do.call("rbind", yd),ext1,ext2)
     ResPosRob2$p.value=frmMM( ResPosRob2$p.value,4)
     for (i in (c(4,5,9:15)))ResPosRob2[[i]]<-as.numeric(frmMM(ResPosRob2[[i]],2))
-    ResPosRob2<-data.table(ResPosRob2, Tam= unlist(lapply(ResPosRob2$Effect.Size, InterpExplana)))  
+    ResPosRob2<-data.table(ResPosRob2, Magnitude= unlist(lapply(ResPosRob2$Effect.Size, InterpExplana)))  
     
     setorder(ResPosRob2, -Sig.BH)
     #with (ResPosRob[1,], paste0(IV1,": ",IV2.a," - ",IV2.b," = ",dif,": ","tw(",df,") = ",
@@ -2086,7 +2086,7 @@
     
     ResAPAb<-lapply(1:nrow(ResPosRob2), function(i) with (ResPosRob2[i,], paste0(IV1,": ",IV2.a," - ",IV2.b," = ",dif,": ","tw(",df,") = ",
                                                                                  teststat, "; pROM = ", p.Rom,"; pBH = ", p.BH,  "; ", greek$xi," = ",
-                                                                                 Effect.Size, " (",Tam," effect)")))
+                                                                                 Effect.Size, " (",Magnitude," effect)")))
     ResAPA2b<-data.table(do.call("rbind",ResAPAb))
     
     RsAOV$SimplEfb.1<- ResPosRob2
@@ -2998,12 +2998,12 @@
     ResPosRob2<-data.table(do.call("rbind", yd),ext1,ext2)
     ResPosRob2$p.value=frmMM( ResPosRob2$p.value,4)
     for (i in (c(4,5,9:15)))ResPosRob2[[i]]<-as.numeric(frmMM(ResPosRob2[[i]],2))
-    ResPosRob2<-data.table(ResPosRob2, Tam= unlist(lapply(ResPosRob2$Effect.Size, InterpExplana)))
+    ResPosRob2<-data.table(ResPosRob2, Magnitude= unlist(lapply(ResPosRob2$Effect.Size, InterpExplana)))
     setorder(ResPosRob2, -Sig.BH)
     
     ResAPAb<-lapply(1:nrow(ResPosRob2), function(i) with (ResPosRob2[i,], paste0(IV1,": ",IV2.a," - ",IV2.b," = ",dif,": ","tw(",df,") = ",
                                                                                  teststat, "; pROM = ", p.Rom,"; pBH = ", p.BH,  "; ", greek$xi," = ",
-                                                                                 Effect.Size, " (",Tam," effect)")))
+                                                                                 Effect.Size, " (",Magnitude," effect)")))
     ResAPA2b<-data.table(do.call("rbind",ResAPAb))
     RsAOV$Omn <- AOVOmn
     RsAOV$SimplEfb.1<- ResPosRob2
