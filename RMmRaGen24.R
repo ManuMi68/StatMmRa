@@ -28,6 +28,68 @@
     equal='\uff1d', notEqual='\u2260', integral='\u222b', doubleintegral='\u222c', tripleintegral='\u222d',
     logicalAnd='\u2227', logicalOr='\u2228', intersection='\u2229', union='\u222a')
   
+  # Explanatory notes for the Pos Hoc analysis
+  NoteTable=""
+  
+  # Pos Hoc with Robust Analysis
+  NotePosHoc.Rob <- paste0(
+    'IV1: Independent Variable set in the Simple Effects analysis\n',
+    'IV2: Independent variable that is analyzed by means of paired Pos Hoc contrasts (setting its levels two by two)\n',
+    '-------------------------------------------------------------------------------\n',
+    'For each of the Pos Hoc contrasts:\n',
+    '  IV2.a & IV2.b: the levels compared in it\n',
+    '  n1    & n2:    respective sample sizes\n',
+    '  Dif:           Difference obtained in the contrast\n',
+    '  teststat:      Test statistic\n',
+    '  df:            Degrees of Freedom associated with teststat\n',
+    '  se:            Standard Error\n',
+    '  p.value:       Probability associated with teststat\n',
+    '  crit:          Confidence Interval width according to alpha\n',
+    '  ci1 & ci2:     Lower and upper limits of the 95% Confidence Interval\n',
+    '  Effect.Size:   Magnitude of Treatment Effect (e.g. Cohens-d, η2 or Robust-𝜉)\n',
+    '  Var.Explained: Percentage of explained Variance (square of Effect.Size)\n',
+    '  Tam:           Interpretation of the magnitude of the Treatment Effect, according to 3 bands (Small, Medium, Large)\n',
+    '  p.Rom:         Probability with the family-wise Rom error rate correction\n',
+    '  p.BH:          Probability with Benjamini & Hochberg family-wise error rate correction\n',
+    '  Sig.Rom & Sig.BH: The asterisk symbolizes that the contrast is significant for the Rom or BH correction respectively\n',
+    'Asterisks represent p ≤ .05 (*), p ≤ .01 (**) or p ≤ .001 (***),\n',
+    '                    # indicates a trend approaching the significance level we set at .05\n'
+  )
+  
+  # Pos Hoc with emmeans library
+  NotePosHoc.Emm <-paste0(
+    'Main results for the Pos Hoc analysis obtained from the emmeans library:\n',
+    'For each of the experimental conditions of the contrasts:\n',
+    ' emmean:   Difference between contrast means\n',
+    ' SE:       Standard Error\n',
+    ' df:       Degrees of Freedom\n',
+    ' lower.CL: Lower limit of the 95% Confidence Interval\n',
+    ' upper.CL: Upper limit of the 95% Confidence Interval\n',
+    '\n',
+    'For each of the Pos Hoc contrasts:\n',
+    ' estimate: Contrast estimation\n',
+    ' SE:       Standard Error of teststat\n',
+    ' df:       Degrees of Freedom associated with teststat\n',
+    ' t.ratio:  Test statistic\n',
+    ' p.Rom:    Probability with the family-wise Rom error rate correction\n',
+    ' p.Holm:   Probability with Holm family-wise error rate correction\n',
+    'Asterisks represent p ≤ .05 (*), p ≤ .01 (**) or p ≤ .001 (***),\n',
+    '                    # indicates a trend approaching the significance level we set at .05\n'
+  )
+  
+  # Pos Hoc with Ranked Analysis
+  NotePosHoc.Rnk <-paste0(
+    'Main results for the Pos Hoc analysis obtained from Ranked ANOVA:\n',
+    ' Estimator: Contrast estimation\n',
+    ' T:         Test statistic\n',
+    ' p.Value:   Probability associated with T with the Bonferroni correction\n',
+    ' QS:        Magnitude of Treatment Effect estimates from Quantile-Shift statistic\n',
+    ' Size:      Interpretation of the magnitude of the Treatment Effect, according to 3 bands (Small, Medium, Large)\n',
+    ' Lower:     Lower limit of the 95% Confidence Interval\n',
+    ' Upper:     Upper limit of the 95% Confidence Interval\n'
+  )
+  
+  
   # Checks if a certain library is installed on the system.
   # If it is not installed, it installs it first and then loads it.
   chkPkg <-function(l.of.p){
