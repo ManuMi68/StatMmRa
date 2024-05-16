@@ -3885,16 +3885,18 @@
     # remotes::install_github("Eliot-RUIZ/automation")
     # for (i in 1:length(list.of.packagesMas)) install.packages(list.of.packagesMas[[i]])
     
+    if ("remotes"  %ni% installed.packages()) install.packages("remotes")
+    if ("pacman"  %ni% installed.packages()) install.packages("pacman")
     if ("aomisc"  %ni% installed.packages()) remotes::install_github("OnofriAndreaPG/aomisc")
     if ("HydroMe"  %ni% installed.packages()) install.packages("http://cran.r-project.org/src/contrib/Archive/HydroMe/HydroMe_2.0-1.tar.gz", repo=NULL, type="source")
     if ("NRAIA"  %ni% installed.packages()) install.packages("NRAIA", repos="http://R-Forge.R-project.org")
     if ("glmmTMB"  %ni% installed.packages()) remotes::install_github("glmmTMB/glmmTMB/glmmTMB")
-    if (!require("pacman")) install.packages("pacman")
+    #if (!require("pacman")) install.packages("pacman")
     if ("textreadr"  %ni% installed.packages()) pacman::p_load_gh("trinker/textreadr")
     if ("CMC"  %ni% installed.packages()) install.packages("http://cran.r-project.org/src/contrib/Archive/CMC/CMC_1.0.tar.gz", repo=NULL, type="source")
     if ("measureQ"  %ni% installed.packages())  {
-      if (!require("lavaan")) install.packages("lavaan")
-      if (!require("openxlsx")) install.packages("openxlsx")  
+      if ("lavaan"  %ni% installed.packages()) install.packages("lavaan")
+      if ("openxlsx"  %ni% installed.packages()) install.packages("openxlsx")  
       install.packages("https://github.com/ManuMi68/StatMmRa/raw/main/measureQ_1.5.0.tar", repos = NULL, type="source")  
     }
     
