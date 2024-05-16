@@ -3903,6 +3903,8 @@
     }
     if ("introdataviz"  %ni% installed.packages()) remotes::install_github("psyteachr/introdataviz")
     # devtools::install_github("psyteachr/introdataviz")
+    if ("scmamp"  %ni% installed.packages()) remotes::install_github("b0rxa/scmamp")
+    # devtools::install_github("b0rxa/scmamp")
     
     new.packages <- list.of.packagesMas[!(list.of.packagesMas %in% installed.packages()[,"Package"])]
     if(length(new.packages)) install.packages(new.packages)
