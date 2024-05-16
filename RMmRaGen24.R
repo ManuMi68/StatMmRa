@@ -3885,8 +3885,10 @@
     # remotes::install_github("Eliot-RUIZ/automation")
     # for (i in 1:length(list.of.packagesMas)) install.packages(list.of.packagesMas[[i]])
     
+    if ("devtools"  %ni% installed.packages()) install.packages("devtools")
     if ("remotes"  %ni% installed.packages()) install.packages("remotes")
     if ("pacman"  %ni% installed.packages()) install.packages("pacman")
+    
     if ("aomisc"  %ni% installed.packages()) remotes::install_github("OnofriAndreaPG/aomisc")
     if ("HydroMe"  %ni% installed.packages()) install.packages("http://cran.r-project.org/src/contrib/Archive/HydroMe/HydroMe_2.0-1.tar.gz", repo=NULL, type="source")
     if ("NRAIA"  %ni% installed.packages()) install.packages("NRAIA", repos="http://R-Forge.R-project.org")
@@ -3899,6 +3901,8 @@
       if ("openxlsx"  %ni% installed.packages()) install.packages("openxlsx")  
       install.packages("https://github.com/ManuMi68/StatMmRa/raw/main/measureQ_1.5.0.tar", repos = NULL, type="source")  
     }
+    if ("introdataviz"  %ni% installed.packages()) remotes::install_github("psyteachr/introdataviz")
+    # devtools::install_github("psyteachr/introdataviz")
     
     new.packages <- list.of.packagesMas[!(list.of.packagesMas %in% installed.packages()[,"Package"])]
     if(length(new.packages)) install.packages(new.packages)
