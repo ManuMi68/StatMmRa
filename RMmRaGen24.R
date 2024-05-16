@@ -2840,7 +2840,7 @@
     #
     #  The default amount of trimming is tr=.2
     #  Manuel Miguel added the alternative variants
-    library(MASS)
+    require(MASS)
     x<-elimna(x)
     se<-sqrt(winvar(x,tr))/((1-2*tr)*sqrt(length(x)))
     trimci<-vector(mode="numeric",length=2)
@@ -3858,10 +3858,53 @@
                           "ggplotify","nlraa","vegan", "ggtrendline", "HydroMe", "NRAIA", "NISTnls", "rTPC", "nls.multstart",
                           "growthmodels", "Deriv", "FSA", "broom", "purrr")
 
-    #source("https://github.com/ManuMi68/StatMmRa/raw/main/Mas_aosmic.R")
-    chkPkg(list.of.packages)
-    new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
+    list.of.packagesMas <- c("devtools", "remotes","pacman",
+                             "data.table","dplyr", "ggplot2", "knitr", "kableExtra", 
+                             "inflection", "deSolve", 
+                             "nlme","car", "drc", "aomisc", "rootSolve", "RootsExtremaInflections", "minpack.lm",
+                             "ggplotify","nlraa","vegan", "ggtrendline", "HydroMe", "NRAIA", "NISTnls", "rTPC", "nls.multstart",
+                             "growthmodels", "Deriv", "FSA", "broom", "purrr",
+                             "modeest", "e1071",
+                             "effectsize",
+                             "MASS", "parallel", "deeplr",
+                             "shape", "graphics", "cowplot", "rlang", "nortest",
+                             "random","foreach",
+                             "HH", "irr", "psychometric", "psych", "GPArotation","Rcsdp","corrplot", "lavaan", "semTools",
+                             "semPlot", "crayon", "nonnest2", "svMisc")
+    
+   
+    
+
+    
+    # '%ni%' <- Negate('%in%')
+    # remotes::install_github("OnofriAndreaPG/aomisc")
+    # install.packages("http://cran.r-project.org/src/contrib/Archive/HydroMe/HydroMe_2.0-1.tar.gz", repo=NULL, type="source")
+    # install.packages("NRAIA", repos="http://R-Forge.R-project.org")
+    # remotes::install_github("glmmTMB/glmmTMB/glmmTMB")
+    # remotes::install_github("rlesur/klippy")
+    # remotes::install_github("Eliot-RUIZ/automation")
+    # for (i in 1:length(list.of.packagesMas)) install.packages(list.of.packagesMas[[i]])
+    
+    if ("aomisc"  %ni% installed.packages()) remotes::install_github("OnofriAndreaPG/aomisc")
+    if ("HydroMe"  %ni% installed.packages()) install.packages("http://cran.r-project.org/src/contrib/Archive/HydroMe/HydroMe_2.0-1.tar.gz", repo=NULL, type="source")
+    if ("NRAIA"  %ni% installed.packages()) install.packages("NRAIA", repos="http://R-Forge.R-project.org")
+    if ("glmmTMB"  %ni% installed.packages()) remotes::install_github("glmmTMB/glmmTMB/glmmTMB")
+    if (!require("pacman")) install.packages("pacman")
+    if ("textreadr"  %ni% installed.packages()) pacman::p_load_gh("trinker/textreadr")
+    if ("CMC"  %ni% installed.packages()) install.packages("http://cran.r-project.org/src/contrib/Archive/CMC/CMC_1.0.tar.gz", repo=NULL, type="source")
+    if ("measureQ"  %ni% installed.packages())  {
+      if (!require("lavaan")) install.packages("lavaan")
+      if (!require("openxlsx")) install.packages("openxlsx")  
+      install.packages("https://github.com/ManuMi68/StatMmRa/raw/main/measureQ_1.5.0.tar", repos = NULL, type="source")  
+    }
+    
+    new.packages <- list.of.packagesMas[!(list.of.packagesMas %in% installed.packages()[,"Package"])]
     if(length(new.packages)) install.packages(new.packages)
+    
+    #source("https://github.com/ManuMi68/StatMmRa/raw/main/Mas_aosmic.R")
+    try(chkPkg(list.of.packages))
+    
+   
     
     # I will expand it little by little
     NmMod=c("Pow1","Pow2","Pow3","Exp1","Exp2","Exp3","Exp4","Exp5",
@@ -8363,6 +8406,12 @@
     # 1ª Derivate of AsymReg
     DrvAsymReg<-function(x,Asym,R0,c) {(Asym - R0) * (exp(-c * x) * c)}
     
+    AsymRegMM.x<-function(y,Asym,R0,c) {
+      Coc<- (Asym-y)/(Asym-R0)
+      Res<- -log(Coc)/c
+      Res
+    }
+    
     # change names of parameters "Theta"
     ChangeSymb <- function(EqQuo, SymToCh) {
       # It also serves
@@ -8396,6 +8445,28 @@
       numer<-Deriv(EqTh,"X",n = 1)(x)
       denom<-EqTh(x)
       numer/denom
+    }
+    
+    MkEqAsReg<-function() {
+      # Eq0 is the fundamental equation of the model from which all the rest is derived
+      Eq0.a=quote(response)
+      Eq0.b=quote(Asym+(R0-Asym)*exp(-exp(lrc)*input))
+      Eq0=substitute(a ~ b , list(a = Eq0.a, b = Eq0.b))
+      Eq0= as.expression(Eq0)
+      EqTheta = ChangeSymbAR(EqQuo = Eq0,SymRes = c("theta[1]", "theta[2]", "theta[3]"))
+      EqCDR = ChangeSymbAR(Eq0,letters[seq(1, 3)],c("Asym","R0","exp(lrc)"))
+      EqTheta2 = ChangeSymbAR(EqQuo = Eq0,SymRes = c("Asymptote", "Origin", "LogRate"),LaX = "Decile",LaY="Correlation")
+      EqTt.1=quote({"Asymptotic Regression:"})
+      Eq.1=quote({f[theta](x) == theta[1] + (theta[2]-theta[1])*~e^{-e^{theta[3]}*~x}})
+      EqLb.1=substitute(a ~ b , list(a = EqTt.1, b = Eq.1))
+      EqTt.2=quote({"First derivative:"})
+      Eq.2=quote({f*" '"[theta](x) == {e^{theta[3]}*~(theta[1]-f[theta](x))}})
+      EqLb.2=substitute(a ~ b , list(a = EqTt.2, b = Eq.2))
+      EqTt.3=quote({"Params:"})
+      Eq.3=quote(list(theta[1] == "Asymptote", theta[2] == "Origin", theta[3] == "Log of Rate")~"["*{Rate==e^{theta[3]}}*"]")
+      EqLb.3=substitute(a ~ b , list(a = EqTt.3, b = Eq.3))
+      JnEq=list(EqLb.1,EqLb.2,EqLb.3)
+      return(JnEq)
     }
     
     AdjParms <-function(ModelP,DataP) {
@@ -8930,7 +9001,11 @@
       decilecolors=c("#7F7FCE", "#7F7FF7", "#88A9F9", "#93D2FB", "#A0FCFE",
                      "#BDFDD7", "#DDFEB3", "#FFFF91", "#F8D68B", "#F3AE86" )
       colorsdef=rep(decilecolors, each=6)
-      #ResF<-list()
+      getCurrentAspect <- function() {
+        uy <- diff(grconvertY(1:2,"user","inches"))
+        ux <- diff(grconvertX(1:2,"user","inches"))
+        uy/ux
+      }
       NmMod="RegAs1"
       
       XMin=head(LasMedP$X,1)
@@ -8954,6 +9029,7 @@
       xMed=log(2)/(exp(lrcStim))
       PredxMed=predict(fit, data.frame(X = xMed))
       Rate=c=             exp(lrcStim)
+      MaxRateX=round(AsymRegMM.x(0,Asym,R0,c),0)
       
       # Find root, plot results, print Taylor coefficients and rho estimation:
       bR <-rootxi(LasMedP$X,LasMedP$Y,1,length(LasMedP$X),5,5,plots=F); # bR$froot[2]
@@ -8979,28 +9055,42 @@
       
       #log(2)
       if (LineRate) {
-        newx <- 1
+        newx <- MaxRateX
         pred0 <- data.frame(x=newx, y=AsymRegMM(newx,AsymStim,R0Stim,c))
         pred1 <- data.frame(x=newx, y=DrvAsymReg(newx,AsymStim,R0Stim,c))
         yint <- pred0$y - (pred1$y*newx)
         xint <- -yint/pred1$y
         lines(xPred, yint + pred1$y*xPred, lty=2,lwd=1) # tangent (1st deriv. of spline at newx)
+        # Alternative:
+          # abline(b,DrvAsymReg(MaxRateX,Asym,R0,c), lty=2,lwd=1)
         #points(xint, 0, col=3, pch=19) # x intercept
         LTang=lm(yint + pred1$y*xPred ~ xPred)$coefficients
         ratio=5/1
-        Angle = atan(LTang[2] * ratio) * (180 / pi) # Yo estimé 70
-        text(2, .75,"Max Rate at x = 1",srt=Angle,adj=c(0.75,0),cex=.90) 
+        # Angle = atan(LTang[2] * ratio) * (180 / pi) # Yo estimé 70
+        aspIn=getCurrentAspect()
+        Angle<-180/pi*atan(LTang[[2]]*aspIn)
+        YRate = (Asym-R0)/2
+        XRate=(YRate-R0)/DrvAsymReg(MaxRateX,Asym,R0,c)
+        text(XRate, YRate,paste0("Max Rate at x = ",MaxRateX),srt=Angle,cex=.90,pos=3) 
+        # text(2, .75,"Max Rate at x = 1",srt=Angle,adj=c(0.75,0),cex=.90) 
       }
       
       if (pointXMed=="p") points(xMed, PredxMed[[1]],pch=16,cex=1.5,col=rgb(red = 1, green = 0, blue = 0, alpha = 0.5))
       if (pointXMed=="X") points(xMed, PredxMed[[1]],pch=4, cex=1.5,col=rgb(red = 0, green = 1, blue = 1))
       if (pointXMed %in% c("p", "X") & pointXMedLb =="OnAx") {
+        Eq0.ai=quote({x[0.5]})
+        Eq0.bi=round(xMed,0)
+        Eq0i=substitute(a %~~% b , list(a = Eq0.ai, b = Eq0.bi))
+        Eq0ii= as.expression(Eq0i)
+        
+        
         lines(c(0,xMed),c(PredxMed[[1]],PredxMed[[1]]),lty=2,lwd=1)
         lines(c(xMed,xMed),c(PredxMed[[1]],-1),lty=2,lwd=1)
         # text(xMed+3, PredxMed,expression(X[0.5]%~~%.(xMed)))
         # text(xMed+1.5, PredxMed,bquote(X[0.5]==.(ceiling(xMed))),cex=1.5)
         text(xMed+.5, PredxMed[[1]],
-             quote({x[0.5] %~~%1}), 
+             #quote({x[0.5] %~~%1}),
+             Eq0i,
              adj = c(0, 0.5),
              cex=1)
         abline(h=AsymStim,lty=2,lwd=1)
@@ -9011,7 +9101,7 @@
         text(x = -1.3, y= .1,labels=expression(frac(theta[1]+theta[2],2)),adj=c(.5,0),cex=.75)
         text(x = xMed, y= -1.4,labels=expression(frac(log(2), e^{theta[3]})==frac(log(2), Rate)),cex=.75)
         Arrows(-1,.15,-.4,PredxMed[[1]], arr.length = .25, arr.type="triangle", arr.adj = 1)
-        Arrows(1,-1.35,1,-1.1, arr.length = .25, arr.type="triangle", arr.adj = 1 )
+        Arrows(xMed,-1.35,xMed,-1.1, arr.length = .25, arr.type="triangle", arr.adj = 1 )
         par(xpd=FALSE)
         axis(side=2, at = R0Stim, labels= expression(theta[2]), pos=-.5, las=1)
         axis(side=2, at = AsymStim, labels= expression(theta[1]), pos=-.5, las=1)
