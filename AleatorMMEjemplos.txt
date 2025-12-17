@@ -1,0 +1,15 @@
+1) Instala el programa R en tu computadora a partir de https://cloud.r-project.org
+2) Una vez terminada la instalacion, abres el programa R y creas un nuevo script (File > New Document)
+3) Escribes en ese script las siguientes lineas:
+
+source('http://www4.ujaen.es/~mramos/EPIP/LibrMMRA.R')
+rndBlock(c("Exp","Control"),10)
+rndpseudo(c("Exp","Control"),10)
+rndMuestreo(10000,1000)
+rndMuestreoAcot(1000,3000,50,4000)
+
+4) Ejecuta las lineas de codigo una a una
+
+
+(C) Manuel Miguel Ramos Alvarez 2023
+Notas: Se han omitido las tildes para evitar problemas de programación
